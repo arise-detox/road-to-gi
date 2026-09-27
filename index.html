@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c1118">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ROAD TO GI">
+  <title>ROAD TO GI</title>
+  <style>
+:root{--bg:#0b1016;--surface:#121923;--surface2:#18212d;--line:#273240;--text:#eef3f9;--muted:#8f9dad;--accent:#67a2ff;--accent2:#2c66b8;--good:#58d39b;--warn:#f2bb5f;--danger:#ff6b73;--shadow:0 10px 30px rgba(0,0,0,.22)}*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}button,input,select,textarea{font:inherit}button{cursor:pointer}.shell{width:min(820px,100%);margin:auto;min-height:100vh;padding-bottom:92px}.topbar{position:sticky;top:0;z-index:20;background:rgba(11,16,22,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:11px;min-width:0}.brandmark{width:42px;height:42px;border-radius:12px;background:var(--surface2);display:grid;place-items:center;border:1px solid var(--line);font-weight:900;color:var(--accent)}.brand h1{font-size:17px;letter-spacing:1.4px;margin:0}.brand p{font-size:12px;color:var(--muted);margin:2px 0 0}.top-controls{display:flex;gap:8px}.compact-select{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:10px;padding:9px 26px 9px 10px;font-size:12px}.main{padding:16px}.hero{background:linear-gradient(135deg,#172230,#101720);border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:var(--shadow)}.eyebrow{font-size:11px;letter-spacing:1.6px;font-weight:800;color:var(--accent);margin:0 0 8px}.hero h2{font-size:28px;line-height:1.05;margin:0 0 8px}.muted{color:var(--muted)}.hero p{margin:0}.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.btn{border:1px solid var(--line);background:var(--surface2);color:var(--text);min-height:44px;border-radius:11px;padding:10px 14px;font-weight:750}.btn.primary{background:var(--accent);color:#07111e;border-color:transparent}.btn.good{background:var(--good);color:#082015;border-color:transparent}.btn.danger{color:#ffdfe1;border-color:#6b3037;background:#25161a}.btn.ghost{background:transparent}.grid{display:grid;gap:12px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:14px}.stat{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:14px;min-width:0}.stat span{font-size:11px;color:var(--muted);display:block;margin-bottom:6px}.stat strong{font-size:18px;display:block;overflow-wrap:anywhere}.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}.card h3,.card h4{margin:0}.card-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}.tag{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;background:#1b2b41;color:#a8caff;font-size:11px;font-weight:800}.progress{height:9px;background:#202a36;border-radius:999px;overflow:hidden}.progress>div{height:100%;background:var(--accent);border-radius:inherit}.schedule{display:grid;gap:7px}.schedule-row{border:1px solid var(--line);background:var(--surface2);border-radius:12px;padding:12px;display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:8px}.schedule-row.today{border-color:#4d82c5;background:#162236}.schedule-row .day{font-size:11px;color:var(--accent);font-weight:900}.schedule-row .kind{font-size:13px;font-weight:700}.schedule-row .arrow{color:var(--muted)}.section-title{font-size:22px;margin:6px 0 14px}.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:8px}.tab{white-space:nowrap;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:9px 12px}.tab.active{background:#1d3350;color:#cfe1ff;border-color:#426a9f}.source-block{white-space:pre-wrap;line-height:1.5;color:#d8e0e9;font-size:13px;background:#0e141c;border:1px solid var(--line);border-radius:12px;padding:13px;max-height:330px;overflow:auto}.source-block.expanded{max-height:none}.source-toggle{margin-top:10px}.worklist{display:grid;gap:7px}.workitem{display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:flex-start;background:var(--surface2);border:1px solid var(--line);padding:11px;border-radius:12px}.workitem input{width:22px;height:22px;margin:1px 0}.workitem.done{opacity:.55}.workitem.done .worktext{text-decoration:line-through}.worktext{font-size:13px;line-height:1.38}.force-grid{display:grid;gap:8px}.force-row{display:grid;grid-template-columns:1fr 80px 76px 44px;gap:7px;align-items:center;background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:10px}.force-row input{width:100%;background:#0d141c;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px}.force-row .check{width:40px;height:40px;border-radius:9px;border:1px solid var(--line);background:#0f1720;color:var(--text)}.force-row .check.done{background:var(--good);color:#062116}.timer-panel{text-align:center}.timer-display{font-variant-numeric:tabular-nums;font-size:54px;font-weight:900;letter-spacing:1px;margin:4px 0 12px}.timer-status{font-size:12px;color:var(--muted);min-height:18px}.quick-timers{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:10px}.quick-timers button{min-width:60px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}.field input,.field select{width:100%;min-height:46px;background:#0d141c;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:16px}.notice{padding:12px;border:1px solid #405472;border-radius:12px;background:#142033;color:#cbdcff;font-size:13px;line-height:1.45}.history-row{display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.history-row:last-child{border-bottom:0}.history-row small{color:var(--muted)}.bottomnav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(820px,100%);height:76px;background:rgba(11,16,22,.97);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,1fr);z-index:30;padding-bottom:env(safe-area-inset-bottom)}.navbtn{border:0;background:transparent;color:#798797;display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;font-size:10px}.navbtn b{font-size:18px}.navbtn.active{color:var(--accent)}.empty{padding:26px;text-align:center;color:var(--muted)}.pill-row{display:flex;gap:8px;flex-wrap:wrap}.result{font-size:13px;line-height:1.55}.result strong{color:#fff}.divider{height:1px;background:var(--line);margin:14px 0}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}@media(max-width:640px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.form-grid{grid-template-columns:1fr}.schedule-row{grid-template-columns:74px 1fr 16px}.force-row{grid-template-columns:1fr 65px 65px 40px}.top-controls{gap:5px}.compact-select{padding-left:8px;padding-right:20px}.hero h2{font-size:24px}.timer-display{font-size:46px}.main{padding:12px}}
+  
+/* Modification rapide des RM */
+.rm-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin:14px 0 8px;
+}
+.rm-head h4{
+    margin:0;
+    min-width:0;
+}
+.rm-edit{
+    flex:0 0 auto;
+    min-height:38px;
+    padding:0 12px;
+    font-size:12px;
+}
+@media (max-width:420px){
+    .rm-head{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+    .rm-edit{
+        width:100%;
+    }
+}
+
+
+/* ROAD TO GI V3 */
+.rm-inline-editor{
+    display:flex;
+    align-items:end;
+    gap:8px;
+    margin:10px 0 12px;
+    padding:10px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:#0d141c;
+}
+.rm-inline-editor label{
+    flex:1;
+    color:var(--muted);
+    font-size:12px;
+}
+.rm-inline-editor input{
+    display:block;
+    width:100%;
+    min-height:42px;
+    margin-top:6px;
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:#0a1016;
+    color:var(--text);
+    font-size:16px;
+}
+.course-session-tabs{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin:10px 0 14px;
+}
+.course-session-tabs .btn.active{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+}
+.rm-form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+}
+.rm-save-note{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:12px;
+}
+.navbtn span{font-size:9px}
+@media(max-width:520px){
+    .rm-form-grid{grid-template-columns:1fr}
+    .rm-inline-editor{align-items:stretch;flex-direction:column}
+    .course-session-tabs{grid-template-columns:1fr}
+    .bottomnav{height:78px}
+    .navbtn{font-size:9px}
+}
+
+</style>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <meta name="mobile-web-app-capable" content="yes">
+
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+window.ROAD_TO_GI_DATA = {
+  "1": {
+    "functional": {
+      "1": {
+        "title": "Pectoraux et Dorsaux",
+        "strength": "EXERCICE SÉRIES REPS\nDéveloppé couché Voir le tableau\nTirage horizontal OU couché\nOU Bent over row OU Voir le tableau\nPendlay row\n3 ROUNDS de :\nMAX de réps à 65% en 2’00’’\nDéveloppé incliné OU\nShoulders press Augmenter de 2.5% à chaque round\nREPOS : 2’00’’ entre chaque round\n3 ROUNDS de :\nMAX de réps à 65% en 2’00’’\nTirage devant OU\nTraction lestée Augmenter de 2.5% à chaque round\nREPOS : 2’00’’ entre chaque round",
+        "weeks": {
+          "1": {
+            "headline": "- de 48’00’’",
+            "body": "FOR TIME - Effectuer 2 ROUNDS LE PLUS VITE POSSIBLE :\n1 ROUND =\n15 Tractions\n30 Step ups sur une box – 15 de chaque côté avec un disque de 15-20kg\n40 Knees-to-elbows\n50 Pompes surélevées – pieds sur un banc\nREPOS : 1’00’’\n50 Pompes\n40 V ups croisés alternés – 20 de chaque côté\n30 Thrusters avec un disque de 15-20kg\n15 Tractions\nREPOS : 3’00 entre les 2 rounds\nSi le temps est ≥ 48’00’’ – Pénalité de 50 Ground to overhead avec un disque de 15-20kg"
+          },
+          "2": {
+            "headline": "55’00’’ - ACCROCHE TOI",
+            "body": "- FOR TIME 1 - Effectuer LE PLUS VITE POSSIBLE le nombre demandé de répétitions\n21 – 15 – 9 en :\nTraction prise neutre (ou prise pronation si neutre pas possible)\nThruster avec un disque de 15-20kg\nEffectuer les 21 répétitions pour les 2 exercices, puis les 15 répétitions puis terminer avec les\n9 répétitions.\nSANS REPOS\n- FOR TIME 2 - Effectuer LE PLUS VITE POSSIBLE le nombre demandé de répétitions\n42 – 30 – 18 en :\nTraction\nGoblet lunge – moitié de chaque côté avec un disque de 15kg\nEffectuer les 42 répétitions pour les 2 exercices, puis les 30 répétitions puis terminer avec les\n18 répétitions.\nSANS REPOS\n- FOR TIME 3 - Effectuer LE PLUS VITE POSSIBLE le nombre demandé de répétitions\n63 – 45 – 27 en :\nPompe\nAir squat\nEffectuer les 63 répétitions pour les 2 exercices, puis les 45 répétitions puis terminer avec les\n27 répétitions.\nTemps restant pour aller à 55’00 :\nAMRAP évolutif – effectuer le pus de rounds :\n1er round : 1 Traction horizontale + 1 Sit up\n2ème round : 2 Tractions horizontales + 2 Sit ups\nEtc."
+          },
+          "3": {
+            "headline": "- de 50’00’’",
+            "body": "1- AMRAP évolutif de 15’00’’ – effectuer le plus de rounds :\n1er round : 1 GAO + 1 Knees-to-elbows\n2ème round : 2 GAO + 2 Knees-to-elbows\nEtc.\nREPOS : 3’00’’\n2- FOR TIME - Effectuer 35 Tractions LE PLUS VITE POSSIBLE\nREPOS : 3’00’’\n3- AMRAP évolutif de 15’00’’ – effectuer le plus de rounds :\n1er round : 1 BOPE + 2 Sit ups\n2ème round : 2 BOPE + 4 Sit ups\nEtc.\nREPOS : 3’00’’\n4- FOR TIME - Effectuer 35 Tractions LE PLUS VITE POSSIBLE"
+          },
+          "4": {
+            "headline": "- de 55’00’’",
+            "body": "FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n10 Navy seals\n20 Dips\n30 Tractions commando – 15 de chaque côté\n40 Burpees\n50 Tractions\n60 Ground to overhead avec un disque de 15-20kg\n70 Sit ups\n80 Overhead lunges – 40 de chaque côté avec un disque de 15-20kg\n90 Marteaux – 45 de chaque côté avec un disque de 15-20kg (rotation autour de la tête avec\nle disque)\n100 Pompes"
+          }
+        }
+      },
+      "2": {
+        "title": "Jambes et Epaules",
+        "strength": "EXERCICE SÉRIES REPS\nDéveloppé devant /\nShoulders press\nVoir le tableau\nBack squat Voir le tableau\n3 ROUNDS de :\nMAX de réps à 65% en 2’00’’\nTirage menton – Rowing OU\nPush press Augmenter de 2.5% à chaque round\nREPOS : 2’00’’ entre chaque round\n3 ROUNDS de :\nMAX de réps à 65% en 2’00’’\nDeadlift OU Front squat OU\nPresse OU Fente Augmenter de 2.5% à chaque round\nREPOS : 2’00’’ entre chaque round",
+        "weeks": {
+          "1": {
+            "headline": "35’00’’",
+            "body": "EMOM de 35'00'' - Départ toutes les minutes\nRéaliser 6 fois ce bloc de 6’00’’\nMinute 1 : 6 Navy seals\nMinute 2 : 12-15 Thrusters avec un disque de 15-20kg\nMinute 3 : MAX de Burpees en 1’00’’\nMinute 4 : 20 Sit ups\nMinute 5 : MAX de Tractions en 1’00’’\nMinute 6 : REPOS\nNoter les perfs"
+          },
+          "2": {
+            "headline": "- de 45’00’’",
+            "body": "FOR TIME - Effectuer 30 ROUNDS LE PLUS VITE POSSIBLE :\n1 BOPE\n2 Thrusters avec un disque de 15-20kg\n3 Tractions\n4 Burpees\n5 Pompes\nSi le temps est ≥ 45’00’’ – Pénalité de 40 Kettlebell swings à 20-24kg"
+          },
+          "3": {
+            "headline": "- 45’00’’",
+            "body": "1- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n10 Burpees\n20 Thrusters avec un disque de 20kg\n30 Tractions\n40 Marteaux – 20 de chaque côté avec un disque de 15-20kg\n50 Overhead lunges – 25 de chaque côté avec un disque de 15-20kg\n60’’ de Gainage commando\n70 Swings avec une kettlebell de 20-24kg minimum\n80 Double unders OU 160 Single unders (sauts simples)\n90’’ de Gainage araignée\n100 Pompes\nREPOS : 4’00’’\n2- FOR TIME – Effectuer 10 ROUNDS LE PLUS VITE POSSIBLE :\n4 Tractions\n8 Dips\n12 Jump squats"
+          },
+          "4": {
+            "headline": "- de 42’00’’",
+            "body": "FOR TIME - Effectuer 50 ROUNDS LE PLUS VITE POSSIBLE :\n1 Toes-to-bar\n2 Tractions\n3 Burpees\n4 Ground to overhead avec un disque de 15-20kg\nSi le temps est ≥ 42’00’’ – Pénalité de 15 Navy seals"
+          }
+        }
+      },
+      "3": {
+        "title": "Pectoraux et Dorsaux",
+        "strength": "EXERCICE SÉRIES REPS\nVoir le tableau\nDéveloppé couché\nDiminuer de 2.5%, les valeurs indiquées dans le tableau\nTirage horizontal OU couché Voir le tableau\nOU Bent over row OU\nPendlay row Diminuer de 2.5%, les valeurs indiquées dans le tableau\n3 ROUNDS de :\nMAX de réps à 65% en 2’00’’\nDéveloppé incliné OU décliné\nOU Shoulders press Diminuer de 2.5% à chaque round\nREPOS : 1’30’’ entre chaque round\n3 ROUNDS de :\nMAX de réps à 65% en 2’00’’\nTirage devant OU Traction\nlestée Diminuer de 2.5% à chaque round\nREPOS : 1’30’’ entre chaque round",
+        "weeks": {
+          "1": {
+            "headline": "35’00’’",
+            "body": "AMRAP évolutif de 35’00’’ – effectuer le plus de rounds :\n3 exercices évolutifs – 1 exercice fixe\n1er round : 2 Tractions + 2 Sit ups – 1 GAO – 6 Ground to overhead avec un disque de 15-\n20kg\n2ème round : 4 Tractions + 4 Sit ups – 2 GAO – 6 GTO\n3ème round : 6 Tractions + 6 Sit ups – 3 GAO – 6 GTO\nEtc."
+          },
+          "2": {
+            "headline": "- de 50’00’’",
+            "body": "- FOR TIME 1 - Effectuer LE PLUS VITE POSSIBLE le nombre demandé de répétitions\n3 – 6 – 9 – 12 – 15 – 18 – 21 – 24 en :\nTraction\nThruster avec un disque de 15-20kg\nPompe *2\nRajouter 30’’ de Gainage bras tendus (tap shoulders : main droite touche épaule gauche puis\nmain gauche touche épaule droite etc.)\n1er série : 3 Tractions – 3 Thrusters – 6 Pompes – 30’’ de Tap shoulders\n2ème série : 6 Tractions – 6 Thrusters – 12 Pompes – 30’’ de Tap shoulders\n3ème série : 9 Tractions – 9 Thrusters – 18 Pompes – 30’’ de Tap shoulders\nEtc."
+          },
+          "3": {
+            "headline": "36’00’’",
+            "body": "- HICT - Effectuer le circuit suivant :\n0’ – 5’00’’ : 100 Sit ups\n5’ – 10’00’’ : 80 Swings avec une kettlebell de 20-24kg minimum\n10’ – 17’00’’ : 21 – 15 – 9 répétitions en Tractions et Pompes\n17’ – 21’00’’ : 6 ROUNDS de 4 Thrusters – 6 Ground to overhead avec un disque de 15-20kg\n21’ – 31’00’’ : 85 Burpees\n31 – 36’00’’ : MAX Tractions\nPour chaque intervalle de temps, le nombre de répétitions est à effectuer le plus vite\npossible. Le reste du temps pour arriver à l’intervalle suivant est le repos."
+          },
+          "4": {
+            "headline": "- de 50’00’’",
+            "body": "FOR TIME - Effectuer 5 ROUNDS LE PLUS VITE POSSIBLE :\n50 Sit ups\n40 Goblet lunges – 20 de chaque côté avec un disque de 15-20kg\n30 Pompes surélevées – pieds sur un banc\n20 Tractions\nREPOS : 2’30 entre chaque round\nSi le temps est ≥ 50’00’’ – Pénalité de 10 BOPE + 20 Tractions + 30 Jump squats"
+          }
+        }
+      }
+    },
+    "running": {
+      "1": {
+        "1": "- 1er Test COOPER : Courir la plus grande distance sur 12 minutes\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nEtirements légers\n- 3 séries de 6 min de 30’’/30’’ à 100 % de la VMA (= VMA du Cooper +2)\nTu multiplies par 5 la distance du Cooper et tu rajouteras 2 à la VMA du Cooper pour la\nVMA en 30’’/30’’ ou en 45’’/15’’ et tu te réfères au tableau pour la distance\nRécupération passive : 3’00’’ entre les séries\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers\nExemple :\nSi tu fais 3000m au Cooper (12min), tu cours à 15km/h.\n3000 * 5 = 15000m/60min = 15km/h\nDONC VMA du Cooper + 2 = 17km/h\nRegarde à la fin du programme tu as un tableau\nQuand tu as une VMA de 17 tu dois courir au minimum 142m en 30s.",
+        "2": "- Alterner pendant 40min :\n- 1min à allure rapide (VMA du Cooper +1) (minimum X km/h)\n- 4min à allure « récupération » (minimum 9-10km/h)\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer un 800m, puis un 600m, un autre 600m et pour finir un 400m\nChaque course doit être effectuée LE PLUS VITE POSSIBLE\n 800m commencez à 0.00 min\n 600m commencez à 6.00 min\n 600m commencez à 9.30 min\n 400m commencez à 13.00 min\nRepos : 5 minutes\nLe réaliser une seconde fois\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers"
+      },
+      "2": {
+        "1": "- 3 séries de 7 min de 30’’/30’’ à 100 % de la VMA (= VMA du Cooper +2)\nRécupération passive : 3’30’’ entre les séries\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "2": "- Alterner pendant 35min : 2min à allure rapide (VMA du Cooper +1) (minimum X km/h)\net 3min à allure « récupération » (minimum 9-10km/h)\nEchauffement : 15’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer un 4 * 600m, puis un 6 * 300m\nChaque course doit être effectuée LE PLUS VITE POSSIBLE\n 4x600m départ toutes les 3’00’’\nRepos : 5 minutes\n 6x300m départ toutes les 1’30’’\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers"
+      },
+      "3": {
+        "1": "- 3 séries de 8 min de 30’’/30’’ à 100 % de la VMA (= VMA du Cooper +2)\nRécupération passive : 4’00’’ entre les séries\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "2": "- Alterner pendant 30min : 3min à allure rapide (VMA du Cooper +0,5) (minimum X\nkm/h) et 2min à allure « récupération » (minimum 9-10km/h)\nEchauffement : 15’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer 2 séries de 5 * 400m\nChaque course doit être effectuée LE PLUS VITE POSSIBLE\n 5x400m départ toutes les 2’00’’\nRepos : 5 minutes\n 5x400m départ toutes les 2’00’’\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers"
+      },
+      "4": {
+        "1": "- 3 séries de 9 min de 30’’/30’’ à 100 % de la VMA (= VMA du Cooper +2)\nRécupération passive : 4’30’’ entre les séries\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "2": "- Alterner pendant 25min : 4min à allure rapide (VMA du Cooper) (minimum X km/h) et\n1min à allure « récupération » (minimum 9-10km/h)\nEchauffement : 15’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 15’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer 2 séries de 10 * 200m\nChaque course doit être effectuée LE PLUS VITE POSSIBLE\n 10x200m départ toutes les 1’15’’\nRepos : 5 minutes\n 10x200m départ toutes les 1’15’’\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers"
+      }
+    },
+    "circuits": {
+      "1": "- FOR TIME - Effectuer 2 ROUNDS LE PLUS VITE POSSIBLE de :\n63 Goblet squats - avec une kettlebell de 20-24kg minimum\n45 Swings - avec une kettlebell de 20-24kg minimum\n27 Thrusters - avec une kettlebell de 20-24kg minimum\nA chaque fois que tu poses la kettlebell, pénalité de 7 TRACTIONS\nSi tu dépasses 25’00’’ – Pénalité de 50 Burpees",
+      "2": "- FOR TIME - Effectuer 200 Pompes LE PLUS VITE POSSIBLE :\nMAIS à chaque CUT (genou au sol), effectuer 5 Burpees + 5 Tractions\nSi tu dépasses 17’00’’ – Pénalité de 25 Toes-to-bar + 40 Pompes surélevées – pieds sur un\nbanc + 25 Tractions biceps",
+      "3": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n5 – 10 – 15 – 20 – 25 répétitions en :\nBurpees\nV up\nMarteau – de chaque côté avec un disque de 15-20kg (rotation autour de la tête)\nSwing - avec une kettlebell de 20-24kg minimum\n1’00’’ de Tractions\n1ère série : 5 Burpees – 5 V ups – 5 Marteaux – 5 Swings – 1’00’’ de Tractions\n2ème série : 10 Burpees – 10 V ups – 10 Marteaux – 10 Swings – 1’00’’ de Tractions\nEtc.",
+      "4": "- EMOM 15’00’’ – Départ toutes les minutes :\n5 Dips\n5 Burpees\n5 Sit ups\nREPOS : 5’00’’\n- AMRAP 15’00’’ – Effectuer LE PLUS DE ROUNDS POSSIBLE :\n5 Tractions\n6 Ground to overhead avec un disque de 15-20kg\n7 Pompes",
+      "5": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n20 Calories rameur OU Assault bike OU Burpees\n30 Tractions\n60 Pompes\n100 Double unders OU 200 Sauts simples\n20 Cal rameur OU Assault bike OU Burpees\n20 Tractions\n40 Pompes\n80 Double unders OU 160 Sauts simples\n20 Cal rameur OU Assault bike OU Burpees\n10 Tractions\n20 Pompes\n60 Double unders OU 120 Sauts simples\n20 Cal rameur OU Assault bike OU Burpees",
+      "6": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n20 Mountain climbers de chaque côté – 4 Tractions – 1 V up – 5 Dips\n19 Mountain climbers de chaque côté – 4 Tractions – 2 V ups – 5 Dips\n18 Mountain climbers de chaque côté – 4 Tractions – 3 V ups – 5 Dips\n17 Mountain climbers de chaque côté – 4 Tractions – 4 V ups – 5 Dips\nEtc.",
+      "7": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n2 – 4 – 6 – 8 – 10 – 12 – 14 – 16 – 18 – 20 répétitions en :\nDiamond push up\nKnees-to-elbows\nTraction\nBox jump OU Jump squat\n1ère série : 2 Diamond push ups – 2 Knees-to-elbows – 2 Tractions – 2 Box jumps\n2ème série : 4 Diamond push ups – 4 Knees-to-elbows – 4 Tractions – 4 Box jumps\nEtc.",
+      "8": "- FOR TIME - Effectuer 2 ROUNDS LE PLUS VITE POSSIBLE de :\n10 Thrusters avec un disque de 15-20kg\n15 V ups\n25 Swings - avec une kettlebell de 20-24kg minimum\n15 Burpees\n10 Goblet squats - avec un disque de 15-20kg\nREPOS : 4’00’’\n- FOR TIME - Effectuer 3 ROUNDS LE PLUS VITE POSSIBLE de :\n10 Goblet lunges de chaque côté avec un disque de 15-20kg\n15 Pompes surélevées – pieds sur un banc\n20 Marteaux – 10 de chaque côté avec un disque de 15-20kg\n15 Tractions\n10 Dips",
+      "9": "- EMOM évolutif de 30’00’’ - Départ toutes les minutes. Commencer par 3 répétitions\n3 Tractions\n3 Pompes\n3 Jump squats\nToutes les 5’00’’, augmenter d’une répétition pour chaque exercice.\nLorsque tu n’arrives plus à tenir le nombre de répétitions dans la minute, descends d’une\nrépétition et tu continues jusqu’à 30’00’’.",
+      "10": "- FOR TIME - Effectuer 10 ROUNDS LE PLUS VITE POSSIBLE :\n8 Goblet lunges – 4 de chaque côté avec un disque 15-20kg\n10 Hand release push ups\n5 Burpees\n5 Tractions - biceps\nREPOS : 5’00’’\n- AMRAP 10’00’’ - LE PLUS DE ROUNDS POSSIBLE :\n7 Ground to overhead avec un disque de 15-20kg\n4 Tractions\n7 Dips",
+      "11": "- EMOM 26’00’’ - départ toutes les 1’00’’, pendant 26’00’’ :\n5 Air squats\n4 Burpees Pull ups (burpees tractions)\n15’’ de Gainage araignée",
+      "12": "- EMOM 30’00’’ - Départ toutes les 1’00’’, pendant 30’00’’ - effectuer :\n3 Burpees\n3 Air squats\n3 V ups\nToutes les 5’00’’ - rajouter une 1 répétition à chaque exercice\nLorsque tu n’arrives plus à tenir le nombre de répétitions dans la minute, descends d’une\nrépétition et tu continues jusqu’à 30’00’’."
+    },
+    "abs": {
+      "1": "- CIRCUIT TRAINING - Principe : 30’’ d'efforts maximaux par exercice.\nEffectuer le plus possible de répétitions en 30’’\nREPOS : 30’’ entre chaque série\nFaire exo 1 pendant 30’’ – 30’’ de repos - (exo 1 pendant 30’’+ exo 2 pendant 30’’) – 30’’ de\nrepos - (exo 1 pendant 30’’+ exo 2 pendant 30’’ + exo 3 pendant 30’’) – 30’’ de repos – …….. –\n(exo 1 pendant 30’’+ exo 2 pendant 30’’ + ….. + exo 7 pendant 30’’) – 30’’ de repos – (exo 1\npendant 30’’+ exo 2 pendant 30’’ + ….. + exo 6 pendant 30’’) – 30’’ de repos - etc...\nAller de l’exercice 1 à l’exercice 7 puis redescendre à l’exercice 1\n1er exercice : V up alterné croisé\n2ème exercice : Toes touch\n3ème exercice : Gainage araignée\n4ème exercice : Toes-to-bar\n5ème exercice : Flutter kick\n6ème exercice : Leg raise\n7ème exercice : Plank crunch",
+      "2": "- E2MOM 24’00’’ – Départ toutes les 2’00’’, effectuer pendant 24’00’’ :\n6 Toes-to-bar\n14 Sit ups\n6 Mountain climbers croisés - de chaque côté\n6 Reverse crunches",
+      "3": "- TABATA - Effectuer 5 séries de 4’00’’ en 20’’ / 10’’\nAlterner 20’’ d’efforts – 10’’ de repos pendant 4’00’’\nPour chaque intervalle de temps, effectuer le maximum de répétitions.\n1 exercice par série de TABATA\nREPOS : 2'00'' entre chaque série\n1er exercice : Toes-to-bar\n2ème exercice : Knees crunch\n3ème exercice : Mountain climber croisé\n4ème exercice : Toes touch\n5ème exercice : V up alterné croisé",
+      "4": "- AMRAP 30’00’’ - Effectuer LE PLUS DE ROUNDS POSSIBLE en 30’00’’ :\n100 Mountain climbers - 50 de chaque côté\n90’’ de Gainage araignée\n80 Toes touches\n70 crunches croisés – 35 de chaque côté\n60’’ de Gainage cuillère\n50 Sit ups\n40 Toes-to-bar\n30 Plank crunches – 15 de chaque côté\n20’’ de Hollow hold\n10 Knees crunches",
+      "5": "- 2 EMOM 12’00’’ – Départ toutes les 1’00’’, pendant 12’00’’ :\nEMOM - 12’00’’ : (À faire 2 fois)\n1ère minute = 10 Toes-to-bar\n2ème minute = 8-10 Side plank crunches de chaque côté\n3ème minute = 20-25 Sit ups\n4ème minute = 7 Obliques avec un disque de 15-20kg de chaque côté\n5ème minute = 45’’ de Gainage araignée\n6ème minute = 7 V ups alternés croisés de chaque côté\n7ème minute = 10 Toes-to-bar\n8ème minute = 8 Side plank crunches de chaque côté\n9ème minute = 20-25 Sit ups\n10ème minute = 7 Obliques avec un disque de 15-20kg de chaque côté\n11ème minute = 45’’ de Gainage araignée\n12ème minute = 7 V ups alternés croisés de chaque côté\nREPOS : 4’00’’ entre les EMOM",
+      "6": "- CIRCUIT TRAINING - Effectuer 2 ROUNDS de :\n1’00’’ de Toes-to-bar - maximum de répétitions\n2’00’’ de Mountain climbers croisés alternés\n3’00’’ de Sit ups\n4’00’’ de Gainage latéral – 4 * 30’’ de chaque côté\nREPOS : 2’00’’ entre les rounds\nREPOS : 3’00’’\nEffectuer le TABATA 4’00’’ suivant :\nV up alterné croisé\nToes touch\n20’’ de travail - max de répétitions / 10’’ de repos pendant 4’00’’\nAlterner les 2 exercices – max de répétitions pour chaque intervalle d’efforts.",
+      "7": "- AMRAP 24’00’’ - Effectuer LE PLUS DE ROUNDS\nTOUTES LES 4’00’’, POUR CHAQUE EXERCICE, AUGMENTER DE 2 RÉPÉTITIONS\nAMRAP 24’00’’ : Débuter à 2 répétitions\n1er exercice : V up\n2ème exercice : Plank crunch\n3ème exercice : Toes touch\n4ème exercice : Mountain climber croisé de chaque côté\nRéalisation : Pendant 4’00’’\nEffectuer 2 V ups + 2 Plank crunches + 2 Toes touches + 2 MCC + 2 V ups + 2 Plank crunches +\n2 Toes touches + 2 MCC +… etc.\nRéalisation : De 4’00’’ à 8’00’’\nEffectuer 4 V ups + 4 Plank crunches + 4 Toes touches + 4 MCC + 4 V ups + 4 Plank crunches +\n4 Toes touches + 4 MCC +… etc.\nRéalisation : De 8’00’’ à 12’00’’\nEffectuer 6 V ups + 6 Plank crunches + 6 Toes touches + 6 MCC + 6 V ups + 6 Plank crunches +\n6 Toes touches + 6 MCC +… etc.",
+      "8": "- EMOM 24’00’’ – Départ toutes les 1’00’’, pendant 24’00’’ :\n10 Toes touches + 10 Sit ups les minutes paires\n8 Toes-to-bar + 15’’ de Hollow hold les minutes impaires",
+      "9": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n60 Knees-to-elbows\n50 V ups\n45 Toes touches\n40 Mountain climbers croisés de chaque côté\n35 Sit ups\n30 V ups alternés croisés de chaque côté\n25 Toes-to-bar\n20 Plank crunches de chaque côté\n15 Wipers de chaque côté\n10 Obliques avec un disque de 15-20kg de chaque côté\n5 Hollow rocks",
+      "10": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE : TABATA + Répétitions imposées\n3 min de 20'' / 10'' en Mountain climbers croisés\n60 Leg raises\n3 min de 20'' / 10'' en V ups alternés croisés\n50 Plank crunches – 25 de chaque côté\n3 min de 20'' / 10'' en Mountain climbers croisés\n40 Toes-to-bar\n3 min de 20'' / 10'' en V ups alternés croisés\n30 Sit ups\n3 min de 20'' / 10'' en Mountain climbers croisés\n20 Obliques – 10 de chaque côté avec un disque de 15-20kg",
+      "11": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE\n100 V ups alternés croisés – 50 de chaque côté\n90 Toes touches\n80 Toes-to-bar\n70 Leg raises\n60 Mountain climbers croisés – 30 de chaque côté\nMAIS TOUTES LES 2’30’’ - Pénalité de 6 Obliques de chaque côté avec un disque de 15-20kg",
+      "12": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n15 Toes-to-rings\n50 Sit ups\n50 Toes touches\n50 Leg raises\n15 Toes-to-rings\n30 Sit ups\n30 Toes touches\n30 Leg raises\n15 Toes-to-rings\n10 Sit ups\n10 Toes touches\n10 Leg raises\n15 Toes-to-rings\nLISTE DES EXERCICES :\nhttps://www.youtube.com/watch?v=ycirNQi1ttE&t=212s"
+    },
+    "forceCycle": {
+      "1": [
+        {
+          "sets": 2,
+          "reps": "6",
+          "pct": 77.5
+        },
+        {
+          "sets": 2,
+          "reps": "5",
+          "pct": 80
+        },
+        {
+          "sets": 2,
+          "reps": "4",
+          "pct": 82.5
+        },
+        {
+          "sets": 1,
+          "reps": "MAX",
+          "pct": 60
+        }
+      ],
+      "2": [
+        {
+          "sets": 2,
+          "reps": "6",
+          "pct": 80
+        },
+        {
+          "sets": 2,
+          "reps": "5",
+          "pct": 82.5
+        },
+        {
+          "sets": 2,
+          "reps": "4",
+          "pct": 85
+        },
+        {
+          "sets": 1,
+          "reps": "MAX",
+          "pct": 60
+        }
+      ],
+      "3": [
+        {
+          "sets": 2,
+          "reps": "5",
+          "pct": 82.5
+        },
+        {
+          "sets": 2,
+          "reps": "4",
+          "pct": 85
+        },
+        {
+          "sets": 2,
+          "reps": "3",
+          "pct": 87.5
+        },
+        {
+          "sets": 1,
+          "reps": "MAX",
+          "pct": 65
+        }
+      ],
+      "4": [
+        {
+          "sets": 2,
+          "reps": "4",
+          "pct": 85
+        },
+        {
+          "sets": 2,
+          "reps": "3",
+          "pct": 87.5
+        },
+        {
+          "sets": 2,
+          "reps": "2",
+          "pct": 90
+        },
+        {
+          "sets": 1,
+          "reps": "MAX",
+          "pct": 65
+        }
+      ]
+    }
+  },
+  "2": {
+    "functional": {
+      "1": {
+        "title": "Pectoraux et Dorsaux",
+        "strength": "EXERCICE SÉRIES REPS\nDéveloppé couché Voir le tableau\nTirage horizontal OU couché\nOU Bent over row OU Voir le tableau\nPendlay row\nMAX de réps à 70% en 1’30’’\nREPOS : 2’00’’\nDéveloppé incliné OU\nMAX de réps à 65% en 2’00’’\nShoulders press\nREPOS : 2’00’’\nMAX de réps à 60% en 2’30’’\nMAX de réps à 70% en 1’30’’\nREPOS : 2’00’’\nTirage devant OU\nMAX de réps à 65% en 2’00’’\nTraction lestée\nREPOS : 2’00’’\nMAX de réps à 60% en 2’30’’",
+        "weeks": {
+          "1": {
+            "headline": "- de 49’00’’",
+            "body": "- HICT - Effectuer 7 ROUNDS de :\n4 Tractions\n8 Burpees\n12 V ups croisés alternés – 6 de chaque côté\n16 Air squats\nMAIS à chaque round, ajoutez 4 répétitions à chaque exercice\nREPOS : 1’30’’ entre chaque round\nRéaliser chaque round le plus vite possible."
+          },
+          "2": {
+            "headline": "- de 45’00’’",
+            "body": "FOR TIME - Effectuer 10 ROUNDS LE PLUS VITE POSSIBLE :\n12 Marteaux de chaque côté avec un disque de 15-20kg\n9 Ground to overhead avec un disque de 15-20kg\n6 Navy seals\n30’’ de Tractions HOLD (bras tendus suspendu à la barre – bras tendus) + 8 Tractions\nunbroken (sans lâcher la barre après le hold si possible)\nSi le temps est ≥ 45’00’’ – Pénalité de 40 Burpees"
+          },
+          "3": {
+            "headline": "- de 50’00’’ – Accroche-toi",
+            "body": "HICT 1 - Effectuer 5 ROUNDS LE PLUS VITE POSSIBLE :\n15 Tractions\n10 Dips\n5 Burpees tuck jumps\nREPOS : 30’’ entre chaque round\nREPOS : 1’30’’\nHICT 2 - Effectuer 5 ROUNDS LE PLUS VITE POSSIBLE :\n12 Swings avec une kettlebell de 20-24kg\n8 Knees-to-elbows\n4 Navy seals\nREPOS : 30’’ entre chaque round\nREPOS : 1’30’’\nHICT 3 - Effectuer 5 ROUNDS LE PLUS VITE POSSIBLE :\n9 Tractions prise neutre\n6 Overhead lunges – de chaque côté avec un disque de 15-20kg\n3 BOPE\nREPOS : 30’’ entre chaque round"
+          },
+          "4": {
+            "headline": "- de 45’00’’",
+            "body": "FOR TIME - Effectuer 30 ROUNDS LE PLUS VITE POSSIBLE : avec un disque de 15 ou 20kg !\n1 Ground to overhead\n2 Overhead lunges de chaque côté\n3 Thrusters\n4 Marteaux de chaque côté (rotation autour de la tête avec le disque)\n5 Shoulders press\nMAIS 2 Pénalités :\nPénalité A : 10 Burpees lorsque vous posez le disque au sol\nPénalité B : Toutes les 4’00’’, 10 Tractions + 20 Pompes\nNe pas faire la pénalité A lorsque vous posez le disque pour effectuer la pénalité B."
+          }
+        }
+      },
+      "2": {
+        "title": "Jambes et Epaules",
+        "strength": "EXERCICE SÉRIES REPS\nBack squat Voir le tableau\nDéveloppé devant /\nShoulders press\nVoir le tableau\nMAX de réps à 70% en 1’30’’\nREPOS : 2’00’’\nDeadlift OU Front squat OU\nMAX de réps à 65% en 2’00’’\nPresse OU Fente\nREPOS : 2’00’’\nMAX de réps à 60% en 2’30’’\nMAX de réps à 70% en 1’30’’\nREPOS : 2’00’’\nTirage menton – Rowing OU\nMAX de réps à 65% en 2’00’’\nPush press\nREPOS : 2’00’’\nMAX de réps à 60% en 2’30’’",
+        "weeks": {
+          "1": {
+            "headline": "- de 50’00’’",
+            "body": "FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n33 Navy seals\n33 Tractions\n27 Burpees\n27 Tractions\n21 Burpees tuck jumps\n21 Tractions\n15 BOPE\n15 Tractions\n9 GAO\n9 Tractions serviette OU 2 Grimper de cordes"
+          },
+          "2": {
+            "headline": "40’00’’",
+            "body": "- E2MOM de 10'00'' - Départ toutes les 2 minutes\nEffectuer 3 séries de l’E2MOM 10’00’’\n0’ – 2’00’’ : 15 Tractions + 15-20 Burpees\n2’ – 4’00’’ : 15 Swings avec une kettlebell de 20-24kg minimum + 15 Box jumps\n4’ – 6’00’’ : 10 Tractions + 6 Navy seals\n6’ – 8’00’’ : 15 Thrusters avec un disque de 15-20kg + 12-15 Toes-to-bar\n8’ – 10’00’’ : 8 Tractions prise biceps OU prise neutre au choix + 30 Air squats\nREPOS : 5’00’’ entre chaque série"
+          },
+          "3": {
+            "headline": "30’00’’",
+            "body": "- HIIT – Effectuer 3 BLOCS\nREPOS : 2’30’’ entre chaque bloc\nBLOC 1\n1’00’’ de Tractions horizontales\nREPOS : 30’’\n1’00’’ de Ground to overhead avec un disque de 15-20kg\nREPOS : 30’’\n1’00’’ de Navy seals\nREPOS : 30’’\n1’00’’ de Pompes\nBLOC 2\n1’30’’ de Tractions prise neutre OU prise supination au choix\nREPOS : 45’’\n1’30’’ de Thrusters avec un disque de 15-20kg\nREPOS : 45’’\n1’30’’ de BOPE\nREPOS : 45’’\n1’30’’ de Dips\nBLOC 3\n2’00’’ de Tractions\nREPOS : 1’00’’\n2’00’’ de Goblet lunges avec un disque de 15-20kg\nREPOS : 1’00’’\n2’00’’ de GAO\nREPOS : 1’00’’\n2’00’’ de Diamond push ups"
+          },
+          "4": {
+            "headline": "47’00’’",
+            "body": "- HIIT – Effectuer 5 BLOCS\nREPOS : 3’00’’ entre chaque bloc\nMinute 1 : 60’’ A\nMinute 2 : 50’’ A + 10’’ B\nMinute 3 : 40’’ A + 20’’ B\nMinute 4 : 30’’ A + 30’’ B\nMinute 5 : 20’’ A + 40’’ B\nMinute 6 : 10’’ A + 50’’ B\nMinute 7 : 60’’ B\nBLOC 1\nExercice A : Traction\nExercice B : Pompe\nBLOC 2\nExercice A : Wall sit\nExercice B : Burpees box jump OU Burpees tuck jump\nBLOC 3\nExercice A : Toes-to-bar\nExercice B : Ground to overhead avec un disque de 15-20kg\nBLOC 4\nExercice A : Pompe surélevée – pieds sur un banc\nExercice B : Gainage araignée\nBLOC 5\nExercice A : Traction HOLD (à la barre)\nExercice B : Traction horizontale"
+          }
+        }
+      },
+      "3": {
+        "title": "Pectoraux et Dorsaux",
+        "strength": "EXERCICE SÉRIES REPS\nVoir le tableau\nDéveloppé couché\nDiminuer de 2.5%, les valeurs indiquées dans le tableau\nTirage horizontal OU couché\nVoir le tableau\nOU Bent over row OU\nPendlay row Diminuer de 2.5%, les valeurs indiquées dans le tableau\nMAX de réps à 70% en 1’30’’\nREPOS : 2’00’’\nDéveloppé incliné OU décliné MAX de réps à 65% en 2’00’’\nREPOS : 2’00’’\nMAX de réps à 60% en 2’30’’\nMAX de réps à 70% en 1’30’’\nREPOS : 2’00’’\nTirage devant OU Traction\nMAX de réps à 65% en 2’00’’\nlestée\nREPOS : 2’00’’\nMAX de réps à 60% en 2’30’’",
+        "weeks": {
+          "1": {
+            "headline": "- de 42’00’’",
+            "body": "FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n20 Burpees\n40 Tractions\nREPOS : 1’00’’\n20 Burpees\n40 Overhead lunges – 20 de chaque côté avec un disque de 15-20kg\nREPOS : 1’00’’\n30 Navy seals\nREPOS : 1’00’’\n20 Burpees\n40 Overhead lunges – 20 de chaque côté avec un disque de 15-20kg\nREPOS : 1’00’’\n20 Burpees\n40 Tractions"
+          },
+          "2": {
+            "headline": "- de 50’00’’",
+            "body": "- FOR TIME 1 - Effectuer LE PLUS VITE POSSIBLE le nombre demandé de répétitions\n21 – 15 – 9 en :\nTractions\nNavy seals\nSwing avec une kettlebell de 20-24kg minimum\nEffectuer les 21 répétitions pour les 3 exercices, puis les 15 répétitions puis terminer avec les 9\nrépétitions.\nREPOS : 2’30’’\n- FOR TIME 2 - Effectuer LE PLUS VITE POSSIBLE le nombre demandé de répétitions\n12 – 9 – 6 en :\nTraction\nBOPE\nStep up avec une kettlebell de 20-24kg minimum (1 rép = 2 jambes)\nEffectuer les 12 répétitions pour les 3 exercices, puis les 9 répétitions puis terminer avec les 6\nrépétitions.\nREPOS : 2’30’’\n- FOR TIME 3 - Effectuer LE PLUS VITE POSSIBLE le nombre demandé de répétitions\n9 – 6 – 3 en :\nTraction\nGAO\nThruster avec un disque de 15-20kg\nEffectuer les 9 répétitions pour les 3 exercices, puis les 6 répétitions puis terminer avec les 3\nrépétitions."
+          },
+          "3": {
+            "headline": "40’00’’ – Simple mais très efficace",
+            "body": "AMRAP – effectuer le plus de rounds :\nRéaliser 3 BLOCS de 3 AMRAP\nBLOC 1\nAMRAP 5’00’’ : 4 Tractions – 8 Pompes\nREPOS : 1’00’’\nAMRAP 4’00’’ : 5 Burpees – 7 Air squats\nREPOS : 1’00’’\nAMRAP 3’00’’ : 6 Ground to overhead avec un disque de 15-20kg – 6 Sit ups\nREPOS : 2’00’’\nBLOC 2\nAMRAP 5’00’’ : 6 Ground to overhead avec un disque de 15-20kg – 6 Sit ups\nREPOS : 1’00’’\nAMRAP 4’00’’ : 4 Tractions – 8 Pompes\nREPOS : 1’00’’\nAMRAP 3’00’’ : 5 Burpees – 7 Air squats\nREPOS : 2’00’’\nBLOC 3\nAMRAP 5’00’’ : 5 Burpees – 7 Air squats\nREPOS : 1’00’’\nAMRAP 4’00’’ : 6 Ground to overhead avec un disque de 15-20kg – 6 Sit ups\nREPOS : 1’00’’\nAMRAP 3’00’’ : 4 Tractions – 8 Pompes"
+          },
+          "4": {
+            "headline": "29’00’’",
+            "body": "AMRAP – effectuer le plus de rounds\nRéaliser 3 AMRAP de 7’00’’\n1- AMRAP de 7’00’’ – Burpees\nMais toutes les minutes, pénalité de 4 Tractions\nCommencer par la pénalité\nPénalité 2 : le nombre de Burpees est ≤ 85 – Pénalité de 16 Burpees tuck jumps à effectuer à\nla fin de l’entraînement.\nREPOS : 4’00’’\n2- AMRAP de 7’00’’ – Pompes surélevées – pieds sur un banc\nMais toutes les minutes, pénalité de 4 Tractions\nCommencer par la pénalité\nPénalité 2 : le nombre de Pompes surélevées est ≤ 105 – Pénalité de 12 Navy seals à effectuer\nà la fin de l’entraînement.\nREPOS : 4’00’’\n3- AMRAP de 7’00’’ – Tractions\nMais toutes les minutes, pénalité de 5 Ground to overhead avec un disque de 15-20kg\nCommencer par la pénalité\nPénalité 2 : le nombre de Tractions est ≤ 45 – Pénalité de 8 BOPE à la fin de l’entraînement."
+          }
+        }
+      }
+    },
+    "running": {
+      "1": {
+        "1": "- 2ème Test COOPER : Courir la plus grande distance sur 12 minutes\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nEtirements légers\n- 3 séries de 6 min de 30’’/30’’ à 100 % de la VMA (= VMA du Cooper +2)\nTu multiplies par 5 la distance du Cooper et tu rajoutes 1,5 - 2 à la VMA du Cooper pour\nla VMA en 30’’/30’’ ou en 45’’/15’’ et tu te réfères au tableau pour la distance.\nRécupération passive : 3’00’’ entre les séries\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers\nExemple :\nSi tu fais 3200m au Cooper (12min), tu cours à 16km/h.\n3200 * 5 = 16000m/60min = 16km/h\nDONC VMA du Cooper + 2 = 18km/h\nRegarde à la fin du programme tu as un tableau\nQuand tu as une VMA de 18 tu dois courir au minimum 225 en 45s.",
+        "2": "- Alterner pendant 40min :\n1min à allure rapide (VMA du Cooper +1) (minimum X km/h)\n4min à allure « récupération » (minimum 9,5-10,5km/h)\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer 6 séries de 800m LE PLUS VITE POSSIBLE\nRécupération passive : 2’30’’ entre les séries\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers"
+      },
+      "2": {
+        "1": "- 3 séries de 7 min de 45’’/15’’ à 100 % de la VMA (= VMA du Cooper +2)\nRécupération passive : 3’30’’ entre les séries\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "2": "- Alterner pendant 35min :\n- 2min à allure rapide (VMA du Cooper +1) (minimum X km/h)\n- 3min à allure « récupération » (minimum 9,5-10,5km/h)\nEchauffement : 15’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer 5 séries de 1000m LE PLUS VITE POSSIBLE\nRécupération passive : 3’30’’ entre les séries\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers"
+      },
+      "3": {
+        "1": "- 3 séries de 8 min de 45’’/15’’ à 100 % de la VMA (= VMA du Cooper +2)\nRécupération passive : 4’00’’ entre les séries\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "2": "- Alterner pendant 30min :\n- 3min à allure rapide (VMA du Cooper +0,5) (minimum X km/h)\n- 2min à allure « récupération » (minimum 9,5-10,5km/h)\nEchauffement : 15’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer 4 séries de 1500m LE PLUS VITE POSSIBLE\nRécupération passive : 4’00’’ entre les séries\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers"
+      },
+      "4": {
+        "1": "- 3 séries de 6 min de 30’’/30’’ à 100 % de la VMA (= VMA du Cooper +2)\nRécupération passive : 4’00’’ entre les séries\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "2": "- FOOTING de 45’00’’ en aisance respiratoire – 10-12 km/h\nEtirements légers",
+        "3": "- Effectuer 2 séries de 2000m LE PLUS VITE POSSIBLE\nRécupération passive : 5’00’’ entre les séries\nEchauffement : 15’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers"
+      }
+    },
+    "circuits": {
+      "1": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n25 – 15 – 5 – 5 – 15 – 25 en\nTraction\nThruster – avec un disque de 15-20kg\nHand release push up\n1ère série : 25 Tractions – 25 Thrusters – 25 Hand release push ups / 1’00’’ de Burpees\n2ème série : 15 Tractions – 15 Thrusters – 15 Hand release push ups / 1’00’’ de Burpees\nEtc.\nRajouter 1’00’’ de Burpees à la fin de chaque round",
+      "2": "- FOR TIME - Effectuer 7 ROUNDS LE PLUS VITE POSSIBLE :\n1’00’’ de Tractions\n10 Swings avec une kettlebell de 20-24kg minimum\n1’00’’ de Pompes surélevées – pieds sur un banc\n12 V ups\n1’00’’ de Tractions horizontales\n14 Jump squats",
+      "3": "- FOR TIME - Effectuer 2 ROUNDS LE PLUS VITE POSSIBLE de :\n2’00’’ de Pompes surélevées – pieds sur un banc\n30 Overhead lunges – 15 de chaque côté avec un disque de 15-20kg\n20 Swings avec une kettlebell de 20-24kg minimum\n10 Toes-to-bar\n3'00’’ de Tractions\n10 Toes touches\n20 Thrusters avec un disque de 15-20kg\n30 Jump squats\n2’00’’ de Diamond push ups\nREPOS : 4’00’’ entre chaque round",
+      "4": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n30 Dips - 10 Swings avec une kettlebell de 20-24kg minimum - 6 Tractions – 7 Burpees\n25 Dips - 15 Swings - 6 Tractions – 7 Burpees\n25 Dips - 15 Swings - 6 Tractions – 7 Burpees\n20 Dips - 20 Swings - 6 Tractions – 7 Burpees\n20 Dips - 20 Swings - 6 Tractions – 7 Burpees\n15 Dips - 25 Swings - 6 Tractions – 7 Burpees\n15 Dips - 25 Swings - 6 Tractions – 7 Burpees\n10 Dips - 30 Swings - 6 Tractions – 7 Burpees",
+      "5": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE : (TABATA + Répétitions imposées)\n3 min de 20'' / 10'' en Hollow Hold\n20 Tractions commando – 10 de chaque côté\n3 min de 20'' / 10'' en Sit up\n30 Hand release push ups\n3 min de 20'' / 10'' en Gainage araignée\n20 Swings avec une kettlebell de 20-24kg minimum\n3 min de 20'' / 10'' en Toes touch\n30 Pompes surélevées – pieds sur un banc\n3 min de 20'' / 10'' en Gainage cuillère\n20 Tractions\n3 min de 20'' / 10'' en Leg raise\n30 Diamond push ups\n3 min de 20'' / 10'' en Gainage commando\n20 Tractions – prise biceps",
+      "6": "- FOR TIME - Effectuer 2 ROUNDS LE PLUS VITE POSSIBLE de :\n10 Knees-to-elbows\n20 Tractions\n30 Pompes\n40 Jump squats\n50 Mountain climbers - 25 de chaque côté\nREPOS : 5’00’’\n- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n20 Swings à 20-24kg minimum + 20 Goblet squats avec un disque de 15-20kg + 20 Burpees",
+      "7": "- E2MOM 30’00’’ - départ toutes les 2’00’’, pendant 30’00’’ :\n12 Jump squats\n10 Pompes surélevées – pieds sur un banc\n6 Tractions\n+ le reste du temps : Gainage frontal",
+      "8": "- E2MOM 30’00’’ - départ toutes les 2’00’’, pendant 30’00’’ :\n30’’ de Burpees\n30’’ de Ground to overhead avec un disque de 15-20kg\n30’’ de Tractions horizontales",
+      "9": "- Effectuer 3 ROUNDS de :\nMAX Air squats en 1’00’’ (noter le nombre)\n60’’ de Wall Sit\nMAX Air squats en 1’00’’ (noter le nombre)\nREPOS : 1’30’’\nMAX Burpees en 1’00’’ (noter le nombre)\n75’’ de Gainage araignée\nMAX Burpees en 1’00’’ (noter le nombre)\nREPOS : 1’30’’\nMAX Tractions en 1’00’’ (noter le nombre)\n45’’ de Hold (position traction bras tendus)\nMAX Tractions en 1’00’’ (noter le nombre)\nREPOS : 3’00’’",
+      "10": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n80 – 60 – 40 – 20 – 10 Double unders OU Single unders *2 OU Jumping jacks *2\n40 – 30 – 20 – 10 – 5 Tractions horizontales\n1ère série : 80 DU – 40 Tractions horizontales\n2ème série : 60 DU – 30 Tractions horizontales\nEtc.\nREPOS : 5’00’’\n- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n20 Tractions\n30 Burpees\n40 Pompes surélevées – pieds sur un banc",
+      "11": "- FOR TIME - Effectuer 2 ROUNDS LE PLUS VITE POSSIBLE de :\n60’’ de Toes-to-bar\n60’’ de Jump squats\n60’’ de Pompes surélevées – pieds sur un banc\n60’’ Swings avec une kettlebell de 20-24kg minimum\n30 Tractions\n60’’ de Burpees\n60’’ de Sit ups\n60’’ d’Overhead lunges avec un disque de 15-20kg\n60’’ de Navy seals\nREPOS : 5’00’’ entre chaque round",
+      "12": "- AMRAP 15’00’’ – Effectuer LE PLUS DE ROUNDS POSSIBLE :\n4 Burpees Pull ups\n5 Sit ups\n6 Pompes\n7 Jump squats\nREPOS : 4’00’’\n- EMOM 15’00’’ – Départ toutes les minutes, effectuer :\n8 Pompes surélevées – pieds sur un banc\n3 Tractions\n5 Ground to overhead avec un disque de 15-20kg\nREPOS : 4’00’’\nMAX de Tractions en 1’00’’\nREPOS : 1’00’’\nMAX de Pompes en 1’00’’"
+    },
+    "abs": {
+      "1": "- FOR TIME – Effectuer 2 ROUNDS LE PLUS VITE POSSIBLE :\n20 V ups\n15 Leg raises\n10 Sitting twists – 5 de chaque côté avec un disque de 15kg\n1’00’’ de Gainage frontal - coudes\nREPOS : 30’’\n20 Toes touches\n15 Crunches\n10 Plank crunches – 5 de chaque côté\n1’00’’ de Gainage latéral – 30’’ de chaque côté\nREPOS : 30’’\n20 Mountain climbers croisés – 10 de chaque côté\n15 Reverse crunches\n10 V ups alternés croisés – 5 de chaque côté\n1’00’’ de Gainage araignée\nREPOS : 30’’\n20 Toes-to-bar\n15 Toes taps de chaque côté\n10 Side plank crunches – 5 de chaque côté\n1’00’’ de Gainage cuillère\nREPOS : 30’’",
+      "2": "- EMOM 15’00’’ – Départ toutes les 1’00’’, pendant 15’00’’ :\n15’’ de Gainage latéral de chaque côté\n5 Toes-to-bar\nREPOS : 3’00’’\n- EMOM 10’00’’ – Départ toutes les 1’00’’, pendant 10’00’’ :\n4 V ups alternés croisés de chaque côté\n7 Toes touches\n20’’ de Hollow hold",
+      "3": "- FOR TIME – Effectuer 5 à 6 ROUNDS LE PLUS VITE POSSIBLE\n10 Toes-to-bar\n20 V ups alternés croisés – 10 de chaque côté\n30 Sit ups\n40 Mountain climbers croisés – 20 de chaque côté",
+      "4": "- EMOM 25’00’’ – Départ toutes les 1’00’’, pendant 25’00’’ :\n15’’ de Gainage araignée\n5 Toes-to-bar\n5 Sit ups\n15’’ de Gainage frontal - coudes",
+      "5": "- FOR TIME – Effectuer LE PLUS VITE POSSIBLE le nombre demandé de répétitions :\n1 – 2 – 3 – 4 – 5 – 6 – 7 – 8 – 9 – 10 – 9 – 8 – 7 – 6 – 5 – 4 – 3 – 2 – 1 en\nV up alterné croisé de chaque côté\nReverse crunch\nToes touch\n1ère série : 1 V up alterné de chaque côté – 1 Reverse crunch – 1 Toes touch\n2ème série : 2 V ups alternés de chaque côté – 2 Reverse crunches – 2 Toes touches\n3ème série : 3 V ups alternés de chaque côté – 3 Reverse crunches – 3 Toes touches Etc.",
+      "6": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE : 200 Sit ups + 120 Mountain climbers alternés\ncroisés – 60 de chaque côté\nMais toutes les 1’00’’ - Pénalité de 4 Toes-to-bar",
+      "7": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n30 – 20 – 5 – 5 – 20 – 30\nV up alterné croisé de chaque côté\nToes touch\nSit up\n1ère série : 30 V ups alternés – 30 Toes touches – 30 Sit ups / 1’30’’ de Gainage\n2ème série : 20 V ups alternés – 20 Toes touches – 20 Sit ups / 1’30’’ de Gainage\nEtc.\nRajouter à la fin de chaque round :\n45’’ de Gainage araignée\n45’’ de Gainage frontal - coudes",
+      "8": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n20 Leg raises – 1 Sit up – 4 Toes-to-bar\n19 Leg raises – 2 Sit ups – 4 Toes-to-bar\n18 Leg raises – 3 Sit ups – 4 Toes-to-bar\n17 Leg raises – 4 Sit ups – 4 Toes-to-bar\nEtc.",
+      "9": "- FOR TIME – Effectuer LE PLUS VITE POSSIBLE le nombre demandé de répétitions :\n10 – 9 – 8 – 7 – 6 – 5 – 4 – 3 – 2 – 1 – 1 – 2 – 3 – 4 – 5 – 6 – 7 – 8 – 9 – 10 en :\nOblique avec un disque de 15-20kg de chaque côté\nSit up\nToes touch\n1ère série : 10 Obliques avec un disque de 15-20kg de chaque côté – 10 Sit ups – 10 Toes\ntouches\n2ème série : 9 Obliques avec un disque de 15-20kg de chaque côté – 9 Sit ups – 9 Toes\ntouches\n3ème série : 8 Obliques avec un disque de 15-20kg de chaque côté – 8 Sit ups – 8 Toes\ntouches",
+      "10": "- EMOM 8’00’’ – Départ toutes les 1’00’’ pendant 8’00’’ :\n4 V ups alternés croisés de chaque côté\n5 Sit ups\n6 Toes touches\nREPOS : 3’00’’\nAMRAP 8’00’’ – Effectuer LE PLUS DE ROUNDS POSSIBLE :\n10 Mountain climbers croisés – 5 de chaque côté\n7 Leg raises\n5 Toes-to-bar\nREPOS : 3’00’’\nFOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n40 Reverse crunches + 40 Obliques avec un disque de 15-20kg – 20 de chaque côté",
+      "11": "- FOR TIME – Effectuer LE PLUS VITE POSSIBLE le nombre demandé de répétitions :\n15 – 14 – 13 – 12 – 11 – 10 – 9 – 8 – 7 – 6 – 5 – 4 – 3 – 2 – 1 en :\nSit up\nPlank crunch (un côté = 1 répétition)\nToes-to-ring\n1ère série : 15 Sit ups – 15 Plank crunches de chaque côté – 15 Toes-to-rings\n2ème série : 14 Sit ups – 14 Plank crunches de chaque côté – 14 Toes-to-rings\n3ème série : 13 Sit ups – 13 Plank crunches de chaque côté – 13 Toes-to-rings\nEtc",
+      "12": "- AMRAP 25’00’’ évolutif : LE PLUS DE ROUNDS. Commencer par 4 répétitions\n4 Sit ups\n4 Knees-to-elbows\n4 Crunches croisés - de chaque côté\nToutes les 5’00’’, augmenter de 4 répétitions pour chaque exercice."
+    },
+    "forceCycle": {
+      "1": [
+        {
+          "sets": 3,
+          "reps": "5",
+          "pct": 82.5
+        },
+        {
+          "sets": 1,
+          "reps": "12",
+          "pct": 70
+        },
+        {
+          "sets": 2,
+          "reps": "5",
+          "pct": 80
+        },
+        {
+          "sets": 1,
+          "reps": "MAX",
+          "pct": 55
+        }
+      ],
+      "2": [
+        {
+          "sets": 3,
+          "reps": "4",
+          "pct": 85
+        },
+        {
+          "sets": 1,
+          "reps": "10",
+          "pct": 72.5
+        },
+        {
+          "sets": 2,
+          "reps": "4",
+          "pct": 82.5
+        },
+        {
+          "sets": 1,
+          "reps": "MAX",
+          "pct": 60
+        }
+      ],
+      "3": [
+        {
+          "sets": 3,
+          "reps": "3",
+          "pct": 87.5
+        },
+        {
+          "sets": 1,
+          "reps": "8",
+          "pct": 75
+        },
+        {
+          "sets": 2,
+          "reps": "3",
+          "pct": 85
+        },
+        {
+          "sets": 1,
+          "reps": "MAX",
+          "pct": 65
+        }
+      ],
+      "4": [
+        {
+          "sets": 3,
+          "reps": "2",
+          "pct": 90
+        },
+        {
+          "sets": 1,
+          "reps": "7",
+          "pct": 77.5
+        },
+        {
+          "sets": 2,
+          "reps": "2",
+          "pct": 87.5
+        },
+        {
+          "sets": 1,
+          "reps": "MAX",
+          "pct": 70
+        }
+      ]
+    }
+  },
+  "3": {
+    "functional": {
+      "1": {
+        "title": "Pectoraux et Dorsaux",
+        "strength": "EXERCICE SÉRIES REPS\nDéveloppé couché Voir le tableau\nTirage horizontal OU couché\nOU Bent over row OU Voir le tableau\nPendlay row\nEMOM 3’00’’ - Pendant 3 minutes : Départ toutes les 1’00’’\nMinute 1 : Effectuer 1 répétition à 90% du MAX\nMinute 2 : Effectuer 2 répétitions à 87,5% du MAX\nMinute 3 : Effectuer 3 répétitions à 82,5% du MAX\nDéveloppé incliné OU\nREPOS : 2’00’’\nShoulders press OU décliné\nEMOM 3’00’’ - Pendant 3 minutes : Départ toutes les 1’00’’\nMinute 1 : Effectuer 1 répétition à 85% du MAX\nMinute 2 : Effectuer 3 répétitions à 80% du MAX\nMinute 3 : Effectuer 5 répétitions à 75% du MAX\nEMOM 3’00’’ - Pendant 3 minutes : Départ toutes les 1’00’’\nMinute 1 : Effectuer 1 répétition à 90% du MAX\nMinute 2 : Effectuer 2 répétitions à 87,5% du MAX\nMinute 3 : Effectuer 3 répétitions à 82,5% du MAX\nTirage devant OU\nREPOS : 2’00’’\nTraction lestée\nEMOM 3’00’’ - Pendant 3 minutes : Départ toutes les 1’00’’\nMinute 1 : Effectuer 1 répétition à 85% du MAX\nMinute 2 : Effectuer 3 répétitions à 80% du MAX\nMinute 3 : Effectuer 5 répétitions à 75% du MAX",
+        "weeks": {
+          "1": {
+            "headline": "- de 42’00’’",
+            "body": "FOR TIME - Effectuer LE PLUS VITE POSSIBLE\n25 Thrusters avec un disque de 15-20kg – 1’00’’ de Tractions – 5 Diamond push ups – 30’’\nd’Overhead hold (bras tendus avec un disque de 15-20kg au dessus de la tête)\n25 Thrusters – 1’00’’ de Tractions – 5 DPU – 30’’ d’Overhead hold\n20 Thrusters – 1’00’’ de Tractions – 10 DPU – 30’’ d’Overhead hold\n20 Thrusters – 1’00’’ de Tractions – 10 DPU – 30’’ d’Overhead hold\n15 Thrusters – 1’00’’ de Tractions – 15 DPU – 30’’ d’Overhead hold\n15 Thrusters – 1’00’’ de Tractions – 15 DPU – 30’’ d’Overhead hold\n10 Thrusters – 1’00’’ de Tractions – 20 DPU – 30’’ d’Overhead hold\n10 Thrusters – 1’00’’ de Tractions – 20 DPU – 30’’ d’Overhead hold\n5 Thrusters – 1’00’’ de Tractions – 25 DPU – 30’’ d’Overhead hold\n5 Thrusters – 1’00’’ de Tractions – 25 DPU – 30’’ d’Overhead hold"
+          },
+          "2": {
+            "headline": "- 50’00’’",
+            "body": "FOR TIME - Effectuer LE PLUS VITE POSSIBLE\n40 Tractions\n30 Goblet lunges – 15 de chaque côté avec un disque de 15-20kg\n20 Toes-to-rings\n10 Navy seals\nREPOS : 1’15’’\n30 Goblet lunges – 15 de chaque côté avec un disque de 15-20kg\n20 Toes-to- rings\n10 Navy seals\nREPOS : 1’00’’\n20 Toes-to- rings\n10 Navy seals\nREPOS : 45’’\n10 Navy seals\nREPOS : 30’’\n10 Navy seals\nREPOS : 45’’\n10 Navy seals\n20 Toes-to- rings\nREPOS : 1’00’’\n10 Navy seals\n20 Toes-to- rings\n30 Goblet lunges – 15 de chaque côté avec un disque de 15-20kg\nREPOS : 1’15’’\n10 Navy seals\n20 Toes-to-rings\n30 Goblet lunges – 15 de chaque côté avec un disque de 15-20kg\n40 Tractions"
+          },
+          "3": {
+            "headline": "- de 44’00’’",
+            "body": "- FOR TIME 1 - Effectuer LE PLUS VITE POSSIBLE\n21 – 15 – 9 en :\nBurpees\nSwing avec une kettlebell de 20-24kg minimum\nTraction\nEffectuer les 21 répétitions pour les 3 exercices, puis les 15 répétitions puis terminer avec les 9\nrépétitions.\nREPOS : 2’30’’\n- FOR TIME 2 : Effectuer LE PLUS VITE POSSIBLE\n30 – 15 en :\nBurpees\nSwing avec une kettlebell de 20-24kg minimum\nTraction\nEffectuer les 30 répétitions pour les 3 exercices, puis les 15 répétitions.\nREPOS : 2’30’’\n- FOR TIME 3 : Effectuer LE PLUS VITE POSSIBLE\n45 en :\nBurpees\nSwing avec une kettlebell de 20-24kg minimum\nTraction\nEffectuer les 45 répétitions pour les 3 exercices."
+          },
+          "4": {
+            "headline": "- de 40’00’’",
+            "body": "- FOR TIME 1 - Effectuer le nombre demandé de répétitions LE PLUS VITE POSSIBLE\n10-9-8-7-6-5-4-3-2-1 en Tractions prise neutre ou biceps au choix\n1-2-3-4-5-6-7-8-9-10 en BOPE\n10-9-8-7-6-5-4-3-2-1 en Tractions\n1’00’’ de Gainage commando alterné\n1ère série : 10 Tractions prise neutre – 1 BOPE – 10 Tractions – 1’00’’ de Gainage commando\nalterné\n2ème série : 9 Tractions prise neutre – 2 BOPE – 9 Tractions – 1’00’’ de Gainage commando\nalterné\n3ème série : 8 Tractions prise neutre – 3 BOPE – 8 Tractions – 1’00’’ de Gainage commando\nalterné\nEtc."
+          }
+        }
+      },
+      "2": {
+        "title": "Jambes et Epaules",
+        "strength": "EXERCICE SÉRIES REPS\nBack squat Voir le tableau\nDéveloppé devant /\nShoulders press Voir le tableau\nEMOM 3’00’’ - Pendant 3 minutes : Départ toutes les 1’00’’\nMinute 1 : Effectuer 1 répétition à 90% du MAX\nMinute 2 : Effectuer 2 répétitions à 87,5% du MAX\nMinute 3 : Effectuer 3 répétitions à 82,5% du MAX\nDeadlift OU Front squat OU\nREPOS : 2’00’’\nPresse OU Fente\nEMOM 3’00’’ - Pendant 3 minutes : Départ toutes les 1’00’’\nMinute 1 : Effectuer 1 répétition à 85% du MAX\nMinute 2 : Effectuer 3 répétitions à 80% du MAX\nMinute 3 : Effectuer 5 répétitions à 75% du MAX\nEMOM 3’00’’ - Pendant 3 minutes : Départ toutes les 1’00’’\nMinute 1 : Effectuer 1 répétition à 90% du MAX\nMinute 2 : Effectuer 2 répétitions à 87,5% du MAX\nMinute 3 : Effectuer 3 répétitions à 82,5% du MAX\nTirage menton – Rowing OU\nREPOS : 2’00’’\nPush press\nEMOM 3’00’’ - Pendant 3 minutes : Départ toutes les 1’00’’\nMinute 1 : Effectuer 1 répétition à 85% du MAX\nMinute 2 : Effectuer 3 répétitions à 80% du MAX\nMinute 3 : Effectuer 5 répétitions à 75% du MAX",
+        "weeks": {
+          "1": {
+            "headline": "44’00’’",
+            "body": "AMRAP – effectuer le plus de rounds\nRéaliser 3 AMRAP de 12’00’’\n1- AMRAP de 12’00’’\n5 Tractions\n10 Goblet squats avec un disque de 15-20kg\n15 Pompes surélevées – pieds sur un banc\nREPOS : 4’00’’\n2- AMRAP de 12’00’’\n4 Tractions commando – 2 de chaque côté\n8 Overhead lunges – 4 de chaque côté avec un disque de 15-20kg\n12 Dips\nREPOS : 4’00’’\n3- AMRAP de 12’00’’\n3 Chest-to-bar\n6 Thrusters avec un disque de 15-20kg\n9 Diamond push ups"
+          },
+          "2": {
+            "headline": "38’00’’",
+            "body": "- CIRCUIT TRAINING : Effectuer 2 Blocs de (5 rounds de (2’30’’ d’efforts et 1’00’’ de repos)).\nPour chaque effort de 2'30’’, réaliser 1 tour d’un circuit + un max de répétitions d’un autre\nexercice sur le temps restant.\n1 Round du BLOC A :\n3 tours de (6 Swings + 5 Goblet squats + 3 Tractions) + max de répétitions en Burpees over the\nKettlebell de 20-24kg minimum pour aller à 2’30’’.\nREPOS : 1’00’’\n1 Round du BLOC B :\n3 tours de (3 Tractions + 5 Pompes) + max de répétitions en Swings avec une kettlebell de 20-\n24kg minimum pour aller à 2’30’’.\nREPOS : 1’00’’\nRéalisation de la séance\nBLOC A =\n5 ROUNDS de (3 tours de (6 Swings + 5 Goblet squats + 3 Tractions) + max de répétitions en\nBurpees over the kettlebell de 20-24kg minimum pour aller à 2’30’’).\nREPOS : 1’00’’ entre chaque round\nREPOS : 5’00’’ entre les blocs A et B\nBLOC B =\n5 ROUNDS de (3 tours de (3 Tractions + 5 Pompes) + max de répétitions en Swings avec une\nkettlebell de 20-24kg minimum pour aller à 2’30’’).\nREPOS : 1’00’’ entre chaque round"
+          },
+          "3": {
+            "headline": "- de 40’00’’",
+            "body": "FOR TIME 1 - Effectuer 70 Tractions LE PLUS VITE POSSIBLE\nMAIS à chaque fois que vous posez les pieds au sol, pénalité de 10 Marteaux de chaque côté\navec un disque de 15-20kg + 10 Shoulders press avec un disque de 15-20kg + 15 Pompes\nsurélevées + 5 Toes-to-bar\nREPOS : 5’00’’\nFOR TIME 2 - Effectuer 35 Tractions LE PLUS VITE POSSIBLE\nMAIS à chaque fois que vous posez les pieds au sol, pénalité de 5 Navy seals"
+          },
+          "4": {
+            "headline": "- de 48’00’’ – ATROCE pour le grip",
+            "body": "HICT 1 - Effectuer 8 ROUNDS LE PLUS VITE POSSIBLE : (BLOC A + BLOC B)\nBLOC A\n8 Tractions\n8 Knees-to-elbows\n4 Tractions\n4 Knees-to-elbows\nSANS PAUSE\nBLOC B\n10 Marteaux de chaque côté avec un disque de 15-20kg\n10 Thrusters avec un disque de 15-20kg\n5 Marteaux de chaque côté avec un disque de 15-20kg\n5 Thrusters avec un disque de 15-20kg\nREPOS : 1’00’’ entre chaque round\nPénalités :\nPénalité A : 3 GAO à chaque fois que vous posez les pieds au sol dans le bloc A.\nPénalité B : 5 Overhead lunges de chaque côté à chaque fois que vous posez le disque au sol\ndans le bloc B.\nLes pénalités sont à effectuer à la fin du WOD."
+          }
+        }
+      },
+      "3": {
+        "title": "Pectoraux et Dorsaux",
+        "strength": "EXERCICE SÉRIES REPS\nVoir le tableau\nDéveloppé couché\nDiminuer de 2.5%, les valeurs indiquées dans le tableau\nTirage horizontal OU couché\nVoir le tableau\nOU Bent over row OU\nPendlay row Diminuer de 2.5%, les valeurs indiquées dans le tableau\nEMOM 3’00’’ - Pendant 3 minutes : Départ toutes les 1’00’’\nMinute 1 : Effectuer 1 répétition à 90% du MAX\nMinute 2 : Effectuer 2 répétitions à 87,5% du MAX\nMinute 3 : Effectuer 3 répétitions à 82,5% du MAX\nDéveloppé incliné OU décliné REPOS : 2’00’’\nEMOM 3’00’’ - Pendant 3 minutes : Départ toutes les 1’00’’\nMinute 1 : Effectuer 1 répétition à 85% du MAX\nMinute 2 : Effectuer 3 répétitions à 80% du MAX\nMinute 3 : Effectuer 5 répétitions à 75% du MAX\nEMOM 3’00’’ - Pendant 3 minutes : Départ toutes les 1’00’’\nMinute 1 : Effectuer 1 répétition à 90% du MAX\nMinute 2 : Effectuer 2 répétitions à 87,5% du MAX\nMinute 3 : Effectuer 3 répétitions à 82,5% du MAX\nTirage devant OU Traction\nREPOS : 2’00’’\nlestée\nEMOM 3’00’’ - Pendant 3 minutes : Départ toutes les 1’00’’\nMinute 1 : Effectuer 1 répétition à 85% du MAX\nMinute 2 : Effectuer 3 répétitions à 80% du MAX\nMinute 3 : Effectuer 5 répétitions à 75% du MAX",
+        "weeks": {
+          "1": {
+            "headline": "- de 42’00’’ – accroche-toi        Simple mais efficace",
+            "body": "FOR TIME - Effectuer 60 ROUNDS LE PLUS VITE POSSIBLE :\n4 Ground to overhead avec un disque de 15-20kg\n3 Pompes\n2 Tractions\n1 Thruster avec un disque de 15-20kg"
+          },
+          "2": {
+            "headline": "37’30’’",
+            "body": "- HIIT – Effectuer 4 BLOCS de 7’00’’\nREPOS : 3’00’’ entre chaque bloc\nExercice 1 : Traction\nExercice 2 : Pompe surélevée – pieds sur un banc\nExercice 3 : Air squat\nExercice 4 : Sit up\nExercice 5 : Traction horizontal\nExercice 6 : Swing avec une kettlebell de 20-24kg minimum\nExercice 7 : Burpees\nBLOC 1 en 60’’ / 5’’\nBLOC 2 en 50’’ / 10’’\nBLOC 3 en 40’’ / 20’’\nBLOC 4 en 30’’ / 30’’\nA chaque intervalle d’effort, réaliser le maximum de répétitions pour chaque exercice.\nRéalisation :\nBLOC 1 : 60’’ de Tractions – 5’’ de repos – 60’’ de Pompes surélevées – 5’’ de repos – 60’’ d’Air\nsquats – 5’’ de repos – 60’’ de Sit ups – 5’’ de repos – 60’’ de Tractions horizontales – 5’’ de\nrepos – 60’’ de Swings – 5’’ de repos – 60’’ de Burpees."
+          },
+          "3": {
+            "headline": "- de 53’00’’",
+            "body": "FOR TIME 1 - Effectuer 5 ROUNDS LE PLUS VITE POSSIBLE :\n20 Tractions\n15 Pompes surélevées – pieds sur un banc\n10 V ups alternés croisés – 5 de chaque côté\n5 Hand release push ups\nREPOS : 4’00’’\nFOR TIME 2 - Effectuer 4 ROUNDS LE PLUS VITE POSSIBLE :\n20 Goblet lunges – 10 de chaque côté avec un disque de 15-20kg\n15 Marteaux de chaque côté avec un disque de 15-20kg\n10 Ground to overhead avec un disque de 15-20kg\n5 Thrusters avec un disque de 15-20kg\nREPOS : 4’00’’\nFOR TIME 3 - Effectuer 3 ROUNDS LE PLUS VITE POSSIBLE :\n20 Burpees\n15 Mountain climbers de chaque côté OU 30 Double unders\n10 Box jumps OU Jump squats\n5 BOPE"
+          },
+          "4": {
+            "headline": "- de 36’00’’",
+            "body": "1- AMRAP de 3’00’’ – Tractions\nEffectuer le plus de tractions en 3’00’’\nREPOS : 2’00’’\n2- AMRAP de 3’00’’ – Pompes surélevées – pieds sur un banc\nEffectuer le plus de pompes surélevées en 3’00’’\nREPOS : 2’00’’\n3- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n30 Tractions prise neutre OU prise supination au choix\n30 Dips\n40 Thrusters avec un disque de 15-20kg\n40 Marteaux – 20 de chaque côté avec un disque de 15-20kg\n50 Double unders OU 100 Single unders\n50 Sit ups\nREPOS : 2’00’’\n4- AMRAP de 3’00’’ – Tractions\nEffectuer le plus de tractions en 3’00’’\nREPOS : 2’00’’\n5- AMRAP de 3’00’’ – Pompes surélevées – pieds sur un banc\nEffectuer le plus de pompes surélevées en 3’00’’"
+          }
+        }
+      }
+    },
+    "running": {
+      "1": {
+        "1": "- 3ème Test COOPER : Courir la plus grande distance sur 12 minutes\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nEtirements légers\n- 3 séries de 6 min de 30’’/30’’ à 100 % de la VMA + 10 mètres (= VMA du Cooper\n+2 + 10m)\nTu multiplies par 5 la distance du Cooper et tu rajoutes 1,5 - 2 à la VMA du Cooper\npour la VMA en 30’’/30’’ ou en 45’’/15’’ et tu te réfères au tableau pour la distance.\nRécupération passive : 3’30’’ entre les séries\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "2": "PARTIE A\n- Effectuer 2 Blocs de 4km le PLUS VITE POSSIBLE\n- Repos : 5’00’’ entre les blocs\n- S’il y a une différence de plus de 30’’ entre les 2 Blocs :\nPénalité de : 20 Burpees + 30 Pompes + 40 Sit ups\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nPARTIE B - FACULTATIF\n- Courir 7km en aisance respiratoire à 10-11km/h minimum\nEtirements",
+        "3": "- Effectuer un 800m, puis un 700m, un 600m, un 500m, 400m, 300m et pour finir un\n200m\nChaque course doit être effectuée LE PLUS VITE POSSIBLE\nRepos entre chaque course : 2’00’’\nLe réaliser une seconde fois\nPrendre 8’00’’ de repos avant d’effectuer la 2nde série\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers"
+      },
+      "2": {
+        "1": "- 3 séries de 7 min de 30’’/30’’ à 100 % de la VMA + 10 mètres (= VMA du Cooper\n+2 + 10m)\nRécupération passive : 4’30’’ entre les séries\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer 3 séries de 1200m, puis 10 séries de 200m\nChaque course doit être effectuée LE PLUS VITE POSSIBLE\nRepos entre chaque 1200m : 3’00’’\nRepos entre chaque 200m : 1’00’’\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers\nAprès les 1200m, prendre 5’00’’ de repos avant d’effectuer les 200m.",
+        "2": "PARTIE A\n- Effectuer 2 Blocs de 4km le PLUS VITE POSSIBLE\n- Repos : 5’00’’ entre les blocs\n- S’il y a une différence de plus de 30’’ entre les 2 Blocs :\nPénalité de : 20 Burpees + 30 Pompes + 40 Sit ups\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nPARTIE B - FACULTATIF\n- Courir 7km en aisance respiratoire à 10-11km/h minimum\nEtirements"
+      },
+      "3": {
+        "1": "- 3 séries de 8 min de 30’’/30’’ à 100 % de la VMA + 5 mètres (= VMA du Cooper +2\n+ 5m)\nRécupération passive : 5’00’’ entre les séries\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer :\n2000m LE PLUS VITE POSSIBLE\n- Repos : 4’00’’\n5 séries de 400m LE PLUS VITE POSSIBLE\n- Repos : 1’30’’ entre chaque 400m\n- Repos : 4’00’’ après le dernier 400m\n2000m LE PLUS VITE POSSIBLE\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "2": "PARTIE A\n- Effectuer 2 Blocs de 4km le PLUS VITE POSSIBLE\n- Repos : 5’00’’ entre les blocs\n- S’il y a une différence de plus de 30’’ entre les 2 Blocs :\nPénalité de : 20 Burpees + 30 Pompes + 40 Sit ups\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nPARTIE B - FACULTATIF\n- Courir 7km en aisance respiratoire à 10-11km/h minimum\nEtirements"
+      },
+      "4": {
+        "1": "- 3 séries de 9 min de 30’’/30’’ à 100 % de la VMA (= VMA du Cooper +2)\nRécupération passive : 5’30’’ entre les séries\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer :\n1000m LE PLUS VITE POSSIBLE\n- Repos : 3’30’’\n5 séries de 200m LE PLUS VITE POSSIBLE\n- Repos : 1’00’’ entre chaque 200m\n- Repos : 3’30’’ après le dernier 200m\n1000m LE PLUS VITE POSSIBLE\n- Repos : 3’30’’\n5 séries de 200m LE PLUS VITE POSSIBLE\n- Repos : 1’00’’ entre chaque 200m\n- Repos : 3’30’’ après le dernier 200m\n1000m LE PLUS VITE POSSIBLE\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure / Etirements légers",
+        "2": "PARTIE A\n- Effectuer 2 Blocs de 4km le PLUS VITE POSSIBLE\n- Repos : 5’00’’ entre les blocs\n- S’il y a une différence de plus de 30’’ entre les 2 Blocs :\nPénalité de : 20 Burpees + 30 Pompes + 40 Sit ups\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nPARTIE B - FACULTATIF\n- Courir 7km en aisance respiratoire à 10-11km/h minimum\nEtirements"
+      }
+    },
+    "circuits": {
+      "1": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n60 Overhead lunges – 30 de chaque côté avec un disque de 15-20kg\n3’00’’ de Pompes surélevées – pieds sur un banc\n60 Jump squats\n3’00’’ de Dips\n60 Ground to overhead avec un disque de 15-20kg\n3’00’’ de Hand release push ups\n60 Burpees\n3’00’’ de Pompes\n60 Marteaux – 30 de chaque côté avec un disque de 15-20kg\n3’00’’ de Diamond push ups",
+      "2": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n35 – 25 – 15 – 15 – 25 – 35 en\nPompe surélevée – pieds sur un banc\nThruster avec un disque de 15-20kg\nSit up\nJump squat\n1’00’’ de Tractions\n1ère série : 35 Pompes surélevées – 35 Thrusters – 35 Sit ups – 35 Jump squats - 1’00’’ de\nTractions\n2ème série : 25 Pompes surélevées – 25 Thrusters – 25 Sit ups – 25 Jump squats - 1’00’’ de\nTractions\nEtc.",
+      "3": "- FOR TIME - Effectuer 4 ROUNDS LE PLUS VITE POSSIBLE\n30’’ de Gainage araignée\n30’’ de Sit ups\n30’’ de Gainage araignée\n30’’ de Sit ups\n10 Burpees\n20 Tractions\n30 Pompes\n40 Jump squats",
+      "4": "- FOR TIME - Effectuer 5 ROUNDS LE PLUS VITE POSSIBLE de :\n1’00’’ de Tractions\n10 Fentes de chaque côté\n1’00’’ de Swings avec une kettlebell de de 20-24kg minimum\n15 Jump squats\n1’00’’ de Tractions - prise biceps\n20 Double unders OU 40 Single unders OU 40 Jumping jacks\n1’00’’ de Tractions horizontales\n25 Air squats",
+      "5": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE\n30 Ground to overhead avec un disque de 15-20kg - 20 Pompes surélevées – pieds sur un\nbanc - 12 Swings avec une kettlebell de 20-24kg minimum – 6 V ups alternés croisés de\nchaque côté\n25 GTOH – 30 Pompes surélevées - 12 Swings – 6 V ups alternés de chaque côté\n20 GTOH - 40 Pompes surélevées - 12 Swings – 6 V ups alternés de chaque côté\n15 GTOH - 50 Pompes surélevées - 12 Swings – 6 V ups alternés de chaque côté\n10 GTOH - 60 Pompes surélevées - 12 Swings – 6 V ups alternés de chaque côté",
+      "6": "- E2MOM 30’00’’ - Départ toutes les 2’00’’, pendant 30’00’’ - effectuer :\n5 Tractions\n30’’ de Gainage commando\n5 Jump squats\n5 Pompes\n5 Sit ups",
+      "7": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n30 Air squats\n2’00’’ de Double unders OU Single unders OU Jumping jacks\n15 Tractions UNBROKEN\n30 Goblet squats avec un disque de 15-20kg\n2’00’’ de BOPE\n14 Tractions\n30 Jump squats\n2’00’’ de GAO\n13 Tractions\n30 Thrusters avec un disque de 15-20kg\n2’00’’ de Navy seals\n12 Tractions\n30 Pistol squats – 15 de chaque côté\n2’00’’ de Burpees tuck jumps\n11 Tractions\n30 Overhead squats – 15 de chaque côté avec un disque de 15-20kg\n2’00’’ de Burpees\n10 Tractions",
+      "8": "- E2MOM 24’00’’ - Départ toutes les 2’00’’, pendant 24’00’’ - effectuer :\n5 Tractions\n25’’ de Traction HOLD (rester suspendu à la barre – bras tendus)\n3 Tractions\n7 Ground to overhead avec un disque de 15-20kg\n12 Pompes",
+      "9": "- EMOM 30’00’’ - Départ toutes les 1’00’’, pendant 30’00’’ - effectuer :\n6 Burpees + 12 Pompes les minutes paires\n5 V ups + 6 Tractions les minutes impaires",
+      "10": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n20 Burpees\n15 Knees-to-elbows\n10 Tractions\nREPOS : 1’00’’\nFOR TIME - Effectuer 8 ROUNDS LE PLUS VITE POSSIBLE de :\n1 Grimper de corde OU 7 Tractions serviette\n10 Marteaux de chaque côté avec un disque de 15-20kg\n5 Overhead lunges de chaque côté avec un disque de 15-20kg\nREPOS : 1’00’’\n20 Burpees\n15 Knees-to-elbows\n10 Tractions",
+      "11": "- FOR TIME - Effectuer 10 ROUNDS LE PLUS VITE POSSIBLE de :\n12 Dips\n9 Swings avec une kettlebell de 20-24kg minimum\n6 Tractions\n3 Navy seals\nREPOS : 5’00’’\n- FOR TIME - Effectuer LE PLUS VITE POSSIBLE\n40 Burpees\n30 Thrusters avec un disque de 15-20kg\n20 Toes-to-bar\n10 Tractions",
+      "12": "- AMRAP 40’00’’ - Effectuer LE PLUS DE ROUNDS POSSIBLE en 40’00’’ :\n100 Double unders OU 200 Single unders OU 200 Jumping jacks\n90’’ de Gainage frontal\n80 Box jumps OU Jump squats\n90’’ de Gainage latéral – 45’’ de chaque côté\n60 Pompes surélevées – pieds sur un banc\n90’’ de Gainage araignée\n40 Tractions\n90’’ de Gainage cuillère\n20 Thrusters avec un disque de 15-20kg\n90’’ de Gainage superman – 45’’ de chaque côté"
+    },
+    "abs": {
+      "1": "- AMRAP 25’00’’. Effectuer LE PLUS DE ROUNDS POSSIBLE\nAMRAP est constitué de 2 blocs. Chaque bloc est constitué de 3 exercices.\nRéaliser le 1er bloc avant de passer au 2nd puis recommencer le bloc 1 et ainsi de suite\npendant 25’00’’.\nAlterner les 2 blocs.\nBLOC 1 : Effectuer 21 – 15 – 9 répétitions en :\nToes-to-bar\nPlank crunch de chaque côté\nToes touch\nBLOC 2 : Effectuer 21 – 15 – 9 répétitions en :\nMountain climbers croisé de chaque côté\nLeg raise\nSit up\nRéalisation des blocs :\nPour chaque bloc, effectuer les 21 répétitions pour chaque exercice (3) puis les 15 répétitions\npour terminer par les 9 répétitions.",
+      "2": "- FOR TIME - Effectuer 3 à 4 ROUNDS LE PLUS VITE POSSIBLE :\n60’’ de Gainage latéral – 30’’ de chaque côté\n50 Mountain climbers croisés – 25 de chaque côté\n40 Toes touches\n30’’ de Gainage cuillère\n20 Toes-to-rings\n10 V ups alternés croisés – 5 de chaque côté",
+      "3": "AMRAP 7’00’’ - Effectuer LE PLUS de ROUNDS POSSIBLE pendant 7’00’’ :\n4 Leg raises\n6 Knees-to-elbows\n8 Sit ups\nREPOS : 4’00''\nAMRAP 7’00’’ - Effectuer LE PLUS de ROUNDS POSSIBLE pendant 7’00’’ :\n6 Toes-to-bar\n8 Mountain climber croisés de chaque côté\n10 Reverse crunches\nREPOS : 4’'00''\nAMRAP 7’00’’ - Effectuer LE PLUS de ROUNDS POSSIBLE pendant 7’00’’ :\n12 Toes touches\n10 V ups alternés croisés – 6 de chaque côté\n8 Toes taps de chaque côté",
+      "4": "- FOR TIME - Effectuer 4 à 5 ROUNDS LE PLUS VITE POSSIBLE :\n6 Toes-to-rings\n30’’ de Hollow hold\n9 Knees-to-elbows\n60’’ de Gainage araignée\n12 Sit ups\n90’’ de Gainage frontal\n15 Toes touches",
+      "5": "- FOR TIME - Effectuer 4 à 5 ROUNDS LE PLUS VITE POSSIBLE :\n20 Mountain climbers croisés – 10 de chaque côté\n15 Sit ups\n10 V ups\n1’00’’ de Gainage superman – 30’’ de chaque côté\n10 Reverse crunches\n15 Toes touches\n20 V ups alternés croisés – 10 de chaque côté\nREPOS : 1’00'' entre chaque round",
+      "6": "- FOR TIME - Effectuer 5 ROUNDS LE PLUS VITE POSSIBLE :\n8 V ups alternés croisés – 4 de chaque côté\n12 Tuck crunches\n60’’ Gainage araignée\n12 Toes touches\n8 Knees crunches\nREPOS : 4’00’’\nFOR TIME - Effectuer 4 ROUNDS LE PLUS VITE POSSIBLE :\n6 Knees-to-elbows\n12 V ups\n60’’ de Gainage cuillère\n12 Plank crunches – 6 de chaque côté\n6 Toes-to-bar",
+      "7": "- TABATA - Effectuer 2 séries de 4’00’’ en 20’’ / 10’’ pour chaque bloc\nAlterner 20s d’efforts – 10s de repos pendant 4’00’’\n4 exercices par série de TABATA\nPour chaque intervalle de temps, effectuer le maximum de répétitions.\nEffectuer les 2 séries du bloc 1 avant de passer au bloc 2, et faire de même pour ce bloc\navant de passer au dernier bloc.\nPour chaque bloc :\n20’’ Exo 1 – 10’’ de repos - 20’’ Exo 2 – 10’’ de repos - 20’’ Exo 3 – 10’’ de repos - 20’’ Exo 4 –\n10’’ de repos - 20’’ Exo 1 – 10’’ de repos - 20’’ Exo 2 – 10’’ de repos - 20’’ Exo 3 – 10’’ de repos\n- 20’’ Exo 4 – 10’’ de repos\nREPOS : 1’00’’ entre chaque bloc\nBLOC 1\n1er exercice : Sit up\n2ème exercice : Reverse crunch\n3ème exercice : Gainage frontal - coudes\n4ème exercice : knees-to-elbows\nBLOC 2\n1er exercice : Tuck crunch\n2ème exercice : Gainage araignée\n3ème exercice : Leg raise\n4ème exercice : Toes touch\nBLOC 3\n1er exercice : Mountain climber croisé\n2ème exercice : V up alterné croisé\n3ème exercice : Gainage cuillère\n4ème exercice : Knees crunch",
+      "8": "- CIRCUIT TRAINING - Effectuer LE PLUS VITE POSSIBLE :\n- 5 ROUNDS :\n8 Toes-to-rings\n12 Crunches croisés chaque côté\n15 Sit ups\n20’’ de Hollow hold\nREPOS : 2’00’’\n- 3 ROUNDS :\n10 V ups\n15 Leg raises\n20 Toes touches\n30’’ de Gainage araignée\nREPOS : 2’00’’\n- 1 ROUND :\n30 Tuck crunches\n45’’ de Gainage latéral de chaque côté",
+      "9": "- CIRCUIT TRAINING - Effectuer 3 séries du bloc\n1 Bloc = 10 exercices\nEffectuer LE PLUS DE REPETITIONS POSSIBLE pendant la durée de l’effort.\nREPOS : 2’30’’ entre chaque bloc\nREPOS : 10’’ entre chaque exercice\nEffectuer 60’’ Exo 1 – 10’’ de repos – 50’’ Exo 2 – 10’’ de repos – 40’’ Exo 3 …… etc\n1er exercice : 60’’ de Mountain climbers croisés\n2ème exercice : 50’’ de Gainage araignée\n3ème exercice : 40’’ de Toes-to-rings\n4ème exercice : 30’’ de Sitting twists avec un disque de 10-15kg\n5ème exercice : 20’’ de Hollow Hold\n6ème exercice : 20’’ de Gainage cuillère\n7ème exercice : 30’’ de Toes touches\n8ème exercice : 40’’ de Leg raises\n9ème exercice : 50’’ de Gainage frontal - bras tendus\n10ème exercice : 60’’ de V ups alternés croisés",
+      "10": "- FOR TIME - Effectuer 8 à 10 ROUNDS LE PLUS VITE POSSIBLE :\n30’’ de Gainage cuillère\n30’’ de Gainage araignée\n30’’ de Gainage latéral gauche\n30’’ de Gainage latéral droit\n8 Toes touches\n8 Reverse crunches\n8 Sit ups",
+      "11": "- CIRCUIT TRAINING - Effectuer 3 blocs de 7 exercices.\nEffectuer LE PLUS DE REPETITIONS POSSIBLE pendant la durée de l’effort.\nREPOS : 3’00’’ entre chaque bloc\nREPOS : 15’’ entre chaque exercice\nBLOC 1 :\nFaire exo 1 pendant 30’’ + exo 2 pendant 30’’ + exo 3 pendant 30’’’ + … + exo 7 pendant 30’’.\nBLOC 2 :\nFaire exo 1 pendant 1’00’’ + exo 2 pendant 1’00’’ + exo 3 pendant 1’00’’ + … + exo 7 pendant\n1’00’’.\nBLOC 3 :\nFaire exo 1 pendant 1’30’’ + exo 2 pendant 1’30’’ + exo 3 pendant 1’30’’ + … + exo 7 pendant\n1’30’’.\n1er exercice : Toes-to-rings\n2ème exercice : Plank crunch\n3ème exercice : Leg raise\n4ème exercice : V up alterné croisé\n5ème exercice : Sit up\n6ème exercice : Gainage araignée\n7ème exercice : Toes touch",
+      "12": "- AMREPS - Effectuer 4 ROUNDS de :\nKnees-to-elbows\nSit up\nToes touch\nMax de répétitions en 1’30’’ pour chaque exercise\nREPOS : 30’’ entre chaque exercice\nREPOS : 1’00’’ entre chaque round"
+    },
+    "forceCycle": {
+      "1": [
+        {
+          "sets": 3,
+          "reps": "6",
+          "pct": 80
+        },
+        {
+          "sets": 2,
+          "reps": "6",
+          "pct": 75
+        },
+        {
+          "sets": 1,
+          "reps": "10",
+          "pct": 70
+        },
+        {
+          "sets": 1,
+          "reps": "MAX",
+          "pct": 55
+        }
+      ],
+      "2": [
+        {
+          "sets": 3,
+          "reps": "5",
+          "pct": 85
+        },
+        {
+          "sets": 2,
+          "reps": "5",
+          "pct": 80
+        },
+        {
+          "sets": 1,
+          "reps": "12",
+          "pct": 70
+        },
+        {
+          "sets": 1,
+          "reps": "MAX",
+          "pct": 55
+        }
+      ],
+      "3": [
+        {
+          "sets": 3,
+          "reps": "4",
+          "pct": 87.5
+        },
+        {
+          "sets": 2,
+          "reps": "4",
+          "pct": 82.5
+        },
+        {
+          "sets": 1,
+          "reps": "10",
+          "pct": 72.5
+        },
+        {
+          "sets": 1,
+          "reps": "MAX",
+          "pct": 60
+        }
+      ],
+      "4": [
+        {
+          "sets": 3,
+          "reps": "2-3",
+          "pct": 90
+        },
+        {
+          "sets": 2,
+          "reps": "3",
+          "pct": 85
+        },
+        {
+          "sets": 1,
+          "reps": "12",
+          "pct": 72.5
+        },
+        {
+          "sets": 1,
+          "reps": "MAX",
+          "pct": 60
+        }
+      ]
+    }
+  },
+  "4": {
+    "functional": {
+      "1": {
+        "title": "Pectoraux et Dorsaux",
+        "strength": "EXERCICE SÉRIES REPS\nDéveloppé couché Voir le tableau\nTirage horizontal OU allongé\nOU Bent over row Voir le tableau\nAMREP 3’00’’ - Pendant 3 minutes :\nEffectuer le plus possible de répétitions à 90% du MAX\nREPOS : 1’30’’\nAMREP 2’00’’ - Pendant 2 minutes :\nDéveloppé incliné OU décliné\nEffectuer le plus possible de répétitions à 80% du MAX\nREPOS : 1’30’’\nAMREP 1’00’’ - Pendant 1 minute :\nEffectuer le plus possible de répétitions à 70% du MAX\nAMREP 3’00’’ - Pendant 3 minutes :\nEffectuer le plus possible de répétitions à 90% du MAX\nREPOS : 1’30’’\nTirage devant OU Traction AMREP 2’00’’ - Pendant 2 minutes :\nlestée Effectuer le plus possible de répétitions à 80% du MAX\nREPOS : 1’30’’\nAMREP 1’00’’ - Pendant 1 minute :\nEffectuer le plus possible de répétitions à 70% du MAX",
+        "weeks": {
+          "1": {
+            "headline": "40’00’’",
+            "body": "1- AMRAP de 17’00’’ – effectuer le plus de tours de :\n21-15-9 répétitions en\nTraction\nPompe\nAir squat\n1ère série : 21 Tractions – 21 Pompes – 21 Air squats\n2ème série : 15 Tractions – 15 Pompes – 15 Air squats\n3ème série : 9 Tractions – 9 Pompes – 9 Air squats\n4ème série : 21 Tractions – 21 Pompes – 21 Air squats\nEtc.\nREPOS : 6’00’’\n2- AMRAP de 17’00’’ – effectuer le plus de tours :\n15-12-9 répétitions en\nBurpees\nTraction horizontale\nPompe surélevée – pieds sur un banc\n1ère série : 15 Burpees – 15 Tractions horizontales – 15 Pompes surélevées\n2ème série : 12 Burpees – 12 Tractions horizontales – 12 Pompes surélevées\n3ème série : 9 Burpees – 9 Tractions horizontales – 9 Pompes surélevées\n4ème série : 15 Burpees – 15 Tractions horizontales – 15 Pompes surélevées\nEtc."
+          },
+          "2": {
+            "headline": "44’00’’",
+            "body": "E5MOM de 15'00'' - Départ toutes les 5 minutes, effectuer :\n14 Tractions\n30 Pompes surélevées – pieds sur un banc\n20 Overhead lunges – 10 de chaque côté avec un disque de 15-20kg\n10 Marteaux de chaque côté avec un disque de 15-20kg\nREPOS : 4’00’’\nE4MOM de 12'00'' - Départ toutes les 4 minutes, effectuer :\n6 Navy seals\n12 Tractions\n15 Swings avec une kettlebell de 20-24kg minimum\nREPOS : 4’00’’\nE3MOM de 9'00'' - Départ toutes les 3 minutes, effectuer :\n33 Burpees"
+          },
+          "3": {
+            "headline": "- de 46’00’’",
+            "body": "PARTIE A\nFOR TIME – Effectuer 7 ROUNDS le plus vite possible :\n7 Goblet lunges chaque côté avec un disque de 15-20kg\n7 Thrusters avec un disque de 15-20kg\n7 Dips\n7 Marteaux de chaque côté avec un disque de 15-20kg\n7 Tractions\n7 Toes-to-bar\n7 Ground to overhead avec un disque de 15-20kg\nREPOS : 5’00’’\nPARTIE B\nE2MOM de 10'00'' - Départ toutes les 2 minutes, effectuer :\n10 Tractions\n25-30 Pompes"
+          },
+          "4": {
+            "headline": "39’00’’",
+            "body": "- HIIT – Effectuer 4 BLOCS\nREPOS : 3’00’’ entre chaque bloc\nBLOC 1\n1’30’’ d’Overhead lunges avec un disque de 15-20kg\nREPOS : 30’’\n1’30’’ de Thrusters avec un disque de 15-20kg\nREPOS : 30’’\n1’30’’ de Marteaux – 45’’ de chaque côté avec un disque de 15-20kg\nREPOS : 30’’\n1’30’’ de Ground to overhead avec un disque de 15-20kg\nBLOC 2\n1’30’’ de Tractions\nREPOS : 30’’\n1’30’’ de Tractions commando\nREPOS : 30’’\n1’30’’ de Tractions prise neutre\nREPOS : 30’’\n1’30’’ de Tractions horizontales\nBLOC 3\n1’30’’ de Pompes\nREPOS : 30’’\n1’30’’ de Hand release push ups\nREPOS : 30’’\n1’30’’ de Pompes + tap shoulders (une pompe + tap shoulders à droite, une pompe + tap\nshoulders à gauche etc.)\nREPOS : 30’’\n1’30’’ de Gainage commando – 45’’ de chaque côté\nBLOC 4\n1’30’’ de BOPE\nREPOS : 30’’\n1’30’’ de Navy seals\nREPOS : 30’’\n1’30’’ de Burpees\nREPOS : 30’’\n1’30’’ de Double unders OU Single unders"
+          }
+        }
+      },
+      "2": {
+        "title": "Jambes et Epaules",
+        "strength": "EXERCICE SÉRIES REPS\nBack squat Voir le tableau\nDéveloppé devant /\nShoulders press\nVoir le tableau\nAMREP 3’00’’ - Pendant 3 minutes :\nEffectuer le plus possible de répétitions à 90% du MAX\nREPOS : 1’30’’\nDeadlift OU Front squat OU AMREP 2’00’’ - Pendant 2 minutes :\nPresse OU Fente Effectuer le plus possible de répétitions à 80% du MAX\nREPOS : 1’30’’\nAMREP 1’00’’ - Pendant 1 minute :\nEffectuer le plus possible de répétitions à 70% du MAX\nAMREP 3’00’’ - Pendant 3 minutes :\nEffectuer le plus possible de répétitions à 90% du MAX\nREPOS : 1’30’’\nTirage menton – Rowing OU AMREP 2’00’’ - Pendant 2 minutes :\nPush press Effectuer le plus possible de répétitions à 80% du MAX\nREPOS : 1’30’’\nAMREP 1’00’’ - Pendant 1 minute :\nEffectuer le plus possible de répétitions à 70% du MAX",
+        "weeks": {
+          "1": {
+            "headline": "- de 44’00’’",
+            "body": "FOR TIME – Effectuer 3 DEMI - ANGIE le plus vite possible :\n50 Tractions\n50 Pompes\n50 Sit ups\n50 Air squats\nREPOS : 4’00’’ entre chaque demi – Angie\nPrendre le meilleur temps et le moins bon. Si il y a une différence de plus de 30 secondes\nentre les 2 temps, pénalité de : 15 BOPE"
+          },
+          "2": {
+            "headline": "- de 40’00’’",
+            "body": "CIRCUIT TRAINING – Effectuer :\n20 Tractions\nTABATA de 4’00’’ en 20’’ / 10’’ (alterner 20’’ d’effort – 10’’ de repos) en Pompes surélevées –\npieds sur un banc\nEffectuer le max de reps sur chaque intervalle d’effort.\nREPOS : 1’00’’\n20 Tractions\nEMOM de 4’00’’ - Départ toutes les minutes, effectuer : 15 Burpees\nREPOS : 1’00’’\n20 Tractions\nAMREP de 4’00’’ - Effectuer le MAX de GAO en 4’00’’\nREPOS : 1’00’’\n20 Tractions\nAMRAP évolutif de 4’00’’ - Effectuer :\n1 Pompe – 1 Hand release push up – 1 Diamond push up\n2 Pompes – 2 HRPU – 2 Diamond push ups\n3 Pompes – 3 HRPU – 3 Diamond push ups\nEtc.\nREPOS : 1’00’’\n20 Tractions\nTABATA de 4’00’’ en 20’’ / 10’’ (alterner 20’’ d’effort – 10’’ de repos) en Ground to overhead\navec un disque de 20kg\nEffectuer le max de reps sur chaque intervalle d’effort."
+          },
+          "3": {
+            "headline": "42’30’’",
+            "body": "AMRAP et AMREP – effectuer le plus de tours ou le plus de répétitions :\n3 BLOCS\nREPOS : 4’00’’ entre chaque bloc\n1 BLOC =\nAMREP de 4’00’’ : MAX de réps en Pompes surélevées – pieds sur un banc.\nREPOS : 30’’\nAMRAP de 3’00’’ : Le plus de rounds de : 5 Tractions + 5 Ground to overhead avec un disque de\n15-20kg.\nREPOS : 30’’\nAMRAP de 2’00’’ : Le plus de rounds de : 8 Swings + 8 Goblet squats avec une kettlebell de 20-\n24kg.\nREPOS : 30’’\nAMREP de 1’00’’ : MAX de réps en Tractions."
+          },
+          "4": {
+            "headline": "- de 55’00’’",
+            "body": "- HICT 1 - Effectuer 5 ROUNDS de :\n20 Air squats\n15 Tractions\n10 Swings avec une kettlebell de 20-24kg minimum\n5 Navy seals\n30’’ de Burpees\nREPOS : 1’00’’ entre chaque round\nChaque round est à effectuer le plus vite possible\nREPOS : 5’00’’\n- HICT 2 - Effectuer 5 ROUNDS de :\n16 DIPS\n12 Ground to overhead avec un disque de 15-20kg\n8 Thrusters avec un disque de 15-20kg\n4 BOPE\n30’’ de Double unders OU Single unders\nREPOS : 1’00’’ entre chaque round\nChaque round est à effectuer le plus vite possible"
+          }
+        }
+      },
+      "3": {
+        "title": "Pectoraux et Dorsaux",
+        "strength": "EXERCICE SÉRIES REPS\nVoir le tableau\nDéveloppé couché\nDiminuer de 2.5%, les valeurs indiquées dans le tableau\nTirage horizontal OU couché\nVoir le tableau\nOU Bent over row OU\nPendlay row Diminuer de 2.5%, les valeurs indiquées dans le tableau\nAMREP 3’00’’ - Pendant 3 minutes :\nEffectuer le plus possible de répétitions à 90% du MAX\nREPOS : 1’30’’\nDéveloppé incliné OU décliné AMREP 2’00’’ - Pendant 2 minutes :\nOU Shoulders press Effectuer le plus possible de répétitions à 80% du MAX\nREPOS : 1’30’’\nAMREP 1’00’’ - Pendant 1 minute :\nEffectuer le plus possible de répétitions à 70% du MAX\nAMREP 3’00’’ - Pendant 3 minutes :\nEffectuer le plus possible de répétitions à 90% du MAX\nREPOS : 1’30’’\nTirage devant OU Traction AMREP 2’00’’ - Pendant 2 minutes :\nlestée Effectuer le plus possible de répétitions à 80% du MAX\nREPOS : 1’30’’\nAMREP 1’00’’ - Pendant 1 minute :\nEffectuer le plus possible de répétitions à 70% du MAX",
+        "weeks": {
+          "1": {
+            "headline": "38’00’’",
+            "body": "AMRAP et AMREP – effectuer le plus de tours ou le plus de répétitions :\nAMREP de 6’00’’ : MAX de réps en Tractions.\nREPOS : 2’00’’\nAMRAP de 6’00’’ : Le plus de rounds de : 2 Tractions commando (1 de chaque côté) + 4 Pompes\nREPOS : 2’00’’\nAMRAP de 6’00’’ : Le plus de rounds de : 2 Tractions serviette + 4 Hand release push ups + 6\nSwings avec une kettlebell de 24kg minimum.\nREPOS : 2’00’’\nAMRAP de 6’00’’ : Le plus de rounds de : 2 Tractions biceps + 4 Dips + 6 Swings avec une\nkettlebell de 24kg + 8 Jump squats.\nREPOS : 2’00’’\nAMRAP de 6’00’’ : Le plus de rounds de : 2 Tractions prise neutre + 4 Diamond push ups + 6\nSwings avec une kettlebell de 24kg + 8 Jump squats + 10 Thrusters avec un disque de 15-20kg."
+          },
+          "2": {
+            "headline": "34’00’’",
+            "body": "E2MOM de 35'00'' - Départ toutes les 2 minutes\nRéaliser 5 fois ce bloc de 7’00’’\n0’ – 2’00’’ : MAX de Tractions en 2’00’’\n2’ – 4’00’’ : 30 Pompes + 4 Navy seals\n4’ – 6’00’’: (12 Ground to overhead + 15 Marteaux de chaque côté (rotation autour de la tête)\n+ 15 Shoulders press) avec un disque de 15-20kg\n6’ – 7’00 : REPOS"
+          },
+          "3": {
+            "headline": "- de 32’00’’",
+            "body": "FOR TIME – Effectuer le plus vite possible :\n25 Tractions - 10 Pompes surélevées UNBROKEN – pieds sur un banc – 10 Toes-to-rings\n20 Tractions - 20 Pompes surélevées UNBROKEN – pieds sur un banc – 10 Toes-to-rings\n15 Tractions - 30 Pompes surélevées UNBROKEN – pieds sur un banc – 10 Toes-to-rings\n10 Tractions - 40 Pompes surélevées – pieds sur un banc – 10 Toes-to-rings\n5 Tractions - 50 Pompes surélevées – pieds sur un banc – 10 Toes-to-rings\nMAIS toutes les 3’30’’, effectuer tout de suite une pénalité de 7 Burpees – tractions.\nNe pas arrêter le chronomètre pendant la pénalité."
+          },
+          "4": {
+            "headline": "- de 55’00’’",
+            "body": "FOR TIME – Effectuer le plus vite possible :\n50 Tractions\n50 Pompes\n50 Overhead lunges – 25 de chaque côté avec un disque de 15-20kg\n50 Double unders OU 100 Single unders\n40 Tractions prise neutre\n40 Pompes surélevées – pieds sur un banc\n40 Marteaux – 20 de chaque côté avec un disque de 15-20kg\n40 Mountain climbers – 20 de chaque côté\n30 Tractions - prise biceps OU supination au choix\n30 Dips\n30 Obliques (abdos) – 15 de chaque côté avec un disque de 15-20kg\n30 Jump squats\n20 Chest-to-bar\n20 Hand release push ups\n20 Thrusters avec un disque de 15-20kg\n20 Burpees\n10 Tractions commando – 5 de chaque côté\n10 Diamond push ups\n10 Ground to overhead avec un disque de 15-20kg\n10 Navy seals"
+          }
+        }
+      }
+    },
+    "running": {
+      "1": {
+        "1": "- 4ème Test COOPER : Courir la plus grande distance sur 12 minutes.\nEchauffement 10’00’’ de course - augmentation progressive de la vitesse\nEtirements légers\n- 3 séries de 6 min de 30’’/30’’ à 100 % de la VMA + 10 mètres (= VMA du Cooper\n+2 + 10m)\nTu multiplies par 5 la distance du Cooper et tu rajouteras 2 à la VMA du Cooper pour la\nVMA en 30’’/30’’ ou en 45’’/15’’ et tu te réfères au tableau pour la distance.\nRécupération passive : 3’30’’\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "2": "/ TOUTES LES SEMAINES – Jeudi\n- PARTIE A\n- Effectuer 8 Km LE PLUS VITE POSSIBLE.\nNote ton temps\nEtirements légers\nAméliorer le temps chaque semaine.\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\n- PARTIE B - FACULTATIF\n- Courir 7km en aisance respiratoire à 10-11km/h minimum\nEtirements",
+        "3": "- Effectuer un 200m, puis un 300m, un 400m, un 500m, 600m, 700m et pour finir un\n800m\nChaque course doit être effectuée LE PLUS VITE POSSIBLE\nRepos entre chaque course : 2’00’’\nREPOS APRES LE PREMIER TOUR : 8’00’’\nLe réaliser une seconde fois\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers"
+      },
+      "2": {
+        "1": "- 1 série de 9 min de 60’’/30’’ à 100 % de la VMA (= VMA du Cooper +2)\n- 1 série de 8 min de 45’’/15’’ à 100 % de la VMA (= VMA du Cooper +2)\n- 1 série de 7 min de 30’’/30’’ à 100 % de la VMA (= VMA du Cooper +2)\nRécupération passive : 4’00’’\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer :\n1000m LE PLUS VITE POSSIBLE\n- Repos : 4’00’’\n1000m LE PLUS VITE POSSIBLE\n- Repos : 4’00’’\n4 séries de 600m LE PLUS VITE POSSIBLE\n- Repos : 1’30’’entre chaque 600m\n- Repos : 4’00’’après le dernier 600m\n1000m LE PLUS VITE POSSIBLE\n- Repos : 4’00’’\n1000m LE PLUS VITE POSSIBLE\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "2": "/ TOUTES LES SEMAINES – Jeudi\n- PARTIE A\n- Effectuer 8 Km LE PLUS VITE POSSIBLE.\nNote ton temps\nEtirements légers\nAméliorer le temps chaque semaine.\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\n- PARTIE B - FACULTATIF\n- Courir 7km en aisance respiratoire à 10-11km/h minimum\nEtirements"
+      },
+      "3": {
+        "1": "- 1 série de 12 min de 60’’/30’’ à 100 % de la VMA (= VMA du Cooper +2)\n- 1 série de 9 min de 45’’/15’’ à 100 % de la VMA (= VMA du Cooper +2)\n- 1 série de 8 min de 30’’/30’’ à 100 % de la VMA (= VMA du Cooper +2)\nRécupération passive : 4’30’’\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer :\n10 séries de 200m LE PLUS VITE POSSIBLE\n- Repos : 1’00’’ entre chaque 200m\n- Repos : 3’30’’ après le dernier 200m\n2000m LE PLUS VITE POSSIBLE\nRepos : 3’30’’\n5 séries de 400m LE PLUS VITE POSSIBLE\n- Repos : 1’30’’ entre chaque 400m\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "2": "/ TOUTES LES SEMAINES – Jeudi\n- PARTIE A\n- Effectuer 8 Km LE PLUS VITE POSSIBLE.\nNote ton temps\nEtirements légers\nAméliorer le temps chaque semaine.\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\n- PARTIE B - FACULTATIF\n- Courir 7km en aisance respiratoire à 10-11km/h minimum\nEtirements"
+      },
+      "4": {
+        "1": "- 1 série de 15 min de 60’’/30’’ à 100 % de la VMA (= VMA du Cooper +2)\n- 1 série de 8 min de 45’’/15’’ à 100 % de la VMA (= VMA du Cooper +2)\n- 1 série de 8 min de 30’’/30’’ à 100 % de la VMA + 5 mètres (= VMA du Cooper +2 +\n5m)\nRécupération passive : 5’00’’\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "3": "- Effectuer :\n1200m LE PLUS VITE POSSIBLE\n- Repos : 3’30’’\n2 séries de 300m LE PLUS VITE POSSIBLE\n- Repos : 1’00’’ entre chaque 300m\n- Repos : 2’00’’ après le dernier 300m\n1200m LE PLUS VITE POSSIBLE\n- Repos : 3’30’’\n2 séries de 300m LE PLUS VITE POSSIBLE\n- Repos : 1’00’’ entre chaque 300m\n- Repos : 2’00’’ après le dernier 300m\n1200m LE PLUS VITE POSSIBLE\n- Repos : 3’30’’\n2 séries de 300m LE PLUS VITE POSSIBLE\n- Repos : 1’00’’ entre chaque 300m\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\nRetour au calme : 10’00’’ de course à faible allure\nEtirements légers",
+        "2": "/ TOUTES LES SEMAINES – Jeudi\n- PARTIE A\n- Effectuer 8 Km LE PLUS VITE POSSIBLE.\nNote ton temps\nEtirements légers\nAméliorer le temps chaque semaine.\nEchauffement : 10’00’’ de course - augmentation progressive de la vitesse\n- PARTIE B - FACULTATIF\n- Courir 7km en aisance respiratoire à 10-11km/h minimum\nEtirements"
+      }
+    },
+    "circuits": {
+      "1": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n35 Swings avec une kettlebell de 20-24kg minimum\n13 Tractions UNBROKEN – en une seule fois\n2’00’’ de Pompes surélevées – pieds sur un banc / noter le nombre\n35 V ups\n13 Tractions UNBROKEN\n2’00’’ de Pompes / noter le nombre\n35 Burpees\n13 Tractions UNBROKEN\n2’00’’ de Diamond push ups / noter le nombre\n35 Jump squats\n13 Tractions UNBROKEN\n2’00’’ de Dips / noter le nombre\n35 Goblet squats avec un disque de 15-20kg\n13 Tractions UNBROKEN\n2’00’’ de Hand release push ups / noter le nombre",
+      "2": "- FOR TIME - Effectuer 2 ROUNDS LE PLUS VITE POSSIBLE de :\n10 Thrusters avec un disque de 15-20kg\n5 Tractions\n20 Ground to overhead avec un disque de 15-20kg\n5 Tractions\n30 Pompes\n5 Tractions\n40 Air squats\n5 Tractions\n30 Pompes surélevées – pieds sur un banc\n5 Tractions\n20 Sit ups\n5 Tractions\n10 Dips\n5 Tractions",
+      "3": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n30 - 1 – 2 – 3 – 4 – 5 – 6 – 7 – 8 – 9 – 10 – 30 – 10 – 9 – 8 – 7 – 6 – 5 – 4 – 3 – 2 – 1 - 30\nJump squat / Goblet lunge – moitié de chaque côté avec un disque de 15-20kg\nTraction\nHand release push up\nSit up\n1ère série : 30 Jump squats + 30 Goblet lunges – 15 de chaque côté avec un disque de 15-\n20kg\n2ème série : 1 Traction – 1 Hand release push up – 1 Sit up\n3ème série : 2 Tractions – 2 Hand release push ups – 2 Sit ups Etc.",
+      "4": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE 5 Km de COURSE OU de RAMEUR :\nMAIS toutes les 2’30’’, effectuer une pénalité en BURPEES\nCommencer à 2 Burpees puis à chaque pénalité augmenter de 2 Burpees (s’arrêter à 10\nBurpees maximum).",
+      "5": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n50 Pompes surélevées – pieds sur un banc\n800m de Course OU Rameur\n40 Thrusters – avec un disque de 15-20kg\n600m de Course OU Rameur\n30 Tractions\n400m de Course OU Rameur\n20 Toes-to-bar\n200m de Course OU Rameur\n10 Burpees tuck jumps\n1000m de Course OU Rameur\n10 Burpees\n200m de Course OU Rameur\n20 Sit ups\n400m de Course OU Rameur\n30 Tractions\n600m de Course OU Rameur\n40 Goblet squats – avec un disque de 15-20kg\n800m de Course OU Rameur\n50 Pompes",
+      "6": "- FOR TIME - Effectuer 3 ROUNDS LE PLUS VITE POSSIBLE de :\n500m de RAMEUR OU COURSE\n30 Sit ups\n400m de RAMEUR OU COURSE\n25 Tractions\n300m de RAMEUR OU COURSE\n20 Hand release push ups\n200m de RAMEUR OU COURSE\n15 Swings avec une kettlebell de 20-24kg minimum\n100m de RAMEUR OU COURSE\n10 Burpees-Toes-to-bar",
+      "7": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\n1 – 2 – 3 – 4 – 5 – 6 – 7 – 8 – 9 – 10 – 11 – 12 – 13 – 14 en\nBurpees\nTraction\nPompe *2\nThruster avec un disque de 15-20kg\n1ère série : 1 Burpees – 1 Traction – 2 Pompes – 1 Thruster avec un disque de 15-20kg\n2ème série : 2 Burpees – 2 Tractions – 4 Pompes – 2 Thrusters avec un disque de 15-20kg\nEtc.",
+      "8": "- FOR TIME - Effectuer 3 ROUNDS LE PLUS VITE POSSIBLE de :\n20 Ground to overhead avec un disque de 15kg\n15 Tractions\n10 Thrusters avec un disque de 15-20kg\n30 Marteaux – 15 de chaque côté avec un disque de 15kg\n10 Navy seals\n15 Swings avec une kettlebell de 20-24kg minimum\n20 Dips",
+      "9": "- FOR TIME - Effectuer 2 ROUNDS LE PLUS VITE POSSIBLE :\n20 Pompes surélevées - pieds sur un banc\n10 Overhead lunges – 5 de chaque côté avec un disque de 15-20kg\n1’00’’ de Navy seals\n20 Tractions\n10 Swings avec une kettlebell de 20-24kg minimum\n1’00’’ de Navy seals\n20 Hand release push ups\n10 Thrusters avec un disque de 15-20kg\n1’00’’ de Navy seals\n20 Tractions horizontales\n10 Goblet squats avec un disque de 15-20kg\n1’00’’ de Navy seals\nREPOS : 3’00’’ entre les rounds",
+      "10": "- E2MOM 26’00’’ - Départ toutes les 2’00’’, effectuer :\n7 Tractions\n30’’ Gainage araignée\n5 Pompes\n4 Burpees",
+      "11": "- FOR TIME - Effectuer 2 ROUNDS LE PLUS VITE POSSIBLE de :\n50 Dips\n40 Marteaux – 20 de chaque côté avec un disque de 15-20kg\n30 Tractions\n20 V ups alternés croisés – 10 de chaque côté\n10 Swings avec une kettlebell de 20-24kg minimum",
+      "12": "- EMOM 16’00’’. Départ toutes les minutes, pendant 16’00’’ - effectuer :\n10 Dips + le reste du temps, fais un max de pompes les minutes paires\n12 Jump squats + 20’’ Wall sit les minutes impaires\nREPOS : 5’00’’\n- EMOM 16’00’’. Départ toutes les minutes, pendant 16’00’’ - effectuer :\n7 Tractions + 20’’ Hold – bras tendus les minutes paires\n7 Burpees + le reste du temps, fais un max de Sit ups les minutes impaires"
+    },
+    "abs": {
+      "1": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE :\nBLOC 1\nEffectuer 42 – 30 – 18 répétitions en :\nExercice 1 = Sit up\nExercice 2 = Toes-to-rings\nExercice 3 = Mountain climber croisé – moitié de chaque côté\nREPOS : 3’00''\nBLOC 2\nEffectuer 21 – 15 – 9 répétitions en :\nExercice 4 = Crunch croisé de chaque côté\nExercice 5 = Leg raise\nExercice 6 = Toes touch\nPour le premier bloc, effectuer d’abord 42 répétitions pour chaque exercice puis les 30\nrépétitions et terminer avec les 18 répétitions.\nPrendre 30’’ de repos entre chaque série.\nPour le second bloc, effectuer d’abord 21 répétitions pour chaque exercice puis les 15\nrépétitions et terminer avec les 9 répétitions.\nPrendre 30’’ de repos entre chaque série.",
+      "2": "- FOR TIME - Effectuer LE PLUS VITE POSSIBLE le nombre demandé de répétitions\n5 – 10 – 15 – 20 – 25 répétitions en :\nToes-to-bar\nOblique - de chaque côté avec un disque de 15-20kg\nKnees crunch\nGainage latéral – 30’’ de chaque côté\n1ère série : 5 Toes-to-bar – 5 Obliques – 5 Knees crunches – 60’’ de Gainage latéral\n2ème série : 10 Toes-to-bar – 10 Obliques – 10 Knees crunches – 60’’ de Gainage latéral\nEtc.",
+      "3": "EMOM 1 Complexe 13’00’’ : Départ toutes les 1’00’’, effectuer les répétitions demandées\npendant 13’00’’.\n1er exercice : 4 Knees-to-elbows\n2ème exercice : 5 Obliques avec un disque de 15-20kg de chaque côté\n3ème exercice : 6 Sit ups\nREPOS : 4’00’’\nEMOM 2 Complexe 13’00’’ :\n1er exercice : 10 Tuck crunches\n2ème exercice : 4 Plank crunches de chaque côté\n3ème exercice : 6 Toes touches\nRéalisation :\nEMOM 1\n1ère minute : 4 Knees-to-elbows – 5 Obliques avec un disque de chaque côté – 6 Sit ups\n2ème minute : 4 Knees-to-elbows – 5 Obliques avec un disque de chaque côté – 6 Sit ups\n3ème minute : 4 Knees-to-elbows – 5 Obliques avec un disque de chaque côté – 6 Sit ups\nEtc.\n13ème minute : 4 Knees-to-elbows – 4 Obliques avec un disque de chaque côté – 6 Sit ups",
+      "4": "- E2MOM 30’00’’ – Départ toutes les 2’00’’, pendant 30’00’’ :\n7 Toes-to-bar\n60’’ de Gainage latéral – 30’’ de chaque côté\n7 Toes touches",
+      "5": "3 exercices par EMOM / 1 exercice uniquement par minute\nEMOM 1 Complexe 9’00’’ : Départ toutes les 1’00’’, pendant 9’00’’\n1er exercice : 20-25 Sit ups\n2ème exercice : 45’’ de Gainage araignée\n3ème exercice : 6 V ups alternés croisés de chaque côté\nREPOS : 1’30’’\nEMOM 2 Complexe 9’00’’ : Départ toutes les 1’00’’, pendant 9’00’’\n1er exercice : 15-20 Leg raises\n2ème exercice : 6-8 Obliques de chaque côté avec un disque de 15-20kg\n3ème exercice : 12-15 V ups\nREPOS : 1’30’’\nEMOM 3 Complexe 9’00’’ : Départ toutes les 1’00’’, pendant 9’00’’\n1er exercice : 12-15 Mountain climbers croisés de chaque côté\n2ème exercice : 12-15 Knees crunches\n3ème exercice : 10 Toes-to-bar\nRéalisation : Ex : EMOM 1\n1ère minute: 20-25 Sit ups\n2ème minute: 45’’ de Gainage araignée\n3ème minute: 6 V ups alternés de chaque côté\n4ème minute : 20-25 Sit ups\n5ème minute : 45’’ de Gainage araignée\n6ème minute : 6 V ups alternés de chaque côté\n7ème minute : 20-25 Sit ups\n8ème minute : 45’’ de Gainage araignée\n9ème minute : 6 V ups alternés de chaque côté",
+      "6": "- AMRAP 8’00’’ – Effectuer LE PLUS DE ROUNDS POSSIBLE\n5 V ups\n6 Tuck crunches\n7 Mountain climbers croisés de chaque côté\nREPOS : 3’00’’\n- AMREPS 4’00’’ – Effectuer LE PLUS DE REPETITIONS POSSIBLE en TOES-TO-BAR\nREPOS : 3’00’’\n- AMRAP 8’00’’ – Effectuer LE PLUS DE ROUNDS POSSIBLE\n4 V ups alternés croisés de chaque côté\n7 Sit ups\n10 Toes touches",
+      "7": "- 2 AMRAP 10’00’’ évolutifs : Effectuer le PLUS DE ROUNDS POSSIBLE.\nA chaque round, ajouter une répétition supplémentaire à chaque exercice.\nAMRAP 1 évolutif - 10’00’’ :\n1er exercice : Toes-to-rings\n2ème exercice : Mountain climber croisé de chaque côté\n3ème exercice : Toes touch\nREPOS : 5'00''\nAMRAP 2 évolutif - 10’00’’ :\n1er exercice : V up alterné croisé de chaque côté\n2ème exercice : Toes tap de chaque côté\n3ème exercice : Sit up\nRéalisation : Pendant 10’00’’\n1er round : EXO1 1 répétition – EXO2 1 répétition – EXO3 1 répétition\n2ème round : EXO1 2 répétitions – EXO2 2 répétitions – EXO3 2 répétitions\n3ème round : EXO1 3 répétitions – EXO2 3 répétitions – EXO3 3 répétitions\nEtc.",
+      "8": "- EMOM 8’00’’ – Départ toutes les 1’00’’ - effectuer pendant 8’00’’ :\n9 Toes touches\n6 Crunches\n3 V ups alternés croisés de chaque côté\nREPOS : 3’00’’\n- EMOM 8’00’’ – Départ toutes les 1’00’’ - effectuer pendant 8’00’’ :\n12 Sit ups\n5 Toes-to-bar\nREPOS : 3’00’’\n- EMOM 8’00’’ – Départ toutes les 1’00’’ - effectuer pendant 8’00’’ :\n45’’ de Gainage araignée",
+      "9": "- CIRCUIT TRAINING - Effectuer :\nAMREP 4’00’’ : V ups alternés croisés\n10 Sit ups\nREPOS : 2’00’’\nAMREP 4’00’’ : Toes touches\n20 Sit ups\nREPOS : 2’00’’\nAMREP 4’00’’ : Knees-to-elbows\n30 Sit ups\nREPOS : 2’00’’\nAMREP 4’00’’ : Leg raises\n40 Sit ups\nPour chaque AMREP, réaliser le MAXIMUM DE RÉPÉTITIONS.",
+      "10": "- CIRCUIT TRAINING - Effectuer :\n1’00’’ de Toes touches - maximum de répétitions\n2'00’’ de Gainage araignée\n3’00’’ de V ups alternés - maximum de répétitions\n4’00’’ de Gainage latéral – 2 * 1’00’’ de chaque côté\n5’00’’ de Toes-to-rings - maximum de répétitions\nREPOS : 4’00’’\nEffectuer le SUPER TABATA 8’00’’ suivant :\nTuck crunch\nHollow hold\n20’’ de travail - max de répétitions / 10’’ de repos pendant 8’00’’\nAlterner les 2 exercices – max de répétitions pour chaque intervalle d’efforts.",
+      "11": "TABATA - Effectuer 5 séries de 4’00’’ en 20’’ / 10’’\nAlterner 20s d’efforts – 10s de repos pendant 4’00’’\nPour chaque intervalle de temps, effectuer le maximum de répétitions\n2 exercices par série de TABATA\nAlterner les 2 exercices durant le Tabata\nREPOS : 2'00'' entre chaque série\nPour chaque série :\n20’’ Exo 1 – 10’’ de repos - 20’’ Exo 2 – 10’’ de repos - 20’’ Exo 1 – 10’’ de repos - 20’’ Exo 2 –\n10’’ de repos - 20’’ Exo 1 – 10’’ de repos - 20’’ Exo 2 – 10’’ de repos - 20’’ Exo 1 – 10’’ de repos\n- 20’’ Exo 2 – 10’’ de repos.\n1ère série : Toes-to-bar / Gainage cuillère\n2ème série : Hollow rock / Gainage araignée\n3ème série : Gainage coude / Toes touch\n4ème série : Sit up / Reverse crunch\n5ème série : V up alterné croisé / Tuck crunch",
+      "12": "- EMOM 10’00’’ – Départ toutes les 1’00’’, pendant 10’00’’ :\n6 V ups alternés – 3 de chaque côté\n5 V ups\n8 Toes touches\nREPOS : 5’00’’\n- AMRAP 10’00’’ - Effectuer LE PLUS DE ROUNDS POSSIBLE en 10’00’’:\n12 Crunches\n10 Mountain climbers croisés de chaque côté\n8 Toes-to-bar\n6 Knees crunches\n30’’ de Gainage cuillère"
+    },
+    "forceCycle": {
+      "1": [
+        {
+          "sets": 1,
+          "reps": "8",
+          "pct": 70
+        },
+        {
+          "sets": 1,
+          "reps": "7",
+          "pct": 75
+        },
+        {
+          "sets": 2,
+          "reps": "5",
+          "pct": 80
+        },
+        {
+          "sets": 1,
+          "reps": "4",
+          "pct": 82.5
+        },
+        {
+          "sets": 1,
+          "reps": "3",
+          "pct": 85
+        }
+      ],
+      "2": [
+        {
+          "sets": 1,
+          "reps": "7",
+          "pct": 72.5
+        },
+        {
+          "sets": 1,
+          "reps": "6",
+          "pct": 77.5
+        },
+        {
+          "sets": 2,
+          "reps": "4",
+          "pct": 82.5
+        },
+        {
+          "sets": 1,
+          "reps": "3",
+          "pct": 85
+        },
+        {
+          "sets": 1,
+          "reps": "2",
+          "pct": 87.5
+        }
+      ],
+      "3": [
+        {
+          "sets": 1,
+          "reps": "7",
+          "pct": 75
+        },
+        {
+          "sets": 1,
+          "reps": "6",
+          "pct": 80
+        },
+        {
+          "sets": 2,
+          "reps": "4",
+          "pct": 85
+        },
+        {
+          "sets": 1,
+          "reps": "3",
+          "pct": 87.5
+        },
+        {
+          "sets": 1,
+          "reps": "2",
+          "pct": 90
+        }
+      ],
+      "4": [
+        {
+          "sets": 1,
+          "reps": "6",
+          "pct": 77.5
+        },
+        {
+          "sets": 1,
+          "reps": "4",
+          "pct": 82.5
+        },
+        {
+          "sets": 2,
+          "reps": "3",
+          "pct": 87.5
+        },
+        {
+          "sets": 1,
+          "reps": "2",
+          "pct": 90
+        },
+        {
+          "sets": 1,
+          "reps": "1",
+          "pct": 92.5
+        }
+      ]
+    }
+  }
+};
+
+  </script>
+  <script>
+(() => {
+'use strict';
+const DATA = window.ROAD_TO_GI_DATA;
+const DAYS = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+const PLAN = {
+  1:{title:'Functional Training - Entraînement 1',kind:'functional',training:'1'},
+  2:{title:'Course - Séance 1 + Abdominaux',kind:'running',session:'1'},
+  3:{title:'Functional Training - Entraînement 2',kind:'functional',training:'2'},
+  4:{title:'Course - Séance 2 + Abdominaux',kind:'running',session:'2'},
+  5:{title:'Functional Training - Entraînement 3',kind:'functional',training:'3'},
+  6:{title:'Course - Séance 3 + Circuit samedi',kind:'running',session:'3'},
+  0:{title:'Repos',kind:'rest'}
+};
+const DEFAULT={program:1,week:1,page:'home',profile:{bodyWeight:90,bench:110,row:100,shoulder:70,squat:140,deadlift:170,pullup:30,cooper:3000},completed:{},notes:{},history:[]};
+let state=load();
+let timer={mode:'idle',seconds:0,initial:0,interval:null,startedAt:null};
+const app=document.getElementById('app');
+function load(){try{return {...DEFAULT,...JSON.parse(localStorage.getItem('roadToGI_v1')||'{}'),profile:{...DEFAULT.profile,...(JSON.parse(localStorage.getItem('roadToGI_v1')||'{}').profile||{})}}}catch(e){return structuredClone(DEFAULT)}}
+function save(){localStorage.setItem('roadToGI_v1',JSON.stringify(state))}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function pctWeight(max,pct,adjust=0){const raw=max*((pct+adjust)/100);return Math.round(raw/2.5)*2.5}
+function vma(){return +(Number(state.profile.cooper)*5/1000).toFixed(1)}
+function dist(speed,sec){return Math.round(speed*1000/3600*sec)}
+function todayIndex(){return new Date().getDay()}
+function key(parts){return [state.program,state.week,...parts].join('-')}
+function isDone(k){return !!state.completed[k]}
+function toggle(k){state.completed[k]=!state.completed[k];save();render()}
+function countWeekDone(){return Object.entries(state.completed).filter(([k,v])=>v&&k.startsWith(`${state.program}-${state.week}-day-`)).length}
+function splitSteps(text){if(!text)return[];return text.split('\n').map(s=>s.trim()).filter(s=>s.length>1&&!/^Thibault DEPLEDT$/i.test(s)).slice(0,180)}
+function header(){return `<div class="shell"><header class="topbar"><div class="brand"><div class="brandmark">GI</div><div><h1>ROAD TO GI</h1><p>Invictus - Programme ${state.program} / Semaine ${state.week}</p></div></div><div class="top-controls"><select id="programSel" class="compact-select" aria-label="Programme">${[1,2,3,4].map(n=>`<option ${n===state.program?'selected':''} value="${n}">P${n}</option>`).join('')}</select><select id="weekSel" class="compact-select" aria-label="Semaine">${[1,2,3,4].map(n=>`<option ${n===state.week?'selected':''} value="${n}">S${n}</option>`).join('')}</select></div></header><main class="main" id="view"></main>${nav()}</div>`}
+function nav(){const items=[['home','⌂','Aujourd’hui'],['program','▦','Programme'],['strength','🏋','Force'],['running','🏃','Course'],['progress','↗','Suivi'],['profile','⚙','Profil']];return `<nav class="bottomnav">${items.map(([p,i,l])=>`<button class="navbtn ${state.page===p?'active':''}" data-page="${p}"><b>${i}</b><span>${l}</span></button>`).join('')}</nav>`}
+function render(){app.innerHTML=header();bindShell();const view=document.getElementById('view');if(state.page==='home')view.innerHTML=homeView();if(state.page==='program')view.innerHTML=programView();if(state.page==='session')view.innerHTML=sessionView();if(state.page==='strength')view.innerHTML=strengthPageView();if(state.page==='running')view.innerHTML=runningPageView();if(state.page==='progress')view.innerHTML=progressView();if(state.page==='profile')view.innerHTML=profileView();bindView()}
+function bindShell(){document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>{state.page=b.dataset.page;save();render()}));document.getElementById('programSel').addEventListener('change',e=>{state.program=+e.target.value;save();render()});document.getElementById('weekSel').addEventListener('change',e=>{state.week=+e.target.value;save();render()})}
+function homeView(){const d=todayIndex(),plan=PLAN[d],done=countWeekDone();const percent=Math.round(done/6*100);return `<section class="hero"><p class="eyebrow">SÉANCE DU JOUR - ${DAYS[d].toUpperCase()}</p><h2>${esc(plan.title)}</h2><p class="muted">Programme ${state.program} · Semaine ${state.week}</p><div class="hero-actions"><button class="btn primary" id="goSession">Ouvrir la séance</button><button class="btn" id="goProgram">Voir la semaine</button></div></section><div class="grid stats"><div class="stat"><span>Cooper</span><strong>${state.profile.cooper} m</strong></div><div class="stat"><span>VMA estimée</span><strong>${vma()} km/h</strong></div><div class="stat"><span>VMA + 2</span><strong>${(vma()+2).toFixed(1)} km/h</strong></div><div class="stat"><span>Semaine</span><strong>${done}/6</strong></div></div><div class="card"><div class="card-head"><h3>Progression semaine</h3><span class="tag">${percent}%</span></div><div class="progress"><div style="width:${percent}%"></div></div></div><div class="card"><div class="card-head"><h3>Planning</h3><span class="tag">P${state.program} · S${state.week}</span></div><div class="schedule">${[1,2,3,4,5,6,0].map(i=>`<button class="schedule-row ${i===d?'today':''}" data-day="${i}"><span class="day">${DAYS[i].toUpperCase()}</span><span class="kind">${esc(PLAN[i].title)}</span><span class="arrow">›</span></button>`).join('')}</div></div>`}
+function programView(){return `<h2 class="section-title">Programme ${state.program}</h2><div class="tabs">${[1,2,3,4].map(w=>`<button class="tab ${w===state.week?'active':''}" data-weektab="${w}">Semaine ${w}</button>`).join('')}</div><div class="card"><div class="card-head"><h3>Semaine ${state.week}</h3><span class="tag">6 séances + repos</span></div><div class="schedule">${[1,2,3,4,5,6,0].map(i=>`<button class="schedule-row" data-day="${i}"><span class="day">${DAYS[i].toUpperCase()}</span><span class="kind">${esc(PLAN[i].title)}</span><span class="arrow">›</span></button>`).join('')}</div></div><div class="notice">Le contenu est tiré des 16 PDF fournis. Les charges calculées arrondissent au multiple de 2,5 kg le plus proche. Tu peux modifier tes RM directement dans l’onglet Force ou dans une séance de musculation.</div>`}
+function selectedDay(){const x=Number(sessionStorage.getItem('roadToGI_day'));return Number.isInteger(x)&&x>=0&&x<=6?x:todayIndex()}
+function sessionView(){const d=selectedDay(),p=PLAN[d];if(p.kind==='rest')return `<section class="hero"><p class="eyebrow">DIMANCHE</p><h2>Repos</h2><p class="muted">Récupération selon le planning du programme.</p></section>`;return `<div class="card"><div class="card-head"><div><p class="eyebrow" style="margin-bottom:4px">${DAYS[d].toUpperCase()}</p><h3>${esc(p.title)}</h3></div><button class="btn ${isDone(key(['day',d]))?'good':''}" id="finishDay">${isDone(key(['day',d]))?'Séance validée ✓':'Valider séance'}</button></div></div>${timerCard()}${p.kind==='functional'?functionalView(p.training):runningView(p.session,d)}`}
+function timerCard(){return `<div class="card timer-panel"><div class="card-head"><h3>Chrono</h3><span id="timerStatus" class="tag">Prêt</span></div><div id="timerDisplay" class="timer-display">00:00</div><div class="pill-row" style="justify-content:center"><button class="btn primary" id="timerStart">Démarrer</button><button class="btn" id="timerPause">Pause</button><button class="btn danger" id="timerReset">Reset</button></div><div class="quick-timers"><button class="btn" data-timer="30">30 s</button><button class="btn" data-timer="60">1 min</button><button class="btn" data-timer="90">1:30</button><button class="btn" data-timer="120">2 min</button><button class="btn" data-timer="180">3 min</button><button class="btn" data-timer="240">4 min</button></div></div>`}
+function functionalView(training){const dat=DATA[String(state.program)].functional[training];if(!dat)return `<div class="empty">Séance non trouvée.</div>`;const w=dat.weeks[String(state.week)]||{};const adjustment=training==='3'?-2.5:0;const primary=training==='2'?[['Shoulders press','shoulder'],['Back squat','squat']]:[['Développé couché','bench'],['Tirage horizontal / Row','row']];return `<div class="card"><div class="card-head"><h3>Force - ${esc(dat.title)}</h3><span class="tag">Cycle P${state.program} S${state.week}</span></div>${primary.map(([name,rm])=>forceExercise(name,rm,adjustment)).join('')}<div class="divider"></div><button class="btn ghost source-toggle" data-toggle-source="strengthSource">Afficher les consignes originales</button><div id="strengthSource" class="source-block" hidden>${esc(dat.strength)}</div></div><div class="card"><div class="card-head"><h3>WOD - Semaine ${state.week}</h3><span class="tag">${esc(w.headline||'')}</span></div>${checklist(w.body||'',`wod-${training}`)}<button class="btn ghost source-toggle" data-toggle-source="wodSource">Texte source</button><div id="wodSource" class="source-block" hidden>${esc(w.body||'')}</div></div>`}
+function forceExercise(name,rmKey,adjust){const cycle=DATA[String(state.program)].forceCycle[String(state.week)]||[];const max=Number(state.profile[rmKey]||0);let rows='';cycle.forEach((r,ri)=>{for(let s=1;s<=r.sets;s++){const k=key(['force',name,ri,s]);rows+=`<div class="force-row"><div><strong>${esc(name)}</strong><div class="muted" style="font-size:11px">${r.pct+adjust}% · ${esc(r.reps)} rep${r.reps==='1'?'':'s'}</div></div><input inputmode="decimal" aria-label="Charge" value="${pctWeight(max,r.pct,adjust)}" data-loadkey="${esc(k)}"><input inputmode="numeric" aria-label="Répétitions" value="${r.reps==='MAX'?'':esc(r.reps)}"><button class="check ${isDone(k)?'done':''}" data-toggle="${esc(k)}">✓</button></div>`}});return `<div class="rm-head"><h4>${esc(name)} <span class="muted" style="font-weight:400">RM actuel : ${max} kg${adjust?` · ajustement ${adjust}%`:''}</span></h4></div><div class="rm-inline-editor"><label>Modifier le RM de ${esc(name)}<input type="number" step="0.5" min="0" value="${max}" data-rm-input="${esc(rmKey)}"></label><button type="button" class="btn primary" data-rm-save="${esc(rmKey)}">Appliquer</button></div><div class="force-grid">${rows}</div>`}
+
+function runningView(session,d){const dat=DATA[String(state.program)].running[String(state.week)]?.[session]||'';const base=vma(),train2=base+2,train1=base+1;const extra=d===6?saturdayExtras():abExtras();return `<div class="card"><div class="card-head"><h3>Calculs de course</h3><span class="tag">Cooper ${state.profile.cooper} m</span></div><div class="grid stats" style="margin:0"><div class="stat"><span>VMA Cooper</span><strong>${base.toFixed(1)}</strong></div><div class="stat"><span>VMA +1</span><strong>${train1.toFixed(1)}</strong></div><div class="stat"><span>VMA +2</span><strong>${train2.toFixed(1)}</strong></div><div class="stat"><span>30 s à VMA+2</span><strong>${dist(train2,30)} m</strong></div></div><div class="result" style="margin-top:12px">45 s à VMA+2 : <strong>${dist(train2,45)} m</strong> · 60 s : <strong>${dist(train2,60)} m</strong></div></div><div class="card"><div class="card-head"><h3>Course - Séance ${session}</h3><span class="tag">Semaine ${state.week}</span></div>${checklist(dat,`run-${session}`)}<button class="btn ghost source-toggle" data-toggle-source="runSource">Texte source</button><div id="runSource" class="source-block" hidden>${esc(dat)}</div></div>${extra}`}
+function circuitSelector(kind,title){const circuits=DATA[String(state.program)][kind]||{};const nums=Object.keys(circuits);if(!nums.length)return'';const selectId=`${kind}Select`;return `<div class="card"><div class="card-head"><h3>${title}</h3><select class="compact-select" id="${selectId}">${nums.map(n=>`<option value="${n}">Circuit ${n}</option>`).join('')}</select></div><div id="${kind}Body">${checklist(circuits[nums[0]],`${kind}-${nums[0]}`)}</div></div>`}
+function abExtras(){return circuitSelector('abs','Circuit abdominaux (au choix)')}
+function saturdayExtras(){return circuitSelector('circuits','Circuit du samedi (facultatif)')+circuitSelector('abs','Circuit abdominaux (au choix)')}
+function checklist(text,prefix){const steps=splitSteps(text);if(!steps.length)return `<div class="empty">Aucun détail extrait.</div>`;return `<div class="worklist">${steps.map((s,i)=>{const k=key([prefix,i]);return `<label class="workitem ${isDone(k)?'done':''}"><input type="checkbox" data-check="${esc(k)}" ${isDone(k)?'checked':''}><span class="worktext">${esc(s)}</span></label>`}).join('')}</div>`}
+
+function strengthPageView(){
+    const fields=[
+        ['bench','Développé couché'],
+        ['row','Row / tirage horizontal'],
+        ['shoulder','Shoulder press'],
+        ['squat','Back squat'],
+        ['deadlift','Deadlift'],
+        ['pullup','Traction lestée (charge ajoutée)']
+    ];
+    const cycle=DATA[String(state.program)].forceCycle[String(state.week)]||[];
+    const cycleHtml=cycle.map(r=>`<div class="workitem"><span class="worktext"><strong>${r.sets} série${r.sets>1?'s':''} × ${esc(r.reps)} rep${String(r.reps)==='1'?'':'s'}</strong> à ${r.pct}%</span></div>`).join('');
+    return `<h2 class="section-title">Force</h2>
+    <form id="rmQuickForm" class="card">
+        <div class="card-head"><h3>Mes RM</h3><span class="tag">modifiables</span></div>
+        <div class="rm-form-grid">
+            ${fields.map(([k,l])=>`<div class="field"><label for="rmq_${k}">${l} (kg)</label><input id="rmq_${k}" name="${k}" type="number" step="0.5" min="0" value="${state.profile[k]}"></div>`).join('')}
+        </div>
+        <div class="hero-actions"><button class="btn primary" type="submit">Enregistrer les RM</button></div>
+        <div class="rm-save-note">Les charges des séances sont recalculées immédiatement après l’enregistrement.</div>
+    </form>
+    <div class="card">
+        <div class="card-head"><h3>Cycle de force</h3><span class="tag">P${state.program} · S${state.week}</span></div>
+        <div class="worklist">${cycleHtml||'<div class="empty">Cycle non trouvé.</div>'}</div>
+    </div>
+    <div class="card">
+        <div class="card-head"><h3>Aperçu des charges</h3><span class="tag">arrondi 2,5 kg</span></div>
+        <div class="result">
+            ${cycle.map(r=>`<strong>${r.pct}%</strong> : DC ${pctWeight(state.profile.bench,r.pct)} kg · Row ${pctWeight(state.profile.row,r.pct)} kg · Shoulder ${pctWeight(state.profile.shoulder,r.pct)} kg · Squat ${pctWeight(state.profile.squat,r.pct)} kg`).join('<br>')}
+        </div>
+    </div>`;
+}
+
+function runningPageView(){
+    let session=Number(sessionStorage.getItem('roadToGI_runSession')||1);
+    if(![1,2,3].includes(session))session=1;
+    const dat=DATA[String(state.program)].running[String(state.week)]?.[String(session)]||DATA[String(state.program)].running[String(state.week)]?.[session]||'';
+    const base=vma(),train1=base+1,train2=base+2;
+    const dayForSession={1:2,2:4,3:6};
+    return `<h2 class="section-title">Course à pied</h2>
+    <div class="card">
+        <div class="card-head"><h3>Référence Cooper / VMA</h3><span class="tag">calcul auto</span></div>
+        <div class="rm-inline-editor">
+            <label>Distance Cooper en 12 min (m)
+                <input id="courseCooperInput" type="number" step="10" min="0" value="${state.profile.cooper}">
+            </label>
+            <button type="button" class="btn primary" id="saveCourseCooper">Mettre à jour</button>
+        </div>
+        <div class="grid stats" style="margin:0">
+            <div class="stat"><span>VMA Cooper</span><strong>${base.toFixed(1)} km/h</strong></div>
+            <div class="stat"><span>VMA +1</span><strong>${train1.toFixed(1)} km/h</strong></div>
+            <div class="stat"><span>VMA +2</span><strong>${train2.toFixed(1)} km/h</strong></div>
+            <div class="stat"><span>30 s à VMA+2</span><strong>${dist(train2,30)} m</strong></div>
+        </div>
+        <div class="result" style="margin-top:12px">45 s à VMA+2 : <strong>${dist(train2,45)} m</strong> · 60 s : <strong>${dist(train2,60)} m</strong></div>
+    </div>
+    <div class="card">
+        <div class="card-head"><h3>Séances de la semaine</h3><span class="tag">Semaine ${state.week}</span></div>
+        <div class="course-session-tabs">
+            ${[1,2,3].map(n=>`<button type="button" class="btn ${session===n?'active':''}" data-runselect="${n}">${n===1?'Mardi':n===2?'Jeudi':'Samedi'} · Séance ${n}</button>`).join('')}
+        </div>
+        ${checklist(dat,`runpage-${session}`)}
+        <div class="hero-actions">
+            <button type="button" class="btn primary" data-open-run="${dayForSession[session]}">Ouvrir cette séance avec chrono</button>
+        </div>
+    </div>`;
+}
+
+function progressView(){const history=state.history.slice().reverse();const dayDone=countWeekDone();return `<h2 class="section-title">Suivi</h2><div class="grid stats"><div class="stat"><span>Séances validées</span><strong>${dayDone}/6</strong></div><div class="stat"><span>Cooper</span><strong>${state.profile.cooper} m</strong></div><div class="stat"><span>VMA</span><strong>${vma()} km/h</strong></div><div class="stat"><span>Poids</span><strong>${state.profile.bodyWeight} kg</strong></div></div><div class="card"><div class="card-head"><h3>Historique</h3><button class="btn" id="addMeasure">Ajouter mesure</button></div>${history.length?history.map(h=>`<div class="history-row"><div><strong>${esc(h.label)}</strong><br><small>${esc(h.date)}</small></div><div>${esc(h.value)}</div></div>`).join(''):`<div class="empty">Aucune mesure enregistrée pour l’instant.</div>`}</div><div class="card"><h3>Références force</h3><div class="result" style="margin-top:12px">Développé couché <strong>${state.profile.bench} kg</strong><br>Row <strong>${state.profile.row} kg</strong><br>Shoulder press <strong>${state.profile.shoulder} kg</strong><br>Squat <strong>${state.profile.squat} kg</strong><br>Deadlift <strong>${state.profile.deadlift} kg</strong><br>Traction lestée <strong>+${state.profile.pullup} kg</strong></div></div>`}
+function profileView(){const fields=[['bodyWeight','Poids du corps (kg)'],['cooper','Cooper - distance en 12 min (m)'],['bench','Développé couché RM (kg)'],['row','Row / tirage RM (kg)'],['shoulder','Shoulder press RM (kg)'],['squat','Back squat RM (kg)'],['deadlift','Deadlift RM (kg)'],['pullup','Traction lestée RM ajouté (kg)']];return `<h2 class="section-title">Profil sportif</h2><form id="profileForm" class="card"><div class="form-grid">${fields.map(([k,l])=>`<div class="field"><label for="p_${k}">${l}</label><input id="p_${k}" name="${k}" type="number" step="0.5" min="0" value="${state.profile[k]}"></div>`).join('')}</div><div class="hero-actions"><button class="btn primary" type="submit">Enregistrer</button><button class="btn danger" type="button" id="resetApp">Réinitialiser l’application</button></div></form><div class="card"><div class="card-head"><h3>Calcul automatique</h3><span class="tag">VMA</span></div><div class="result">Avec un Cooper de <strong>${state.profile.cooper} m</strong>, l’application calcule une VMA de <strong>${vma()} km/h</strong>. À VMA +2 : 30 s ≈ <strong>${dist(vma()+2,30)} m</strong>, 45 s ≈ <strong>${dist(vma()+2,45)} m</strong>.</div></div><div class="notice">Les données restent sur cet appareil via le stockage local du navigateur. Cette V1 fonctionne sans compte et peut être installée comme PWA.</div>`}
+function setDay(d){sessionStorage.setItem('roadToGI_day',String(d));state.page='session';save();render()}
+function bindView(){const go=document.getElementById('goSession');if(go)go.onclick=()=>setDay(todayIndex());const gp=document.getElementById('goProgram');if(gp)gp.onclick=()=>{state.page='program';save();render()};document.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>setDay(+b.dataset.day));document.querySelectorAll('[data-weektab]').forEach(b=>b.onclick=()=>{state.week=+b.dataset.weektab;save();render()});const finish=document.getElementById('finishDay');if(finish)finish.onclick=()=>toggle(key(['day',selectedDay()]));document.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>toggle(b.dataset.toggle));document.querySelectorAll('[data-check]').forEach(cb=>cb.onchange=()=>{state.completed[cb.dataset.check]=cb.checked;save();cb.closest('.workitem').classList.toggle('done',cb.checked)});document.querySelectorAll('[data-toggle-source]').forEach(b=>b.onclick=()=>{const el=document.getElementById(b.dataset.toggleSource);el.hidden=!el.hidden;b.textContent=el.hidden?'Afficher le texte source':'Masquer le texte source'});document.querySelectorAll('[data-rm-save]').forEach(b=>b.onclick=()=>{const rmKey=b.dataset.rmSave;const input=document.querySelector(`[data-rm-input="${rmKey}"]`);if(!input)return;const value=Number(String(input.value).replace(',','.'));if(!Number.isFinite(value)||value<0){input.focus();return}state.profile[rmKey]=value;save();render()});document.querySelectorAll('[data-runselect]').forEach(b=>b.onclick=()=>{sessionStorage.setItem('roadToGI_runSession',b.dataset.runselect);render()});document.querySelectorAll('[data-open-run]').forEach(b=>b.onclick=()=>setDay(+b.dataset.openRun));const saveCooper=document.getElementById('saveCourseCooper');if(saveCooper)saveCooper.onclick=()=>{const input=document.getElementById('courseCooperInput');const value=Number(input.value);if(!Number.isFinite(value)||value<=0){input.focus();return}state.profile.cooper=value;save();render()};const rmQuick=document.getElementById('rmQuickForm');if(rmQuick)rmQuick.onsubmit=e=>{e.preventDefault();const fd=new FormData(rmQuick);for(const [k,v] of fd.entries()){const value=Number(String(v).replace(',','.'));if(Number.isFinite(value)&&value>=0)state.profile[k]=value}save();render()};bindTimer();bindCircuit('abs');bindCircuit('circuits');const pf=document.getElementById('profileForm');if(pf)pf.onsubmit=e=>{e.preventDefault();const fd=new FormData(pf);for(const [k,v] of fd.entries())state.profile[k]=Math.max(0,Number(v)||0);save();render()};const reset=document.getElementById('resetApp');if(reset)reset.onclick=()=>{if(confirm('Effacer tes réglages et ton historique ?')){localStorage.removeItem('roadToGI_v1');state=structuredClone(DEFAULT);render()}};const add=document.getElementById('addMeasure');if(add)add.onclick=()=>{const label=prompt('Mesure (ex : Cooper, 8 km, poids)');if(!label)return;const value=prompt('Valeur (ex : 3050 m, 41:20, 88 kg)');if(!value)return;state.history.push({label,value,date:new Date().toLocaleDateString('fr-FR')});save();render()}}
+function bindCircuit(kind){const sel=document.getElementById(`${kind}Select`),body=document.getElementById(`${kind}Body`);if(!sel||!body)return;sel.onchange=()=>{const n=sel.value;body.innerHTML=checklist(DATA[String(state.program)][kind][n],`${kind}-${n}`);body.querySelectorAll('[data-check]').forEach(cb=>cb.onchange=()=>{state.completed[cb.dataset.check]=cb.checked;save();cb.closest('.workitem').classList.toggle('done',cb.checked)})}}
+function formatTime(sec){sec=Math.max(0,Math.floor(sec));const m=Math.floor(sec/60),s=sec%60;return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`}
+function timerTick(){if(timer.mode!=='running')return;if(timer.initial>0){timer.seconds=Math.max(0,timer.seconds-1);if(timer.seconds<=0){timer.mode='done';clearInterval(timer.interval);timer.interval=null;try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}}}else timer.seconds+=1;paintTimer()}
+function paintTimer(){const d=document.getElementById('timerDisplay'),s=document.getElementById('timerStatus');if(d)d.textContent=formatTime(timer.seconds);if(s)s.textContent=timer.mode==='running'?'En cours':timer.mode==='paused'?'Pause':timer.mode==='done'?'Terminé':'Prêt'}
+function startTimer(seconds=null){if(timer.interval)clearInterval(timer.interval);if(seconds!==null){timer.initial=seconds;timer.seconds=seconds}else if(timer.mode==='idle'||timer.mode==='done'){timer.initial=0;timer.seconds=0}timer.mode='running';timer.interval=setInterval(timerTick,1000);paintTimer()}
+function pauseTimer(){if(timer.mode==='running'){clearInterval(timer.interval);timer.interval=null;timer.mode='paused';paintTimer()}}
+function resetTimer(){if(timer.interval)clearInterval(timer.interval);timer={mode:'idle',seconds:0,initial:0,interval:null,startedAt:null};paintTimer()}
+function bindTimer(){const st=document.getElementById('timerStart'),pa=document.getElementById('timerPause'),re=document.getElementById('timerReset');if(st)st.onclick=()=>startTimer(timer.mode==='paused'?null:null);if(pa)pa.onclick=pauseTimer;if(re)re.onclick=resetTimer;document.querySelectorAll('[data-timer]').forEach(b=>b.onclick=()=>startTimer(+b.dataset.timer));paintTimer()}
+render();
+})();
+  </script>
+
+  <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./service-worker.js").catch(() => {});
+    });
+  }
+  </script>
+
+</body>
+</html>
