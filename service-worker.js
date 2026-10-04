@@ -1,6 +1,8 @@
-const CACHE='road-to-gi-v10';
+const CACHE='road-to-gi-v11';
 const ML_CACHE='gi-ml-v1';
-const ASSETS=['./','./index.html','./manifest.json','./rep-counter.js','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
+// rep-counter.js est demandé avec ?v=N par la page : chaque version de l'appli ne peut donc utiliser que son propre module
+// (plus de décalage « page neuve + script ancien en cache » à la première ouverture après une mise à jour).
+const ASSETS=['./','./index.html','./manifest.json','./rep-counter.js?v=11','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 const NETWORK_TIMEOUT=3500;
 // Compteur caméra : bibliothèque et modèle MediaPipe (hébergés ailleurs), gardés après le premier usage pour fonctionner hors ligne.
 const ML_SOURCES=[['cdn.jsdelivr.net','/npm/@mediapipe/'],['storage.googleapis.com','/mediapipe-models/']];
@@ -35,7 +37,8 @@ self.addEventListener('fetch',e=>{
     }).catch(()=>caches.match('./index.html',{ignoreSearch:true})));
     return;
   }
-  e.respondWith(caches.match(req,{ignoreSearch:true}).then(r=>r||fetch(req).then(res=>{
+  // Fichiers de l'appli : le cache est interrogé avec l'adresse exacte (numéro de version compris).
+  e.respondWith(caches.match(req).then(r=>r||fetch(req).then(res=>{
     if(res.ok){const copy=res.clone();e.waitUntil(caches.open(CACHE).then(c=>c.put(req,copy)));}
     return res;
   })));

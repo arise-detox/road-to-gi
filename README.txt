@@ -1,4 +1,9 @@
-ROAD TO GI - V10
+ROAD TO GI - V11
+Correctif V11 : à la première ouverture après une mise à jour, la page neuve pouvait utiliser l'ancien
+module de comptage resté en cache (le bouton « Démarrer la caméra » ne faisait alors rien jusqu'au
+rechargement). Le module est maintenant versionné (rep-counter.js?v=11) et le compteur garde un suivi
+de secours si jamais l'ancien module est chargé.
+
 Nouveautés V10 :
 - Compteur de reps : verrouillage sur ta personne. Le modèle détecte jusqu'à 3 personnes ; l'appli
   se fixe sur toi (la plus grande, près du centre, squelette doré) en suivant sa position, sa

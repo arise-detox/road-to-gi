@@ -216,7 +216,7 @@ body.cam-open{overflow:hidden}
 </head>
 <body>
   <div id="app"></div>
-  <script src="rep-counter.js"></script>
+  <script src="rep-counter.js?v=11"></script>
   <script>
 window.ROAD_TO_GI_DATA = {
   "1": {
@@ -1531,6 +1531,8 @@ const CAM_LINKS=[[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24]
 const cam={tracker:null,preview:false,forceCpu:false,landmarker:null,loading:null,stream:null,fileUrl:null,facing:'user',key:'squat',level:'normal',target:0,source:'free',ref:'',counter:null,running:false,paused:false,raf:0,lastInfer:0,lastTs:0,voice:true,mode:'camera',reached:false,wake:null,countdownTimer:0,count:0,session:0};
 try{cam.level=localStorage.getItem('roadToGI_camLevel')||'normal';cam.voice=localStorage.getItem('roadToGI_camVoice')!=='0'}catch(e){}
 
+/* Suivi minimal (première personne détectée) si le module de comptage en cache est trop ancien pour contenir le verrouillage. */
+function camPlainTracker(){return {lock:null,state:'tracked',count:0,others:0,reset(){},lockOn(p){this.count=p.length;this.others=Math.max(0,p.length-1);return p.length?0:-1},update(p){this.count=p.length;this.others=Math.max(0,p.length-1);return {idx:p.length?0:-1,state:'tracked',others:this.others}}}}
 function camKeyFor(text){return window.RepCounter?window.RepCounter.detect(text):null}
 function camButton(text,doneKey){const key=camKeyFor(text);if(!key)return '';const target=window.RepCounter.targetFrom(text);return `<button class="btn cam-btn" type="button" data-cam="${key}" data-cam-target="${target}" data-cam-source="wod" data-cam-ref="${esc(doneKey)}">📷 Compter les reps</button>`}
 function camButtonFor(name,source,ref){const key=camKeyFor(name);if(!key)return '';return `<button class="btn cam-btn" type="button" data-cam="${key}" data-cam-target="0" data-cam-source="${source}" data-cam-ref="${esc(ref)}">📷 Compter</button>`}
@@ -1640,7 +1642,7 @@ function camSizeView(v){
   view.style.width=w+'px';view.style.aspectRatio=vw+' / '+vh;
 }
 async function camPrepare(mode){
-  const sess=++cam.session;cam.mode=mode;cam.log=[];cam.fpsCount=0;cam.fpsStart=0;cam.fps=0;cam.tracker=new window.RepCounter.Tracker();cam.preview=false;cam.running=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);
+  const sess=++cam.session;cam.mode=mode;cam.log=[];cam.fpsCount=0;cam.fpsStart=0;cam.fps=0;cam.tracker=window.RepCounter.Tracker?new window.RepCounter.Tracker():camPlainTracker();cam.preview=false;cam.running=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);
   unlockAudio();try{speechSynthesis.speak(new SpeechSynthesisUtterance(''))}catch(e){}
   camShow('stage');camOverlay().querySelector('#camView').classList.toggle('mirror',mode==='camera'&&cam.facing==='user');
   camMsg('Chargement du modèle de détection…');camStatus('Première utilisation : environ 8 Mo à télécharger');camPaint();
