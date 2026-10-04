@@ -1,4 +1,16 @@
-ROAD TO GI - V11
+ROAD TO GI - V12
+Nouveautés V12 :
+- Onglet Reps > « Séance chronométrée » : le compteur de reps sur un temps choisi, ou en séries avec
+  temps de repos.
+  Deux modes : « Séries + repos » (nombre de séries, reps par série ou série libre, repos entre les
+  séries) et « Temps limité » (minutes + secondes : le maximum de reps dans le temps, avec le détail
+  minute par minute). On compose la séance bloc par bloc, ou en texte : « 4x10 squats repos 60 s »,
+  « 3 séries de 8 pompes, repos 1 min 30 », « 5 min burpees puis 2 min repos puis 5 min squats ».
+  Déroulé automatique : compte à rebours, série comptée à voix haute (fin à l'objectif de reps, à la
+  fin du temps ou sur « Terminer la série »), repos avec compte à rebours (« Passer le repos »,
+  « +15 s »), série suivante. La caméra reste ouverte. Bilan par série à la fin, séance enregistrable
+  (historique « Séances terminées ») et séances sauvegardables pour les relancer (« Mes séances »).
+
 Correctif V11 : à la première ouverture après une mise à jour, la page neuve pouvait utiliser l'ancien
 module de comptage resté en cache (le bouton « Démarrer la caméra » ne faisait alors rien jusqu'au
 rechargement). Le module est maintenant versionné (rep-counter.js?v=11) et le compteur garde un suivi

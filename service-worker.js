@@ -1,4 +1,4 @@
-const CACHE='road-to-gi-v11';
+const CACHE='road-to-gi-v12';
 const ML_CACHE='gi-ml-v1';
 // rep-counter.js est demandé avec ?v=N par la page : chaque version de l'appli ne peut donc utiliser que son propre module
 // (plus de décalage « page neuve + script ancien en cache » à la première ouverture après une mise à jour).

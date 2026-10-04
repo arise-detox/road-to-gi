@@ -206,6 +206,27 @@ body.cam-open{overflow:hidden}
 .cam-diag[hidden]{display:none}
 .cam-diag summary{cursor:pointer;font-size:13px;font-weight:800;color:var(--gign-gold)}
 .cam-diag pre{margin:10px 0 0;font:12px/1.55 ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;color:#eaf0ff}
+
+/* V12 : séances chronométrées (temps limité, séries avec repos) */
+[hidden]{display:none!important}
+.plan-modes{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.plan-mode{min-height:44px;border-radius:11px;border:1px solid var(--line);background:var(--surface2);color:var(--text);font-weight:800}
+.plan-mode.on{background:var(--accent);color:#061a45;border-color:transparent}
+.plan-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.plan-chip{min-height:38px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface2);color:var(--text);font-size:13px;font-weight:700}
+.plan-chip.on{border-color:var(--gign-gold);color:var(--gign-gold)}
+.plan-block{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;margin:6px 0;background:var(--surface2);border:1px solid var(--line);border-radius:12px;font-size:14px;line-height:1.4}
+.plan-block .btn{min-height:36px;padding:4px 10px}
+.plan-saved-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.plan-saved-actions .btn{min-height:38px;padding:6px 10px;font-size:12px}
+.plan-warn{margin-top:10px}
+.cam-plan{max-width:520px;margin:0 auto 10px;padding:10px 12px;border:1px solid var(--gign-gold);border-radius:12px;background:#0e2f72}
+.cam-plan-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.cam-plan-head strong{font-size:15px}
+.cam-plan-head span{font-size:26px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--gign-gold)}
+.cam-plan-sub{font-size:12px;color:var(--muted);margin:2px 0 8px}
+.cam-plan-track{height:8px;border-radius:999px;background:#0b2860;overflow:hidden}
+.cam-plan-track i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gign-gold),#ffd84d);transition:width .25s linear}
 </style>
 
   <link rel="manifest" href="manifest.json">
@@ -1097,7 +1118,7 @@ const PLAN = {
   6:{title:'Course - Séance 3 + Circuit samedi',kind:'running',session:'3'},
   0:{title:'Repos',kind:'rest'}
 };
-const DEFAULT={program:1,week:1,page:'home',profile:{bodyWeight:90,bench:110,row:100,shoulder:70,squat:140,deadlift:170,pullup:30,cooper:3000},completed:{},notes:{},history:[],repTests:[]};
+const DEFAULT={program:1,week:1,page:'home',profile:{bodyWeight:90,bench:110,row:100,shoulder:70,squat:140,deadlift:170,pullup:30,cooper:3000},completed:{},notes:{},history:[],repTests:[],repPlans:[],repSessions:[]};
 /* Conseils du coach, repris des PDF (dernière page « Functional Training » et remarque « Course »). */
 const COACH={
   rest:{
@@ -1236,7 +1257,7 @@ function bindBackup(){
   if(!confirm('Remplacer tes données actuelles par cette sauvegarde ?'))return;
   const base=structuredClone(DEFAULT),profile={...base.profile,...(s.profile||{})};Object.keys(base.profile).forEach(k=>{profile[k]=Number.isFinite(Number(profile[k]))?Number(profile[k]):base.profile[k]});
   const plain=o=>o&&typeof o==='object'&&!Array.isArray(o)?o:{};
-  state={...base,...s,profile,completed:plain(s.completed),notes:plain(s.notes),history:Array.isArray(s.history)?s.history:[],repTests:Array.isArray(s.repTests)?s.repTests.slice(0,60):[],program:[1,2,3,4].includes(Number(s.program))?Number(s.program):1,week:[1,2,3,4].includes(Number(s.week))?Number(s.week):1,page:'profile'};
+  state={...base,...s,profile,completed:plain(s.completed),notes:plain(s.notes),history:Array.isArray(s.history)?s.history:[],repTests:Array.isArray(s.repTests)?s.repTests.slice(0,60):[],repPlans:Array.isArray(s.repPlans)?s.repPlans.slice(0,20):[],repSessions:Array.isArray(s.repSessions)?s.repSessions.slice(0,40):[],program:[1,2,3,4].includes(Number(s.program))?Number(s.program):1,week:[1,2,3,4].includes(Number(s.week))?Number(s.week):1,page:'profile'};
   save();render();
  };
 }
@@ -1555,17 +1576,20 @@ function camOverlay(){
     <p class="muted" style="font-size:12px;line-height:1.5;margin:8px 0 0">Plusieurs personnes dans le cadre : l’appli se fixe sur toi (la plus grande, près du centre, squelette doré) et ignore les autres, même si quelqu’un passe devant. Si elle te perd de vue, elle ne compte rien jusqu’à ton retour.</p>
    </section>
    <section id="camStage" class="cam-stage" hidden>
+    <div class="cam-plan" id="camPlan" hidden><div class="cam-plan-head"><strong id="camPlanTitle"></strong><span id="camPlanTime"></span></div><div class="cam-plan-sub" id="camPlanSub"></div><div class="cam-plan-track"><i id="camPlanBar"></i></div></div>
     <div class="cam-view" id="camView"><video id="camVideo" playsinline muted autoplay></video><canvas id="camCanvas"></canvas><div class="cam-overlay-msg" id="camMsg"></div></div>
     <div class="cam-counter"><span id="camCount" aria-live="polite">0</span><small id="camTargetShow"></small></div>
     <div class="cam-status" id="camStatus" aria-live="polite"></div>
-    <div class="cam-actions">
+    <div class="hero-actions" id="camPlanRest" hidden><button class="btn primary" type="button" id="camPlanSkip">Passer le repos</button><button class="btn" type="button" id="camPlanPlus">+15 s</button></div>
+    <div class="cam-actions" id="camActions">
      <button class="btn" type="button" id="camPause">Pause</button><button class="btn" type="button" id="camMinus" aria-label="Retirer une répétition">−1</button><button class="btn" type="button" id="camPlus" aria-label="Ajouter une répétition">+1</button><button class="btn" type="button" id="camReset">Zéro</button><button class="btn" type="button" id="camFlip">Caméra</button>
     </div>
-    <div class="hero-actions"><button class="btn good" type="button" id="camFinish">Terminer</button><button class="btn ghost" type="button" id="camBack">Changer d’exercice</button></div>
+    <div class="hero-actions" id="camFinishRow"><button class="btn good" type="button" id="camFinish">Terminer</button><button class="btn ghost" type="button" id="camBack">Changer d’exercice</button><button class="btn ghost" type="button" id="camPlanStop" hidden>Arrêter la séance</button></div>
     <details class="cam-diag" id="camDiagBox" hidden open><summary>Diagnostic en direct</summary><pre id="camDiag"></pre></details>
    </section>
   </div>`;
   el.querySelector('.cam-scroll').insertAdjacentHTML('beforeend',`<section id="camResult" class="cam-setup" hidden><h3 style="margin:0 0 10px">Résultat du test</h3><p id="camResultText" class="notice"></p><div class="field" style="margin-top:12px"><label for="camReal">Nombre réel de reps que tu as faites (facultatif)</label><input id="camReal" type="number" inputmode="numeric" min="0" max="999" placeholder="Ex. : 10"></div><div class="hero-actions"><button class="btn primary" type="button" id="camSaveTest">Enregistrer le test</button><button class="btn ghost" type="button" id="camSkipTest">Ne pas enregistrer</button></div></section>`);
+  el.querySelector('.cam-scroll').insertAdjacentHTML('beforeend',`<section id="camPlanResult" class="cam-setup" hidden><h3 style="margin:0 0 6px">Séance terminée</h3><p class="muted" id="camPlanSaveName" style="margin:0 0 8px"></p><p id="camPlanTotal" class="notice"></p><div id="camPlanSummary" style="margin-top:12px"></div><div class="hero-actions"><button class="btn primary" type="button" id="camPlanSave">Enregistrer la séance</button><button class="btn ghost" type="button" id="camPlanClose">Fermer</button></div></section>`);
   document.body.append(el);
   const sel=el.querySelector('#camExercise');
   sel.innerHTML=Object.keys(window.RepCounter.EX).map(k=>`<option value="${k}">${esc(window.RepCounter.EX[k].label)}</option>`).join('');
@@ -1573,7 +1597,7 @@ function camOverlay(){
   el.querySelector('#camLevel').onchange=e=>{cam.level=e.target.value;try{localStorage.setItem('roadToGI_camLevel',cam.level)}catch(x){}};
   el.querySelector('#camVoice').onchange=e=>{cam.voice=e.target.checked;try{localStorage.setItem('roadToGI_camVoice',cam.voice?'1':'0')}catch(x){}};
   el.querySelector('#camTarget').oninput=e=>{cam.target=Math.max(0,Math.floor(Number(e.target.value)||0))};
-  el.querySelector('#camClose').onclick=camClose;
+  el.querySelector('#camClose').onclick=camCloseAsk;
   el.querySelector('#camStart').onclick=()=>camStartCamera();
   el.querySelector('#camFile').onchange=e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(f)camStartFile(f)};
   el.querySelector('#camPause').onclick=camTogglePause;
@@ -1584,9 +1608,12 @@ function camOverlay(){
   el.querySelector('#camFinish').onclick=camFinish;
   el.querySelector('#camBack').onclick=()=>{camStop();camShow('setup')};
   el.querySelector('#camSaveTest').onclick=camSaveTest;el.querySelector('#camSkipTest').onclick=camClose;
+  el.querySelector('#camPlanStop').onclick=camCloseAsk;el.querySelector('#camPlanSave').onclick=planSaveSession;el.querySelector('#camPlanClose').onclick=camClose;
+  el.querySelector('#camPlanSkip').onclick=()=>{const p=cam.plan;if(p&&p.phase==='rest')p.restLeft=Math.min(p.restLeft,3)};
+  el.querySelector('#camPlanPlus').onclick=()=>{const p=cam.plan;if(p&&p.phase==='rest'){p.restLeft+=15;p.counting=false}};
   return el;
 }
-function camShow(which){const el=camOverlay();el.querySelector('#camSetup').hidden=which!=='setup';el.querySelector('#camStage').hidden=which!=='stage';el.querySelector('#camResult').hidden=which!=='result'}
+function camShow(which){const el=camOverlay();el.querySelector('#camSetup').hidden=which!=='setup';el.querySelector('#camStage').hidden=which!=='stage';el.querySelector('#camResult').hidden=which!=='result';el.querySelector('#camPlanResult').hidden=which!=='planresult'}
 function camSetupText(){const el=camOverlay();const def=window.RepCounter.EX[cam.key];el.querySelector('#camTip').textContent=def?def.tip:'';el.querySelector('#camExercise').value=cam.key;el.querySelector('#camLevel').value=cam.level;el.querySelector('#camVoice').checked=cam.voice;el.querySelector('#camTarget').value=cam.target||''}
 function camMsg(t){const m=camOverlay().querySelector('#camMsg');m.textContent=t||'';m.hidden=!t}
 function camStatus(t,warn){const s=camOverlay().querySelector('#camStatus');s.textContent=t||'';s.classList.toggle('warn',!!warn)}
@@ -1607,9 +1634,14 @@ function camSay(text){if(!cam.voice||!('speechSynthesis' in window))return;try{s
 function camBeep(freq,dur){if(!soundEnabled||!audioContext||audioContext.state!=='running')return;try{tone(freq,audioContext.currentTime,dur||.09,.25)}catch(e){}}
 function camOnRep(){
   const n=cam.counter.count;
+  if(cam.plan&&cam.plan.phase==='set')cam.plan.reps.push(cam.plan.elapsed);
   if(cam.voice)camSay(n);else camBeep(1000,.1);
   try{navigator.vibrate?.(40)}catch(e){}
-  if(cam.target&&n>=cam.target&&!cam.reached){cam.reached=true;camStatus(`Objectif atteint : ${n} reps !`);setTimeout(()=>{playAlarm(true,false,true);camSay(`Objectif atteint, ${n}`)},cam.voice?900:0);try{navigator.vibrate?.([200,100,200])}catch(e){}}
+  if(cam.target&&n>=cam.target&&!cam.reached){
+    cam.reached=true;camStatus(`Objectif atteint : ${n} reps !`);
+    if(cam.plan){const sess=cam.session;setTimeout(()=>{if(sess===cam.session)planEndSet('objectif')},cam.voice?1400:500)}
+    else{setTimeout(()=>{playAlarm(true,false,true);camSay(`Objectif atteint, ${n}`)},cam.voice?900:0);try{navigator.vibrate?.([200,100,200])}catch(e){}}
+  }
 }
 function camAdjust(d){if(!cam.counter)return;cam.counter.adjust(d);camPaint()}
 function camTogglePause(){if(!cam.running)return;cam.paused=!cam.paused;const v=camOverlay().querySelector('#camVideo');if(cam.mode==='file'){cam.paused?v.pause():v.play().catch(()=>{})}camStatus(cam.paused?'En pause':'');camPaint()}
@@ -1642,7 +1674,7 @@ function camSizeView(v){
   view.style.width=w+'px';view.style.aspectRatio=vw+' / '+vh;
 }
 async function camPrepare(mode){
-  const sess=++cam.session;cam.mode=mode;cam.log=[];cam.fpsCount=0;cam.fpsStart=0;cam.fps=0;cam.tracker=window.RepCounter.Tracker?new window.RepCounter.Tracker():camPlainTracker();cam.preview=false;cam.running=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);
+  const sess=++cam.session;if(cam.plan)cam.plan.sess=cam.session;cam.mode=mode;cam.log=[];cam.fpsCount=0;cam.fpsStart=0;cam.fps=0;cam.tracker=window.RepCounter.Tracker?new window.RepCounter.Tracker():camPlainTracker();cam.preview=false;cam.running=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);
   unlockAudio();try{speechSynthesis.speak(new SpeechSynthesisUtterance(''))}catch(e){}
   camShow('stage');camOverlay().querySelector('#camView').classList.toggle('mirror',mode==='camera'&&cam.facing==='user');
   camMsg('Chargement du modèle de détection…');camStatus('Première utilisation : environ 8 Mo à télécharger');camPaint();
@@ -1669,7 +1701,7 @@ async function camStartCamera(flip){
 }
 function camStopStreamOnly(){cam.running=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);if(cam.stream){cam.stream.getTracks().forEach(t=>t.stop());cam.stream=null}}
 function camCountdownThenRun(sess,seconds,keepCount){
-  const begin=()=>{if(sess!==cam.session)return;camMsg('');const prev=cam.counter&&keepCount?cam.counter.count:0;cam.counter=window.RepCounter.create(cam.key,{level:cam.level});if(prev)cam.counter.adjust(prev);cam.reached=false;cam.running=true;cam.preview=false;cam.paused=false;camStatus('');camSay('C’est parti');camBeep(1175,.35);camPaint();cam.raf=requestAnimationFrame(camFrame)};
+  const begin=()=>{if(sess!==cam.session)return;camMsg('');const prev=cam.counter&&keepCount?cam.counter.count:0;cam.counter=window.RepCounter.create(cam.key,{level:cam.level});if(prev)cam.counter.adjust(prev);cam.reached=false;cam.running=true;cam.preview=false;cam.paused=false;camStatus('');camSay('C’est parti');camBeep(1175,.35);if(cam.plan&&cam.plan.phase!=='set')planOnSetBegin();camPaint();cam.raf=requestAnimationFrame(camFrame)};
   if(!seconds){begin();return}
   let n=seconds;camPaint();cam.preview=true;cam.raf=requestAnimationFrame(camFrame);
   const tick=()=>{if(sess!==cam.session){clearInterval(cam.countdownTimer);return}camMsg(String(n));camStatus(cam.tracker&&cam.tracker.others>0?'Plusieurs personnes : je te suis (squelette doré), les autres sont ignorées':'Place-toi de profil, corps entier dans le cadre');camSay(n);camBeep(660,.12);n--;if(n<0){clearInterval(cam.countdownTimer);begin()}};
@@ -1752,10 +1784,11 @@ function camOpen(opts){
   if(!window.RepCounter){alert('Le module de comptage n’est pas chargé. Recharge la page.');return}
   const el=camOverlay();
   cam.key=window.RepCounter.EX[opts.key]?opts.key:'squat';cam.target=opts.target||0;cam.source=opts.source||'free';cam.ref=opts.ref||'';cam.counter=null;cam.reached=false;
-  camSetupText();camShow('setup');camMsg('');camStatus('');cam.log=[];el.querySelector('#camDiagBox').hidden=cam.source!=='test';el.hidden=false;document.body.classList.add('cam-open');
+  planCancel();planUi();camSetupText();camShow('setup');camMsg('');camStatus('');cam.log=[];el.querySelector('#camDiagBox').hidden=cam.source!=='test';el.hidden=false;document.body.classList.add('cam-open');
 }
-function camClose(){camStop();const el=document.getElementById('camOverlay');if(el)el.hidden=true;document.body.classList.remove('cam-open')}
+function camClose(){planCancel();camStop();const el=document.getElementById('camOverlay');if(el)el.hidden=true;document.body.classList.remove('cam-open')}
 function camFinish(){
+  if(cam.plan){planEndSet('manuel');return}
   const n=cam.counter?cam.counter.count:0,src=cam.source,ref=cam.ref;
   if(src==='test'){camStop();camShowResult();return}
   camClose();
@@ -1793,7 +1826,7 @@ function repsPageView(){
     const amp=t.lo!=null&&t.hi!=null?` · amplitude ${Math.round(t.lo)}${u}→${Math.round(t.hi)}${u}`:'';
     const badge=diff==null?'<span class="tag">non vérifié</span>':diff===0?'<span class="tag rep-ok">exact</span>':`<span class="tag rep-ko">${diff>0?'+':''}${diff}</span>`;
     return `<div class="history-row"><div><strong>${esc(label)} · compté ${t.n}${t.real!=null?` / réel ${t.real}`:''}</strong><br><small>${repTime(t.t)} · ${REP_MODES[t.mode]||t.mode} · ${REP_LEVELS[t.level]||t.level}${amp}</small></div><div>${badge}</div></div>`}).join('');
-  return `<h2 class="section-title">Test des reps <span class="tag">bêta</span></h2>
+  return `<h2 class="section-title">Reps <span class="tag">bêta</span></h2>${planCards()}
   <div class="card"><div class="card-head"><h3>Tester le compteur</h3></div>
    <p class="muted" style="font-size:13px;line-height:1.55;margin:0 0 14px">Choisis un exercice, filme ta série, puis indique combien de reps tu as vraiment faites. L’appli garde la précision du compteur pour chaque exercice : tu sais où il est fiable et où régler la sensibilité. Rien n’est enregistré ni envoyé : seuls les résultats chiffrés restent sur ce téléphone.</p>
    <div class="rep-grid">${buttons}</div>
@@ -1852,6 +1885,262 @@ function camSaveTest(){
   state.repTests.unshift({t:Date.now(),k:cam.key,n:cam.counter?cam.counter.count:0,real:Number.isFinite(real)?real:null,level:cam.level,mode:cam.mode,partials:cam.counter?cam.counter.machine.partials:0,lo:sm.lo,hi:sm.hi,fps:Math.round(cam.fps||0),delegate:cam.delegate||''});
   state.repTests=state.repTests.slice(0,60);save();camClose();
   if(state.page==='reps')render();
+}
+
+/* ---------- séances chronométrées : temps limité ou séries avec repos ---------- */
+const PLAN_REST_CHIPS=[0,15,30,45,60,90,120,180];
+const PLAN_TIME_CHIPS=[1,2,3,5,10,15,20];
+function planLabel(k){return window.RepCounter&&window.RepCounter.EX[k]?window.RepCounter.EX[k].label:k}
+function planFmt(s){s=Math.round(s);if(s<60)return s+' s';const m=Math.floor(s/60),r=s%60;return r?`${m} min ${String(r).padStart(2,'0')}`:`${m} min`}
+function planClock(ms){const s=Math.max(0,Math.ceil(ms/1000));return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`}
+function planNum(v,def,min,max){if(v===undefined||v===null||v==='')return def;const n=Math.floor(Number(v));return Number.isFinite(n)?Math.min(max,Math.max(min,n)):def}
+function planDraft(){
+  if(!state.repDraft||typeof state.repDraft!=='object')state.repDraft={};
+  const d=state.repDraft;
+  d.mode=d.mode==='time'?'time':'sets';
+  if(!window.RepCounter.EX[d.k])d.k='squat';
+  d.sets=planNum(d.sets,4,1,30);d.reps=planNum(d.reps,10,0,999);d.tmin=planNum(d.tmin,3,0,120);d.tsec=planNum(d.tsec,0,0,59);d.rest=planNum(d.rest,60,0,600);
+  if(!Array.isArray(d.blocks))d.blocks=[];
+  d.text=typeof d.text==='string'?d.text:'';d.name=typeof d.name==='string'?d.name:'';d.warn=Array.isArray(d.warn)?d.warn:[];
+  return d;
+}
+function planBlockText(b){
+  const lab=planLabel(b.k);
+  if(b.sets===1&&!b.reps&&b.time)return `${planFmt(b.time)} · ${lab} · maximum de reps`;
+  const per=b.reps?`${b.reps} reps`:b.time?planFmt(b.time):'libre';
+  let t=`${b.sets} × ${per} · ${lab}`;
+  if(b.reps&&b.time)t+=` (max ${planFmt(b.time)})`;
+  if(b.sets>1)t+=` · repos ${planFmt(b.rest)}`;
+  if(b.restAfter&&(b.sets===1||b.restAfter!==b.rest))t+=` · puis repos ${planFmt(b.restAfter)}`;
+  return t;
+}
+function planFlatten(blocks){
+  const out=[];
+  blocks.forEach((b,bi)=>{for(let i=1;i<=b.sets;i++){const last=i===b.sets,lastBlock=bi===blocks.length-1;out.push({k:b.k,target:b.reps||0,cap:b.time||0,rest:last?(lastBlock?0:(b.restAfter!=null?b.restAfter:b.rest)):b.rest,n:i,of:b.sets})}});
+  return out;
+}
+function planFormBlock(d){
+  if(d.mode==='time'){const t=d.tmin*60+d.tsec;if(t<=0)return null;return {k:d.k,sets:1,reps:0,time:t,rest:0,restAfter:d.rest}}
+  return {k:d.k,sets:d.sets,reps:d.reps,time:0,rest:d.rest,restAfter:d.rest};
+}
+
+/* Description en texte : « 4x10 squats repos 60 s », « 5 min burpees », « 3 séries de 8 pompes, repos 1 min 30 » */
+function planNorm(t){return String(t||'').toLowerCase().replace(/[’‘´`]/g,"'").replace(/[“”″]/g,'"')}
+function planDur(str,bare){
+  const s=planNorm(str);let m;
+  if((m=s.match(/(\d+)\s*:\s*(\d{2})/)))return +m[1]*60+ +m[2];
+  if((m=s.match(/(\d+(?:[.,]\d+)?)\s*(?:min(?:ute)?s?|mn)\b\s*(\d{1,2})?/)))return Math.round(parseFloat(m[1].replace(',','.'))*60)+(m[2]?+m[2]:0);
+  if((m=s.match(/(\d+)\s*'\s*(\d{1,2})?/)))return +m[1]*60+(m[2]?+m[2]:0);
+  if((m=s.match(/(\d+)\s*(?:sec(?:onde)?s?|s\b|"|'')/)))return +m[1];
+  if(bare&&(m=s.match(/^\s*(\d+)\s*$/)))return +m[1];
+  return null;
+}
+const PLAN_DUR_RX="(\\d+\\s*(?:min(?:ute)?s?|mn|'|:)\\s*\\d{0,2}\\s*(?:sec(?:onde)?s?|s\\b)?|\\d+\\s*(?:sec(?:onde)?s?|s\\b|\"|'')?)";
+function planExtractRest(seg){
+  const s=planNorm(seg),k=s.match(/(repos|pause|recup\w*)/);
+  if(!k)return {rest:null,cleaned:s.trim()};
+  const before=s.slice(0,k.index),after=s.slice(k.index+k[0].length);
+  let m=after.match(new RegExp("^\\s*(?:de\\s+|d'\\s*|:\\s*|=\\s*|-\\s*)?"+PLAN_DUR_RX));
+  if(m)return {rest:planDur(m[1],true),cleaned:(before+' '+after.slice(m[0].length)).replace(/\s+/g,' ').trim(),hasWord:true};
+  m=before.match(new RegExp(PLAN_DUR_RX+"\\s*(?:de\\s+|d')?\\s*$"));
+  if(m)return {rest:planDur(m[1],true),cleaned:(before.slice(0,m.index)+' '+after).replace(/\s+/g,' ').trim(),hasWord:true};
+  return {rest:null,cleaned:(before+' '+after).replace(/\s+/g,' ').trim(),hasWord:true};
+}
+function planParse(text,defRest){
+  const blocks=[],warn=[];
+  const parts=String(text||'').split(/\n|;|,(?!\d)|\bpuis\b|\bensuite\b/i).map(x=>x.trim()).filter(Boolean);
+  const dur="(\\d+(?:[.,]\\d+)?\\s*(?:min(?:ute)?s?|mn)\\s*\\d{0,2}|\\d+\\s*'\\s*\\d{0,2}|\\d+\\s*(?:sec(?:onde)?s?|s\\b))";
+  parts.forEach(raw=>{
+    const rr=planExtractRest(raw),s=rr.cleaned,k=window.RepCounter.detect(s);
+    if(!k){
+      if(rr.hasWord&&rr.rest!=null&&!/\d/.test(s)){const prev=blocks[blocks.length-1];if(prev){if(!prev.explicit)prev.rest=rr.rest;prev.restAfter=rr.rest}else warn.push(`Repos « ${raw} » ignoré : aucun exercice avant.`);return}
+      warn.push(`Exercice non reconnu : « ${raw} »`);return;
+    }
+    let sets=1,reps=0,time=0;
+    const m=s.match(/(\d+)\s*(?:x|×|\*|fois|s[eé]ries?\s*de)\s*(\d+(?:[.,]\d+)?)\s*(min(?:ute)?s?|mn|'|sec(?:onde)?s?|s\b)?/);
+    if(m){sets=+m[1];if(m[3])time=planDur(m[2]+' '+m[3])||0;else reps=Math.round(parseFloat(m[2].replace(',','.')))}
+    else{const t=s.match(new RegExp(dur));if(t)time=planDur(t[0])||0;else{const n=s.match(/(\d+)/);if(n)reps=+n[1]}}
+    sets=Math.min(30,Math.max(1,sets));
+    const explicit=rr.rest!=null,rest=explicit?rr.rest:defRest;
+    blocks.push({k,sets,reps:Math.min(999,reps),time:Math.min(7200,time),rest,restAfter:rest,explicit});
+  });
+  blocks.forEach(b=>delete b.explicit);
+  return {blocks,warn};
+}
+
+/* ---------- cartes de la page « Reps » ---------- */
+function planCards(){
+  const d=planDraft(),EX=window.RepCounter.EX;
+  const exOpts=Object.keys(EX).map(k=>`<option value="${k}" ${k===d.k?'selected':''}>${esc(EX[k].label)}</option>`).join('');
+  const chips=(field,list,fmt,cur)=>`<div class="plan-chips">${list.map(v=>`<button type="button" class="plan-chip ${cur===v?'on':''}" data-plan-chip="${field}" data-value="${v}">${fmt(v)}</button>`).join('')}</div>`;
+  const mode=(m,l)=>`<button type="button" class="plan-mode ${d.mode===m?'on':''}" data-plan-mode="${m}">${l}</button>`;
+  const fields=d.mode==='sets'
+    ?`<div class="form-grid"><div class="field"><label for="planSets">Nombre de séries</label><input id="planSets" type="number" inputmode="numeric" min="1" max="30" data-plan-field="sets" value="${d.sets}"></div><div class="field"><label for="planReps">Reps par série (0 = libre)</label><input id="planReps" type="number" inputmode="numeric" min="0" max="999" data-plan-field="reps" value="${d.reps}"></div></div>`
+    :`<div class="form-grid"><div class="field"><label for="planMin">Minutes</label><input id="planMin" type="number" inputmode="numeric" min="0" max="120" data-plan-field="tmin" value="${d.tmin}"></div><div class="field"><label for="planSec">Secondes</label><input id="planSec" type="number" inputmode="numeric" min="0" max="59" data-plan-field="tsec" value="${d.tsec}"></div></div>${chips('tmin',PLAN_TIME_CHIPS,v=>v+' min',d.tmin)}`;
+  const restLabel=d.mode==='sets'?'Repos entre les séries (secondes)':'Repos après ce bloc (secondes)';
+  const blocks=d.blocks.map((b,i)=>`<div class="plan-block"><span>${i+1}. ${esc(planBlockText(b))}</span><button type="button" class="btn ghost" data-plan-rm="${i}" aria-label="Retirer ce bloc">✕</button></div>`).join('');
+  const total=planFlatten(d.blocks).length;
+  const warn=d.warn.length?`<p class="notice plan-warn">${d.warn.map(esc).join('<br>')}</p>`:'';
+  const plans=Array.isArray(state.repPlans)?state.repPlans:[];
+  const saved=plans.map(p=>`<div class="history-row"><div><strong>${esc(p.name)}</strong><br><small>${p.blocks.map(planBlockText).map(esc).join(' · ')}</small></div><div class="plan-saved-actions"><button class="btn primary" type="button" data-plan-run-saved="${esc(p.id)}">▶</button><button class="btn" type="button" data-plan-load="${esc(p.id)}">Modifier</button><button class="btn danger" type="button" data-plan-del="${esc(p.id)}" aria-label="Supprimer">✕</button></div></div>`).join('');
+  const sessions=Array.isArray(state.repSessions)?state.repSessions:[];
+  const hist=sessions.slice(0,10).map(s=>`<div class="history-row"><div><strong>${esc(s.name)} · ${s.total} reps</strong><br><small>${repTime(s.t)} · ${planFmt(s.sec)} · ${s.sets.map(x=>`${esc(planLabel(x.k))} ${x.n}`).join(' · ')}</small></div><div><span class="tag">${s.sets.length} série${s.sets.length>1?'s':''}</span></div></div>`).join('');
+  return `<div class="card plan-card"><div class="card-head"><h3>Séance chronométrée</h3><span class="tag">bêta</span></div>
+   <p class="muted" style="font-size:13px;line-height:1.55;margin:0 0 12px">Compte tes reps sur un <strong>temps choisi</strong>, ou enchaîne des <strong>séries avec temps de repos</strong>. La caméra reste ouverte, compte à voix haute, lance le repos puis la série suivante toute seule.</p>
+   <div class="plan-modes">${mode('sets','Séries + repos')}${mode('time','Temps limité')}</div>
+   <div class="field" style="margin-top:12px"><label for="planEx">Exercice</label><select id="planEx" data-plan-field="k">${exOpts}</select></div>
+   ${fields}
+   <div class="field" style="margin-top:12px"><label for="planRest">${restLabel}</label><input id="planRest" type="number" inputmode="numeric" min="0" max="600" data-plan-field="rest" value="${d.rest}"></div>${chips('rest',PLAN_REST_CHIPS,v=>v?planFmt(v):'aucun',d.rest)}
+   <div class="hero-actions"><button class="btn primary" type="button" data-plan-add>＋ Ajouter à la séance</button></div>
+   <div class="divider"></div>
+   <div class="field"><label for="planText">Ou décris-la en texte</label><textarea id="planText" class="backup-text" rows="4" spellcheck="false" data-plan-text placeholder="4x10 squats repos 60 s&#10;3 séries de 8 pompes, repos 1 min 30&#10;5 min burpees">${esc(d.text)}</textarea></div>
+   <div class="hero-actions"><button class="btn" type="button" data-plan-parse>Lire la description</button></div>${warn}
+   <div class="divider"></div>
+   <h4 style="margin:0 0 8px">Ma séance ${total?`<span class="tag">${total} série${total>1?'s':''}</span>`:''}</h4>
+   ${blocks||'<div class="empty">Ajoute au moins un bloc avec le formulaire ou la description.</div>'}
+   <div class="field" style="margin-top:12px"><label for="planName">Nom (pour l’enregistrer)</label><input id="planName" type="text" data-plan-name value="${esc(d.name)}" placeholder="Ex. : Jambes du lundi"></div>
+   <div class="hero-actions"><button class="btn primary" type="button" data-plan-run>▶ Lancer la séance</button><button class="btn" type="button" data-plan-save ${d.blocks.length?'':'disabled'}>Enregistrer</button><button class="btn ghost" type="button" data-plan-clear ${d.blocks.length?'':'disabled'}>Vider</button></div></div>
+  ${plans.length?`<div class="card"><div class="card-head"><h3>Mes séances</h3><span class="tag">${plans.length}</span></div>${saved}</div>`:''}
+  ${sessions.length?`<div class="card"><div class="card-head"><h3>Séances terminées</h3><span class="tag">${sessions.length}</span></div>${hist}<div class="hero-actions"><button class="btn danger" type="button" data-plan-hist-clear>Effacer cet historique</button></div></div>`:''}`;
+}
+
+/* ---------- saisie : on garde le brouillon à chaque frappe, sans recharger la page ---------- */
+document.addEventListener('input',e=>{
+  const t=e.target;if(!t||!t.matches)return;
+  if(t.matches('[data-plan-field]')){const d=planDraft(),f=t.dataset.planField;d[f]=f==='k'?t.value:(t.value===''?'':Number(t.value));save()}
+  else if(t.matches('[data-plan-text]')){planDraft().text=t.value;save()}
+  else if(t.matches('[data-plan-name]')){planDraft().name=t.value;save()}
+});
+function planPlanById(id){return (state.repPlans||[]).find(p=>p.id===id)}
+document.addEventListener('click',e=>{
+  const c=e.target.closest&&e.target.closest.bind(e.target);if(!c)return;
+  let b;
+  if((b=c('[data-plan-mode]'))){planDraft().mode=b.dataset.planMode;save();render();return}
+  if((b=c('[data-plan-chip]'))){const d=planDraft(),f=b.dataset.planChip,v=Number(b.dataset.value);if(f==='tmin'){d.tmin=v;d.tsec=0}else d[f]=v;save();render();return}
+  if(c('[data-plan-add]')){const d=planDraft(),blk=planFormBlock(d);if(!blk){d.warn=['Indique une durée supérieure à zéro.'];}else{d.blocks.push(blk);d.warn=[]}save();render();return}
+  if((b=c('[data-plan-rm]'))){planDraft().blocks.splice(Number(b.dataset.planRm),1);save();render();return}
+  if(c('[data-plan-parse]')){const d=planDraft(),r=planParse(d.text,d.rest);d.blocks.push(...r.blocks);d.warn=r.warn;if(r.blocks.length)d.text='';save();render();return}
+  if(c('[data-plan-clear]')){const d=planDraft();d.blocks=[];d.warn=[];save();render();return}
+  if(c('[data-plan-save]')){const d=planDraft();if(!d.blocks.length)return;const name=d.name.trim()||('Séance du '+new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit'}));
+    if(!Array.isArray(state.repPlans))state.repPlans=[];state.repPlans.unshift({id:'p'+Date.now().toString(36),name,blocks:JSON.parse(JSON.stringify(d.blocks))});state.repPlans=state.repPlans.slice(0,20);d.name='';save();render();return}
+  if(c('[data-plan-run]')){const d=planDraft();let blocks=d.blocks;if(!blocks.length){const blk=planFormBlock(d);if(blk)blocks=[blk]}if(!blocks.length){d.warn=['Ajoute au moins un bloc à la séance.'];save();render();return}planRun(JSON.parse(JSON.stringify(blocks)),d.name.trim()||'Séance');return}
+  if((b=c('[data-plan-run-saved]'))){const p=planPlanById(b.dataset.planRunSaved);if(p)planRun(JSON.parse(JSON.stringify(p.blocks)),p.name);return}
+  if((b=c('[data-plan-load]'))){const p=planPlanById(b.dataset.planLoad);if(p){const d=planDraft();d.blocks=JSON.parse(JSON.stringify(p.blocks));d.name=p.name;d.warn=[];save();render();window.scrollTo(0,0)}return}
+  if((b=c('[data-plan-del]'))){const p=planPlanById(b.dataset.planDel);if(p&&confirm('Supprimer « '+p.name+' » ?')){state.repPlans=state.repPlans.filter(x=>x.id!==p.id);save();render()}return}
+  if(c('[data-plan-hist-clear]')){if(confirm('Effacer l’historique des séances chronométrées ?')){state.repSessions=[];save();render()}return}
+});
+
+/* ---------- déroulé d'une séance : série -> repos -> série suivante ---------- */
+function planRun(blocks,name){
+  if(!window.RepCounter)return;
+  const sets=planFlatten(blocks);if(!sets.length)return;
+  const el=camOverlay();
+  cam.source='plan';cam.ref='';cam.counter=null;cam.reached=false;cam.log=[];cam.paused=false;
+  cam.plan={name:name||'Séance',sets,i:0,results:[],phase:'pre',elapsed:0,reps:[],restLeft:0,last:performance.now(),sess:0,timer:0,t0:Date.now(),counting:false};
+  planPrepareSet();
+  el.querySelector('#camDiagBox').hidden=true;el.querySelector('#camFinish').textContent='Terminer la série';
+  el.hidden=false;document.body.classList.add('cam-open');camShow('stage');camMsg('');camStatus('');planUi();
+  camStartCamera();
+}
+function planCur(){return cam.plan.sets[cam.plan.i]}
+function planPrepareSet(){const p=cam.plan,s=p.sets[p.i];cam.key=s.k;cam.target=s.target;cam.reached=false;p.phase='pre';p.elapsed=0;p.reps=[];p.counting=false}
+function planOnSetBegin(){
+  const p=cam.plan;p.phase='set';p.elapsed=0;p.reps=[];p.last=performance.now();p.sess=cam.session;
+  clearInterval(p.timer);p.timer=setInterval(planTick,200);planUi();
+}
+function planUi(){
+  const el=camOverlay(),p=cam.plan,on=!!p,rest=on&&p.phase==='rest';
+  el.querySelector('#camPlan').hidden=!on;el.querySelector('#camBack').hidden=on;el.querySelector('#camPlanStop').hidden=!on;
+  el.querySelector('#camActions').hidden=rest;el.querySelector('#camFinish').hidden=rest;el.querySelector('#camPlanRest').hidden=!rest;
+  if(!on)el.querySelector('#camFinish').textContent='Terminer';
+  if(on)planHud();
+}
+function planHud(){
+  const p=cam.plan;if(!p)return;const el=camOverlay(),s=planCur(),total=p.sets.length;
+  el.querySelector('#camPlanTitle').textContent=p.phase==='rest'?`Repos · prochaine : série ${p.i+1}/${total}`:`Série ${p.i+1}/${total} · ${planLabel(s.k)}`;
+  let time='',sub='',pct=0;
+  if(p.phase==='set'){
+    time=s.cap?planClock(s.cap*1000-p.elapsed):planClock(p.elapsed);
+    sub=s.target?`Objectif : ${s.target} reps${s.cap?` en ${planFmt(s.cap)} max`:''}`:s.cap?`Temps limité : ${planFmt(s.cap)}`:'Série libre : touche « Terminer la série » quand tu as fini';
+    pct=s.cap?p.elapsed/(s.cap*1000):s.target&&cam.counter?cam.counter.count/s.target:0;
+  }else if(p.phase==='rest'){time=planClock(p.restLeft*1000);sub='Repos';pct=0}
+  else{time='';sub=s.target?`Objectif : ${s.target} reps`:s.cap?`Temps limité : ${planFmt(s.cap)}`:'Série libre';pct=0}
+  el.querySelector('#camPlanTime').textContent=time;el.querySelector('#camPlanSub').textContent=sub;
+  el.querySelector('#camPlanBar').style.width=Math.max(0,Math.min(100,Math.round(pct*100)))+'%';
+}
+function planRestPaint(){
+  const p=cam.plan;if(!p||p.phase!=='rest')return;const s=planCur();
+  camMsg('Repos '+Math.max(0,Math.ceil(p.restLeft)));
+  camStatus(`Prochaine : série ${s.n}/${s.of} · ${planLabel(s.k)}${s.target?` · ${s.target} reps`:s.cap?` · ${planFmt(s.cap)}`:''}`);
+  planHud();
+}
+function planTick(){
+  const p=cam.plan;if(!p||p.sess!==cam.session){if(p)clearInterval(p.timer);return}
+  const now=performance.now(),dt=now-p.last;p.last=now;
+  if(p.phase==='set'){
+    if(!cam.paused&&cam.running)p.elapsed+=dt;
+    const s=planCur();
+    if(s.cap&&p.elapsed>=s.cap*1000){planEndSet('temps');return}
+    planHud();
+  }else if(p.phase==='rest'){
+    p.restLeft-=dt/1000;
+    planRestPaint();
+    if(p.restLeft<=3&&!p.counting){p.counting=true;planStartCountdown(Math.max(1,Math.ceil(p.restLeft)))}
+  }
+}
+function planStartCountdown(sec){const p=cam.plan;p.phase='pre';planUi();camMsg('');camCountdownThenRun(cam.session,sec)}
+function planRecordSet(reason){
+  const p=cam.plan,s=planCur(),n=cam.counter?cam.counter.count:0;
+  const mins=[];p.reps.forEach(ms=>{const b=Math.floor(ms/60000);mins[b]=(mins[b]||0)+1});for(let i=0;i<mins.length;i++)mins[i]=mins[i]||0;
+  p.results.push({k:s.k,n,target:s.target,cap:s.cap,sec:Math.round(p.elapsed/1000),reason,mins:s.cap>=60?mins:null,setN:s.n,of:s.of});
+  cam.running=false;cam.preview=false;
+  const v=document.getElementById('camVideo');if(v)camDraw([],-1,v);
+  return n;
+}
+function planEndSet(reason){
+  const p=cam.plan;if(!p||p.phase!=='set')return;
+  const n=planRecordSet(reason),s=planCur();
+  try{navigator.vibrate?.([200,100,200])}catch(e){}
+  playAlarm(true,false,true);camSay(`Série terminée, ${n} répétition${n>1?'s':''}`);
+  if(p.i>=p.sets.length-1){setTimeout(()=>{if(cam.plan===p)planFinish()},cam.voice?1500:400);p.phase='done';return}
+  const rest=s.rest;p.i++;planPrepareSet();
+  p.phase='rest';p.restLeft=rest;p.last=performance.now();
+  if(rest<=3){p.counting=true;planStartCountdown(Math.max(2,rest||3));return}
+  setTimeout(()=>camSay(`Repos, ${planFmt(rest)}`),cam.voice?1500:0);
+  planUi();planRestPaint();
+}
+function planFinish(){
+  const p=cam.plan;if(!p)return;clearInterval(p.timer);p.phase='done';camStop();planShowResults();
+}
+function planAbort(){
+  const p=cam.plan;if(!p)return;
+  if(p.phase==='set')planRecordSet('arrêt');
+  if(p.results.length)planFinish();else camClose();
+}
+function planCancel(){if(cam.plan){clearInterval(cam.plan.timer);cam.plan=null}}
+function planShowResults(){
+  const p=cam.plan,el=camOverlay();camShow('planresult');
+  const total=p.results.reduce((s,r)=>s+r.n,0),sec=Math.round((Date.now()-p.t0)/1000);
+  el.querySelector('#camPlanTotal').textContent=`${total} répétition${total>1?'s':''} · ${p.results.length} série${p.results.length>1?'s':''} · ${planFmt(sec)}`;
+  el.querySelector('#camPlanSummary').innerHTML=p.results.map(r=>{
+    const ok=r.target?(r.n>=r.target?' ✓':''):'';
+    const extra=[planFmt(r.sec),r.target?`objectif ${r.target}`:'',r.mins?`par minute : ${r.mins.join(' · ')}`:''].filter(Boolean).join(' · ');
+    return `<div class="history-row"><div><strong>${esc(planLabel(r.k))} · série ${r.setN}/${r.of}</strong><br><small>${esc(extra)}</small></div><div><strong>${r.n}</strong>${ok}</div></div>`}).join('');
+  el.querySelector('#camPlanSaveName').textContent=p.name;
+}
+function planSaveSession(){
+  const p=cam.plan;if(!p)return;
+  const total=p.results.reduce((s,r)=>s+r.n,0);
+  if(!Array.isArray(state.repSessions))state.repSessions=[];
+  state.repSessions.unshift({t:Date.now(),name:p.name,total,sec:Math.round((Date.now()-p.t0)/1000),sets:p.results});
+  state.repSessions=state.repSessions.slice(0,40);save();camClose();
+  if(state.page==='reps')render();
+}
+function camCloseAsk(){
+  const p=cam.plan;
+  if(p&&p.phase!=='done'&&!confirm('Arrêter la séance en cours ?'))return;
+  if(p&&p.phase!=='done'&&p.results.length){planAbort();return}
+  camClose();
 }
 
 render();
