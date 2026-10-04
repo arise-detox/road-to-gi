@@ -165,6 +165,32 @@ body{background:linear-gradient(180deg,#0d2d6b 0,#0a2457 40%,#071d4b 100%);backg
 .schedule-row.today{background:#1b4ca4;border-color:var(--gign-gold);box-shadow:inset 4px 0 0 var(--gign-gold)}
 .tab.active{border-color:var(--gign-gold)}
 .progress>div{background:linear-gradient(90deg,var(--gign-gold),#ffd84d)}
+
+/* V8 : compteur de répétitions par caméra */
+body.cam-open{overflow:hidden}
+.cam-btn{margin-top:8px;font-size:12px;min-height:40px;border-color:var(--gign-gold);color:var(--gign-gold)}
+.pill-row .cam-btn{margin-top:0}
+.cam-overlay{position:fixed;inset:0;z-index:90;background:linear-gradient(180deg,#0d2d6b 0,#071d4b 100%);display:flex;flex-direction:column;color:var(--text)}
+.cam-overlay[hidden]{display:none}
+.cam-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 12px;border-bottom:3px solid var(--gign-gold);box-shadow:0 2px 0 var(--gign-red)}
+.cam-scroll{flex:1;overflow:auto;padding:16px 16px calc(24px + env(safe-area-inset-bottom,0px));-webkit-overflow-scrolling:touch}
+.cam-setup,.cam-stage{max-width:520px;margin:0 auto}
+.cam-check{display:flex;gap:10px;align-items:center;margin:14px 0 0;font-size:14px}
+.cam-view{position:relative;margin:0 auto;background:#000;border-radius:14px;overflow:hidden;border:2px solid var(--gign-gold)}
+.cam-view video,.cam-view canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.cam-view.mirror video,.cam-view.mirror canvas{transform:scaleX(-1)}
+.cam-overlay-msg{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:16px;font-size:64px;font-weight:900;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.8);pointer-events:none}
+.cam-overlay-msg[hidden]{display:none}
+.cam-overlay-msg:not(:empty){background:rgba(5,16,45,.45)}
+.cam-counter{display:flex;align-items:baseline;justify-content:center;gap:10px;margin:14px 0 4px}
+.cam-counter span{font-size:92px;line-height:1;font-weight:900;font-variant-numeric:tabular-nums;color:#fff}
+.cam-counter span.pop{animation:camPop .25s ease-out}
+.cam-counter small{font-size:28px;color:var(--gign-gold);font-weight:800}
+@keyframes camPop{0%{transform:scale(1.35);color:var(--gign-gold)}100%{transform:scale(1)}}
+.cam-status{min-height:22px;text-align:center;font-size:13px;color:var(--muted);margin-bottom:12px}
+.cam-status.warn{color:#ffd84d;font-weight:700}
+.cam-actions{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+.cam-actions .btn{padding:8px 4px;font-size:13px}
 </style>
 
   <link rel="manifest" href="manifest.json">
@@ -175,6 +201,7 @@ body{background:linear-gradient(180deg,#0d2d6b 0,#0a2457 40%,#071d4b 100%);backg
 </head>
 <body>
   <div id="app"></div>
+  <script src="rep-counter.js"></script>
   <script>
 window.ROAD_TO_GI_DATA = {
   "1": {
@@ -1094,7 +1121,7 @@ function splitSteps(text){if(!text)return[];return text.split('\n').map(s=>s.tri
 function header(){return `<div class="shell"><header class="topbar"><div class="brand"><div class="brandmark">GI</div><div><h1>ROAD TO GI</h1><div class="live-clock"><span data-live-time></span> · Paris</div><p>Invictus - Programme ${state.program} / Semaine ${state.week}</p></div></div><div class="top-controls"><select id="programSel" class="compact-select" aria-label="Programme">${[1,2,3,4].map(n=>`<option ${n===state.program?'selected':''} value="${n}">P${n}</option>`).join('')}</select><select id="weekSel" class="compact-select" aria-label="Semaine">${[1,2,3,4].map(n=>`<option ${n===state.week?'selected':''} value="${n}">S${n}</option>`).join('')}</select></div></header><main class="main" id="view"></main>${nav()}<div id="miniTimer" class="mini-timer" hidden><div class="mini-timer-info"><strong id="miniTime">00:00</strong><span id="miniLabel"></span></div><button class="btn" id="miniToggle" type="button">Pause</button><button class="btn danger" id="miniStop" type="button" aria-label="Arrêter le chrono">✕</button></div></div>`}
 function nav(){const items=[['home','⌂','Aujourd’hui'],['program','▦','Programme'],['strength','🏋','Force'],['running','🏃','Course'],['progress','↗','Suivi'],['profile','⚙','Profil']];return `<nav class="bottomnav">${items.map(([p,i,l])=>`<button class="navbtn ${state.page===p?'active':''}" data-page="${p}"><b>${i}</b><span>${l}</span></button>`).join('')}</nav>`}
 let lastPage=null;
-function render(){const scrollY=window.scrollY,samePage=lastPage===state.page;lastPage=state.page;ensureCalendar();if(state.page==='home')syncToday();timerPlans={};app.innerHTML=header();bindShell();const view=document.getElementById('view');if(state.page==='home')view.innerHTML=homeView();if(state.page==='program')view.innerHTML=programView();if(state.page==='session')view.innerHTML=sessionView();if(state.page==='strength')view.innerHTML=strengthPageView();if(state.page==='running')view.innerHTML=runningPageView();if(state.page==='progress')view.innerHTML=progressView();if(state.page==='profile')view.innerHTML=profileView();bindView();bindCalendar();window.scrollTo(0,samePage?scrollY:0)}
+function render(){const scrollY=window.scrollY,samePage=lastPage===state.page;lastPage=state.page;ensureCalendar();if(state.page==='home')syncToday();timerPlans={};app.innerHTML=header();bindShell();const view=document.getElementById('view');if(state.page==='home')view.innerHTML=homeView();if(state.page==='program')view.innerHTML=programView();if(state.page==='session')view.innerHTML=sessionView();if(state.page==='strength')view.innerHTML=strengthPageView();if(state.page==='running')view.innerHTML=runningPageView();if(state.page==='progress')view.innerHTML=progressView();if(state.page==='profile')view.innerHTML=profileView();camInject(view);bindView();bindCalendar();window.scrollTo(0,samePage?scrollY:0)}
 function bindShell(){document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>{state.page=b.dataset.page;save();render()}));document.getElementById('programSel').addEventListener('change',e=>{state.program=+e.target.value;if(state.page==='home')state.page='program';save();render()});document.getElementById('weekSel').addEventListener('change',e=>{state.week=+e.target.value;if(state.page==='home')state.page='program';save();render()});document.getElementById('miniToggle').onclick=()=>{if(timer.mode==='running')pauseTimer();else if(timer.mode==='paused')startTimer()};document.getElementById('miniStop').onclick=resetTimer}
 function homeView(){const message=calendarHomeMessage();if(message)return message;const d=todayIndex(),plan=PLAN[d],done=countWeekDone();const percent=Math.round(done/6*100);return `<section class="hero"><p class="eyebrow" data-live-date>${liveDateText()}</p><p class="muted" style="margin-bottom:8px">Séance du jour · calendrier automatique</p><h2>${esc(plan.title)}</h2><p class="muted">Programme ${state.program} · Semaine ${state.week}</p><div class="hero-actions"><button class="btn primary" id="goSession">Ouvrir la séance</button><button class="btn" id="goProgram">Voir la semaine</button></div></section><div class="grid stats"><div class="stat"><span>Cooper</span><strong>${state.profile.cooper} m</strong></div><div class="stat"><span>VMA estimée</span><strong>${vma()} km/h</strong></div><div class="stat"><span>VMA + 2</span><strong>${(vma()+2).toFixed(1)} km/h</strong></div><div class="stat"><span>Semaine</span><strong>${done}/6</strong></div></div><div class="card"><div class="card-head"><h3>Progression semaine</h3><span class="tag">${percent}%</span></div><div class="progress"><div style="width:${percent}%"></div></div></div><div class="card"><div class="card-head"><h3>Planning</h3><span class="tag">P${state.program} · S${state.week}</span></div><div class="schedule">${[1,2,3,4,5,6,0].map(i=>`<button class="schedule-row ${i===d?'today':''}" data-day="${i}"><span class="day">${DAYS[i].toUpperCase()}<small class="schedule-date">${weekDayDate(i)}</small></span><span class="kind">${esc(PLAN[i].title)}</span><span class="arrow">›</span></button>`).join('')}</div></div>`}
 function programView(){return `<h2 class="section-title">Programme ${state.program}</h2><div class="tabs">${[1,2,3,4].map(w=>`<button class="tab ${w===state.week?'active':''}" data-weektab="${w}">Semaine ${w}</button>`).join('')}</div><div class="card"><div class="card-head"><h3>Semaine ${state.week}</h3><span class="tag">6 séances + repos</span></div><div class="schedule">${[1,2,3,4,5,6,0].map(i=>`<button class="schedule-row" data-day="${i}"><span class="day">${DAYS[i].toUpperCase()}<small class="schedule-date">${weekDayDate(i)}</small></span><span class="kind">${esc(PLAN[i].title)}</span><span class="arrow">›</span></button>`).join('')}</div></div><div class="notice">Le contenu est tiré des 16 PDF fournis. Les charges calculées arrondissent au multiple de 2,5 kg le plus proche. Tu peux modifier tes RM directement dans l’onglet Force ou dans une séance de musculation.</div>`}
@@ -1102,7 +1129,7 @@ function selectedDay(){const x=Number(sessionStorage.getItem('roadToGI_day'));re
 function sessionView(){const d=selectedDay(),p=PLAN[d];if(p.kind==='rest')return `<section class="hero"><p class="eyebrow">DIMANCHE</p><h2>Repos</h2><p class="muted">Récupération selon le planning du programme.</p></section>`;return `<div class="card"><div class="card-head"><div><p class="eyebrow" style="margin-bottom:4px">${DAYS[d].toUpperCase()}</p><h3>${esc(p.title)}</h3></div><button class="btn ${isDone(key(['day',d]))?'good':''}" id="finishDay">${isDone(key(['day',d]))?'Séance validée ✓':'Valider séance'}</button></div></div>${timerCard()}${p.kind==='functional'?functionalView(p.training):runningView(p.session,d)}`}
 function originalTimerCard(){return `<div class="card timer-panel"><div class="card-head"><h3>Chrono</h3><span id="timerStatus" class="tag">Prêt</span></div><div id="timerDisplay" class="timer-display">00:00</div><div class="pill-row" style="justify-content:center"><button class="btn primary" id="timerStart">Démarrer</button><button class="btn" id="timerPause">Pause</button><button class="btn danger" id="timerReset">Reset</button></div><div class="quick-timers"><button class="btn" data-timer="30">30 s</button><button class="btn" data-timer="60">1 min</button><button class="btn" data-timer="90">1:30</button><button class="btn" data-timer="120">2 min</button><button class="btn" data-timer="180">3 min</button><button class="btn" data-timer="240">4 min</button></div></div>`}
 function functionalView(training){const dat=DATA[String(state.program)].functional[training];if(!dat)return `<div class="empty">Séance non trouvée.</div>`;const w=dat.weeks[String(state.week)]||{};const adjustment=training==='3'?-2.5:0;const primary=training==='2'?[['Shoulders press','shoulder'],['Back squat','squat']]:[['Développé couché','bench'],['Tirage horizontal / Row','row']];return `<div class="card"><div class="card-head"><h3>Force - ${esc(dat.title)}</h3><span class="tag">Cycle P${state.program} S${state.week}</span></div>${primary.map(([name,rm])=>forceExercise(name,rm,adjustment,training)).join('')}<div class="divider"></div><button class="btn ghost source-toggle" data-toggle-source="strengthSource">Afficher les consignes originales</button><div id="strengthSource" class="source-block" hidden>${esc(dat.strength)}</div></div>${complementaryView(training)}${ropeView()}${structuredWodView(training)}${coachNotes()}`}
-function forceExercise(name,rmKey,adjust,training){const cycle=DATA[String(state.program)].forceCycle[String(state.week)]||[];const max=Number(state.profile[rmKey]||0);let rows='';cycle.forEach((r,ri)=>{for(let s=1;s<=r.sets;s++){const k=key(['force',training,name,ri,s]);rows+=`<div class="force-row"><div><strong>${esc(name)}</strong><div class="muted" style="font-size:11px">${r.pct+adjust}% · ${esc(r.reps)} rep${r.reps==='1'?'':'s'}</div></div><input inputmode="decimal" aria-label="Charge" value="${esc(state.notes[k+'-load']??pctWeight(max,r.pct,adjust))}" data-loadkey="${esc(k)}"><input inputmode="numeric" aria-label="Répétitions" value="${esc(state.notes[k+'-reps']??(r.reps==='MAX'?'':r.reps))}" data-repskey="${esc(k)}"><button class="check ${isDone(k)?'done':''}" data-toggle="${esc(k)}">✓</button></div>`}});return `<div class="rm-head"><h4>${esc(name)} <span class="muted" style="font-weight:400">RM actuel : ${max} kg${adjust?` · ajustement ${adjust}%`:''}</span></h4></div><div class="rm-inline-editor"><label>Modifier le RM de ${esc(name)}<input type="number" step="0.5" min="0" value="${max}" data-rm-input="${esc(rmKey)}"></label><button type="button" class="btn primary" data-rm-save="${esc(rmKey)}">Appliquer</button></div><div class="force-grid">${rows}</div>`}
+function forceExercise(name,rmKey,adjust,training){const cycle=DATA[String(state.program)].forceCycle[String(state.week)]||[];const max=Number(state.profile[rmKey]||0);let rows='';cycle.forEach((r,ri)=>{for(let s=1;s<=r.sets;s++){const k=key(['force',training,name,ri,s]);rows+=`<div class="force-row"><div><strong>${esc(name)}</strong><div class="muted" style="font-size:11px">${r.pct+adjust}% · ${esc(r.reps)} rep${r.reps==='1'?'':'s'}</div></div><input inputmode="decimal" aria-label="Charge" value="${esc(state.notes[k+'-load']??pctWeight(max,r.pct,adjust))}" data-loadkey="${esc(k)}"><input inputmode="numeric" aria-label="Répétitions" value="${esc(state.notes[k+'-reps']??(r.reps==='MAX'?'':r.reps))}" data-repskey="${esc(k)}"><button class="check ${isDone(k)?'done':''}" data-toggle="${esc(k)}">✓</button></div>`}});return `<div class="rm-head"><h4>${esc(name)} <span class="muted" style="font-weight:400">RM actuel : ${max} kg${adjust?` · ajustement ${adjust}%`:''}</span></h4></div><div class="rm-inline-editor"><label>Modifier le RM de ${esc(name)}<input type="number" step="0.5" min="0" value="${max}" data-rm-input="${esc(rmKey)}"></label><button type="button" class="btn primary" data-rm-save="${esc(rmKey)}">Appliquer</button></div>${camButtonFor(name,'force',name)}<div class="force-grid">${rows}</div>`}
 
 function runningView(session,d){const dat=DATA[String(state.program)].running[String(state.week)]?.[session]||'';const base=vma(),train2=base+2,train1=base+1;const extra=d===6?saturdayExtras():abExtras();return `<div class="card"><div class="card-head"><h3>Calculs de course</h3><span class="tag">Cooper ${state.profile.cooper} m</span></div><div class="grid stats" style="margin:0"><div class="stat"><span>VMA Cooper</span><strong>${base.toFixed(1)}</strong></div><div class="stat"><span>VMA +1</span><strong>${train1.toFixed(1)}</strong></div><div class="stat"><span>VMA +2</span><strong>${train2.toFixed(1)}</strong></div><div class="stat"><span>30 s à VMA+2</span><strong>${dist(train2,30)} m</strong></div></div><div class="result" style="margin-top:12px">45 s à VMA+2 : <strong>${dist(train2,45)} m</strong> · 60 s : <strong>${dist(train2,60)} m</strong></div>${vmaTable()}</div><div class="card"><div class="card-head"><h3>Course - Séance ${session}</h3><span class="tag">Semaine ${state.week}</span></div>${courseRemark()}${checklist(dat,`run-${session}`)}<button class="btn ghost source-toggle" data-toggle-source="runSource">Texte source</button><div id="runSource" class="source-block" hidden>${esc(dat)}</div></div>${extra}`}
 function circuitSelector(kind,title){const circuits=DATA[String(state.program)][kind]||{};const nums=Object.keys(circuits);if(!nums.length)return'';const selectId=`${kind}Select`;return `<div class="card"><div class="card-head"><h3>${title}</h3><select class="compact-select" id="${selectId}">${nums.map(n=>`<option value="${n}">Circuit ${n}</option>`).join('')}</select></div><div id="${kind}Body">${circuitTimerPanel(kind,nums[0],circuits[nums[0]])}${checklist(circuits[nums[0]],`${kind}-${nums[0]}`)}</div></div>`}
@@ -1234,7 +1261,7 @@ function complementaryView(training){
   return `<div class="divider"></div><h4>Bloc ${g+1}</h4><select aria-label="Exercice du bloc ${g+1}" class="compact-select renfo-options" data-accessory-choice="${esc(choiceKey)}">${options.map(o=>`<option ${o===selected?'selected':''}>${esc(o)}</option>`).join('')}</select><div class="rm-inline-editor"><label>RM ${esc(selected)} ${selected==='Traction lestée'?'(charge ajoutée)':''} en kg<input type="number" min="0" step="0.5" value="${rm||''}" data-rm-input="${esc(rmKey)}" placeholder="Ton RM"></label><button class="btn primary" data-rm-save="${esc(rmKey)}">Appliquer</button></div><button class="btn primary" data-plan="${planId}">Lancer le bloc avec repos et bips</button>${series.map((r,i)=>{
    const doneKey=key(['accessory',training,g,i]);const repsKey=doneKey+'-reps';
    const id=registerPlan(`${planId}-${i}`,[{seconds:r.seconds,label:`${selected} · ${r.reps} rep · ${r.pct}%`}]);
-   return `<div class="renfo-row ${isDone(doneKey)?'renfo-complete':''}"><strong>${state.program===3?'EMOM · Minute':'Série'} ${i+1} · ${r.reps} rep · ${r.pct}%</strong><p>${formatTime(r.seconds)} · <strong>${rm?pctWeight(rm,r.pct)+' kg':'RM à renseigner'}</strong>${r.rest&&i<series.length-1?` · Repos ${formatTime(r.rest)}`:''}</p><div class="pill-row"><button class="btn" data-plan="${id}">Chrono ${formatTime(r.seconds)}</button>${r.rest&&i<series.length-1?`<button class="btn" data-timer="${r.rest}">Repos ${formatTime(r.rest)}</button>`:''}<label>Reps faites <input type="number" min="0" step="1" data-note="${esc(repsKey)}" value="${esc(state.notes[repsKey]||'')}"></label><label><input type="checkbox" data-accessory-done="${esc(doneKey)}" ${isDone(doneKey)?'checked':''}>Fait</label></div></div>`;
+   return `<div class="renfo-row ${isDone(doneKey)?'renfo-complete':''}"><strong>${state.program===3?'EMOM · Minute':'Série'} ${i+1} · ${r.reps} rep · ${r.pct}%</strong><p>${formatTime(r.seconds)} · <strong>${rm?pctWeight(rm,r.pct)+' kg':'RM à renseigner'}</strong>${r.rest&&i<series.length-1?` · Repos ${formatTime(r.rest)}`:''}</p><div class="pill-row"><button class="btn" data-plan="${id}">Chrono ${formatTime(r.seconds)}</button>${r.rest&&i<series.length-1?`<button class="btn" data-timer="${r.rest}">Repos ${formatTime(r.rest)}</button>`:''}${camButtonFor(selected,'renfo',repsKey)}<label>Reps faites <input type="number" min="0" step="1" data-note="${esc(repsKey)}" value="${esc(state.notes[repsKey]||'')}"></label><label><input type="checkbox" data-accessory-done="${esc(doneKey)}" ${isDone(doneKey)?'checked':''}>Fait</label></div></div>`;
   }).join('')}`;
  }).join('')}</section>`;
 }
@@ -1468,7 +1495,7 @@ function structuredWodView(training){
    const k=key(['wod-exercise-v2',training,bi,wod.rounds>1?globalRound:round,ei]);
    const ownTimer=item.seconds&&!plan?wodTimerButton(`${timerId}-exercise-${ei}`,[{seconds:item.seconds,label:text}],formatTime(item.seconds)):'';
    let window='';if(b.steps&&b.steps.length===b.items.length){const start=b.steps.slice(0,ei).reduce((n,s)=>n+s.seconds,0);window=`${formatTime(start)} – ${formatTime(start+b.steps[ei].seconds)}`;}
-   return `<div class="workitem wod-exercise ${isDone(k)?'done':''}"><input aria-label="${esc(text)} effectué" type="checkbox" data-check="${esc(k)}" ${isDone(k)?'checked':''}><div><label class="worktext">${window?`<small class="wod-window">${window}</small>`:''}${esc(text)}</label>${item.seconds&&plan?`<small class="wod-window">Effort ${formatTime(item.seconds)}${item.rest?` · Repos ${formatTime(item.rest)}`:''}</small>`:''}${ownTimer}</div></div>`;
+   return `<div class="workitem wod-exercise ${isDone(k)?'done':''}"><input aria-label="${esc(text)} effectué" type="checkbox" data-check="${esc(k)}" ${isDone(k)?'checked':''}><div><label class="worktext">${window?`<small class="wod-window">${window}</small>`:''}${esc(text)}</label>${item.seconds&&plan?`<small class="wod-window">Effort ${formatTime(item.seconds)}${item.rest?` · Repos ${formatTime(item.rest)}`:''}</small>`:''}${ownTimer}${camButton(text,k)}</div></div>`;
   }).join('')}</div><div class="wod-block-actions">${plan&&!(wod.blocks.length===1&&canChain)?wodTimerButton(timerId,plan,`Chrono du bloc · ${formatTime(plan.reduce((v,s)=>v+s.seconds,0))}`):''}${b.roundRest&&!plan?`<p class="muted">Repos entre les rounds : ${formatTime(b.roundRest)} ${wodTimerButton(`${timerId}-round-rest`,[{seconds:b.roundRest,label:'Repos entre les rounds'}],'Lancer le repos')}</p>`:''}</div></section>${b.restAfter?`<div class="wod-rest"><strong>Repos ${formatTime(b.restAfter)}</strong>${wodTimerButton(`${timerId}-rest`,[{seconds:b.restAfter,label:'Repos entre les blocs'}],'Lancer le repos')}</div>`:''}`;
  }).join('')}</div>${wod.roundRest?`<div class="wod-rest"><strong>Repos entre les rounds : ${formatTime(wod.roundRest)}</strong>${wodTimerButton(`${clockId}-rest`,[{seconds:wod.roundRest,label:'Repos entre les rounds'}],'Lancer le repos')}</div>`:''}<div id="wodSource" class="source-block" hidden>${esc(raw.body)}</div></section>`;
 }
@@ -1478,6 +1505,219 @@ function bindStructuredWods(){
  paintWodClock();
 }
 function paintWodClock(){const panel=document.querySelector('.wod-clock');if(!panel)return;panel.hidden=!/^(wod-clock-|wod-block-)/.test(activeInlineTimer);if(panel.hidden)return;panel.querySelector('.wod-clock-time').textContent=formatTime(timer.seconds);panel.querySelector('.wod-clock-status').textContent=timer.mode==='running'?'En cours':timer.mode==='paused'?'Pause':timer.mode==='done'?'Terminé':'Prêt';panel.querySelector('.wod-clock-label').textContent=timer.label;}
+
+/* ===== Compteur de répétitions par caméra (bêta) =====
+   La caméra est lue sur le téléphone, les points du corps sont calculés sur le téléphone (MediaPipe Pose) :
+   aucune image n'est enregistrée ni envoyée. Seuls la bibliothèque et le modèle (environ 8 Mo) sont téléchargés
+   la première fois, puis gardés en cache pour fonctionner hors ligne. */
+const MP_VERSION='0.10.21',MP_BASE='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@'+MP_VERSION;
+const MP_MODEL='https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task';
+const CAM_LINKS=[[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28]];
+const cam={forceCpu:false,landmarker:null,loading:null,stream:null,fileUrl:null,facing:'user',key:'squat',level:'normal',target:0,source:'free',ref:'',counter:null,running:false,paused:false,raf:0,lastInfer:0,lastTs:0,voice:true,mode:'camera',reached:false,wake:null,countdownTimer:0,count:0,session:0};
+try{cam.level=localStorage.getItem('roadToGI_camLevel')||'normal';cam.voice=localStorage.getItem('roadToGI_camVoice')!=='0'}catch(e){}
+
+function camKeyFor(text){return window.RepCounter?window.RepCounter.detect(text):null}
+function camButton(text,doneKey){const key=camKeyFor(text);if(!key)return '';const target=window.RepCounter.targetFrom(text);return `<button class="btn cam-btn" type="button" data-cam="${key}" data-cam-target="${target}" data-cam-source="wod" data-cam-ref="${esc(doneKey)}">📷 Compter les reps</button>`}
+function camButtonFor(name,source,ref){const key=camKeyFor(name);if(!key)return '';return `<button class="btn cam-btn" type="button" data-cam="${key}" data-cam-target="0" data-cam-source="${source}" data-cam-ref="${esc(ref)}">📷 Compter</button>`}
+function camCard(){return `<div class="card cam-card"><div class="card-head"><h3>Compteur de reps par caméra</h3><span class="tag">bêta</span></div><p class="muted" style="font-size:13px;line-height:1.5;margin:0 0 12px">Pose ton téléphone, la caméra suit ton corps et compte tes répétitions à voix haute. Analysé sur ton téléphone : rien n’est enregistré ni envoyé.</p><button class="btn primary" type="button" data-cam="squat" data-cam-target="0" data-cam-source="free">Ouvrir le compteur</button></div>`}
+function camInject(view){if(state.page==='home'||state.page==='strength')view.insertAdjacentHTML('beforeend',camCard())}
+
+/* ---------- interface ---------- */
+function camOverlay(){
+  let el=document.getElementById('camOverlay');if(el)return el;
+  el=document.createElement('div');el.id='camOverlay';el.className='cam-overlay';el.hidden=true;el.setAttribute('role','dialog');el.setAttribute('aria-label','Compteur de répétitions');
+  el.innerHTML=`<div class="cam-top"><strong>Compteur de reps <span class="tag">bêta</span></strong><button class="btn" type="button" id="camClose" aria-label="Fermer">✕</button></div>
+  <div class="cam-scroll">
+   <section id="camSetup" class="cam-setup">
+    <div class="field"><label for="camExercise">Exercice</label><select id="camExercise"></select></div>
+    <div class="form-grid" style="margin-top:12px"><div class="field"><label for="camTarget">Objectif (reps, facultatif)</label><input id="camTarget" type="number" inputmode="numeric" min="0" max="999" placeholder="Libre"></div><div class="field"><label for="camLevel">Sensibilité</label><select id="camLevel"><option value="souple">Souple (compte plus facilement)</option><option value="normal">Normale</option><option value="strict">Stricte (amplitude complète)</option></select></div></div>
+    <p id="camTip" class="notice" style="margin-top:12px"></p>
+    <label class="cam-check"><input type="checkbox" id="camVoice"> Annoncer les reps à voix haute</label>
+    <div class="hero-actions"><button class="btn primary" type="button" id="camStart">📷 Démarrer la caméra</button><label class="btn" id="camFileLabel">🎞 Analyser une vidéo<input type="file" accept="video/*" id="camFile" hidden></label></div>
+    <p class="muted" style="font-size:12px;line-height:1.5;margin:12px 0 0">Première utilisation : le modèle de détection (environ 8 Mo) est téléchargé, il faut du réseau. Ensuite l’appli le garde et fonctionne hors ligne. Les images restent sur ton téléphone.</p>
+   </section>
+   <section id="camStage" class="cam-stage" hidden>
+    <div class="cam-view" id="camView"><video id="camVideo" playsinline muted autoplay></video><canvas id="camCanvas"></canvas><div class="cam-overlay-msg" id="camMsg"></div></div>
+    <div class="cam-counter"><span id="camCount" aria-live="polite">0</span><small id="camTargetShow"></small></div>
+    <div class="cam-status" id="camStatus" aria-live="polite"></div>
+    <div class="cam-actions">
+     <button class="btn" type="button" id="camPause">Pause</button><button class="btn" type="button" id="camMinus" aria-label="Retirer une répétition">−1</button><button class="btn" type="button" id="camPlus" aria-label="Ajouter une répétition">+1</button><button class="btn" type="button" id="camReset">Zéro</button><button class="btn" type="button" id="camFlip">Caméra</button>
+    </div>
+    <div class="hero-actions"><button class="btn good" type="button" id="camFinish">Terminer</button><button class="btn ghost" type="button" id="camBack">Changer d’exercice</button></div>
+   </section>
+  </div>`;
+  document.body.append(el);
+  const sel=el.querySelector('#camExercise');
+  sel.innerHTML=Object.keys(window.RepCounter.EX).map(k=>`<option value="${k}">${esc(window.RepCounter.EX[k].label)}</option>`).join('');
+  sel.onchange=()=>{cam.key=sel.value;camSetupText()};
+  el.querySelector('#camLevel').onchange=e=>{cam.level=e.target.value;try{localStorage.setItem('roadToGI_camLevel',cam.level)}catch(x){}};
+  el.querySelector('#camVoice').onchange=e=>{cam.voice=e.target.checked;try{localStorage.setItem('roadToGI_camVoice',cam.voice?'1':'0')}catch(x){}};
+  el.querySelector('#camTarget').oninput=e=>{cam.target=Math.max(0,Math.floor(Number(e.target.value)||0))};
+  el.querySelector('#camClose').onclick=camClose;
+  el.querySelector('#camStart').onclick=()=>camStartCamera();
+  el.querySelector('#camFile').onchange=e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(f)camStartFile(f)};
+  el.querySelector('#camPause').onclick=camTogglePause;
+  el.querySelector('#camMinus').onclick=()=>camAdjust(-1);
+  el.querySelector('#camPlus').onclick=()=>camAdjust(1);
+  el.querySelector('#camReset').onclick=()=>{if(cam.counter){cam.counter.reset();cam.reached=false;camPaint()}};
+  el.querySelector('#camFlip').onclick=()=>{cam.facing=cam.facing==='user'?'environment':'user';camStartCamera(true)};
+  el.querySelector('#camFinish').onclick=camFinish;
+  el.querySelector('#camBack').onclick=()=>{camStop();camShow('setup')};
+  return el;
+}
+function camShow(which){const el=camOverlay();el.querySelector('#camSetup').hidden=which!=='setup';el.querySelector('#camStage').hidden=which!=='stage'}
+function camSetupText(){const el=camOverlay();const def=window.RepCounter.EX[cam.key];el.querySelector('#camTip').textContent=def?def.tip:'';el.querySelector('#camExercise').value=cam.key;el.querySelector('#camLevel').value=cam.level;el.querySelector('#camVoice').checked=cam.voice;el.querySelector('#camTarget').value=cam.target||''}
+function camMsg(t){const m=camOverlay().querySelector('#camMsg');m.textContent=t||'';m.hidden=!t}
+function camStatus(t,warn){const s=camOverlay().querySelector('#camStatus');s.textContent=t||'';s.classList.toggle('warn',!!warn)}
+function camPaint(r){
+  const el=camOverlay();const count=cam.counter?cam.counter.count:cam.count;
+  const c=el.querySelector('#camCount');if(c.textContent!==String(count)){c.textContent=count;c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop')}
+  el.querySelector('#camTargetShow').textContent=cam.target?`/ ${cam.target}`:'';
+  el.querySelector('#camPause').textContent=cam.paused?'Reprendre':'Pause';
+  if(r&&cam.running&&!cam.paused){
+    if(!r.ready)camStatus('Montre-toi en entier dans le cadre',true);
+    else if(r.hint)camStatus(r.hint,/Amplitude|non détecté/.test(r.hint));
+    else camStatus(`${window.RepCounter.EX[cam.key].label} · position ${r.phase}${r.value!=null&&cam.key!=='burpee'?` · ${Math.round(r.value)}°`:''}`);
+  }
+}
+function camSay(text){if(!cam.voice||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(text));u.lang='fr-FR';u.rate=1.1;speechSynthesis.speak(u)}catch(e){}}
+function camBeep(freq,dur){if(!soundEnabled||!audioContext||audioContext.state!=='running')return;try{tone(freq,audioContext.currentTime,dur||.09,.25)}catch(e){}}
+function camOnRep(){
+  const n=cam.counter.count;
+  if(cam.voice)camSay(n);else camBeep(1000,.1);
+  try{navigator.vibrate?.(40)}catch(e){}
+  if(cam.target&&n>=cam.target&&!cam.reached){cam.reached=true;camStatus(`Objectif atteint : ${n} reps !`);setTimeout(()=>{playAlarm(true,false,true);camSay(`Objectif atteint, ${n}`)},cam.voice?900:0);try{navigator.vibrate?.([200,100,200])}catch(e){}}
+}
+function camAdjust(d){if(!cam.counter)return;cam.counter.adjust(d);camPaint()}
+function camTogglePause(){if(!cam.running)return;cam.paused=!cam.paused;const v=camOverlay().querySelector('#camVideo');if(cam.mode==='file'){cam.paused?v.pause():v.play().catch(()=>{})}camStatus(cam.paused?'En pause':'');camPaint()}
+
+/* ---------- modèle et caméra ---------- */
+async function camLoadModel(){
+  if(cam.landmarker)return cam.landmarker;
+  if(cam.loading)return cam.loading;
+  cam.loading=(async()=>{
+    const mp=await import(MP_BASE+'/vision_bundle.mjs');
+    const files=await mp.FilesetResolver.forVisionTasks(MP_BASE+'/wasm');
+    const make=delegate=>mp.PoseLandmarker.createFromOptions(files,{baseOptions:{modelAssetPath:MP_MODEL,delegate},runningMode:'VIDEO',numPoses:1});
+    if(cam.forceCpu)cam.landmarker=await make('CPU');else{try{cam.landmarker=await make('GPU')}catch(e){cam.landmarker=await make('CPU')}}
+    return cam.landmarker;
+  })();
+  try{return await cam.loading}finally{cam.loading=null}
+}
+function camStop(){
+  cam.session++;cam.running=false;cam.paused=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);
+  const v=document.getElementById('camVideo');
+  if(cam.stream){cam.stream.getTracks().forEach(t=>t.stop());cam.stream=null}
+  if(v){try{v.pause()}catch(e){}v.srcObject=null;v.removeAttribute('src');try{v.load()}catch(e){}}
+  if(cam.fileUrl){URL.revokeObjectURL(cam.fileUrl);cam.fileUrl=null}
+  if(cam.wake){cam.wake.release().catch(()=>{});cam.wake=null}
+  try{speechSynthesis.cancel()}catch(e){}
+}
+function camSizeView(v){
+  const vw=v.videoWidth||640,vh=v.videoHeight||480,view=document.getElementById('camView');
+  const w=Math.min(window.innerWidth-24,Math.max(200,0.5*window.innerHeight*vw/vh));
+  view.style.width=w+'px';view.style.aspectRatio=vw+' / '+vh;
+}
+async function camPrepare(mode){
+  const sess=++cam.session;cam.mode=mode;cam.running=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);
+  unlockAudio();try{speechSynthesis.speak(new SpeechSynthesisUtterance(''))}catch(e){}
+  camShow('stage');camOverlay().querySelector('#camView').classList.toggle('mirror',mode==='camera'&&cam.facing==='user');
+  camMsg('Chargement du modèle de détection…');camStatus('Première utilisation : environ 8 Mo à télécharger');camPaint();
+  try{await camLoadModel()}catch(e){camMsg('');camStatus('Impossible de charger le modèle : vérifie ta connexion (nécessaire la première fois).',true);return false}
+  return sess===cam.session;
+}
+async function camStartCamera(flip){
+  camOverlay();
+  if(!flip&&!navigator.mediaDevices?.getUserMedia){camShow('stage');camStatus('Ce navigateur ne donne pas accès à la caméra. Utilise « Analyser une vidéo ».',true);return}
+  const keepCount=flip&&cam.counter?cam.counter.count:0;
+  if(flip)camStopStreamOnly();
+  if(!await camPrepare('camera'))return;
+  const sess=cam.session,v=document.getElementById('camVideo');
+  try{
+    cam.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:cam.facing,width:{ideal:640},height:{ideal:480}},audio:false});
+  }catch(e){camMsg('');camStatus(e&&e.name==='NotAllowedError'?'Caméra refusée. Autorise-la dans Réglages > Safari > Caméra, puis réessaie.':'Caméra introuvable ou déjà utilisée.',true);return}
+  if(sess!==cam.session){cam.stream.getTracks().forEach(t=>t.stop());return}
+  v.srcObject=cam.stream;v.muted=true;
+  try{await v.play()}catch(e){}
+  if(!v.videoWidth)await new Promise(r=>{v.onloadedmetadata=r;setTimeout(r,2000)});
+  camSizeView(v);camMsg('');
+  try{if(navigator.wakeLock)cam.wake=await navigator.wakeLock.request('screen')}catch(e){}
+  camCountdownThenRun(sess,flip?0:5,keepCount);
+}
+function camStopStreamOnly(){cam.running=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);if(cam.stream){cam.stream.getTracks().forEach(t=>t.stop());cam.stream=null}}
+function camCountdownThenRun(sess,seconds,keepCount){
+  const begin=()=>{if(sess!==cam.session)return;camMsg('');const prev=cam.counter&&keepCount?cam.counter.count:0;cam.counter=window.RepCounter.create(cam.key,{level:cam.level});if(prev)cam.counter.adjust(prev);cam.reached=false;cam.running=true;cam.paused=false;camStatus('');camSay('C’est parti');camBeep(1175,.35);camPaint();cam.raf=requestAnimationFrame(camFrame)};
+  if(!seconds){begin();return}
+  let n=seconds;camPaint();
+  const tick=()=>{if(sess!==cam.session){clearInterval(cam.countdownTimer);return}camMsg(String(n));camStatus('Place-toi de profil, corps entier dans le cadre');camSay(n);camBeep(660,.12);n--;if(n<0){clearInterval(cam.countdownTimer);begin()}};
+  tick();cam.countdownTimer=setInterval(tick,1000);
+}
+async function camStartFile(file){
+  camOverlay();
+  const ok=await camPrepare('file');if(!ok)return;
+  const sess=cam.session,v=document.getElementById('camVideo');
+  cam.fileUrl=URL.createObjectURL(file);v.srcObject=null;v.src=cam.fileUrl;v.muted=true;v.loop=false;
+  await new Promise(r=>{v.onloadeddata=r;v.onerror=r});
+  if(sess!==cam.session)return;
+  if(!v.videoWidth){camMsg('');camStatus('Vidéo illisible sur ce téléphone.',true);return}
+  camSizeView(v);camMsg('');
+  v.onended=()=>{if(sess===cam.session){cam.running=false;camStatus(`Analyse terminée : ${cam.counter?cam.counter.count:0} répétitions.`);camPaint()}};
+  cam.counter=window.RepCounter.create(cam.key,{level:cam.level});cam.reached=false;cam.running=true;cam.paused=false;
+  try{await v.play()}catch(e){}
+  cam.raf=requestAnimationFrame(camFrame);
+}
+
+/* ---------- boucle d'analyse ---------- */
+function camDraw(lm,v){
+  const cv=document.getElementById('camCanvas');if(!cv)return;
+  if(cv.width!==v.videoWidth||cv.height!==v.videoHeight){cv.width=v.videoWidth;cv.height=v.videoHeight}
+  const g=cv.getContext('2d');g.clearRect(0,0,cv.width,cv.height);if(!lm)return;
+  const lw=Math.max(3,cv.width/150);g.lineWidth=lw;g.lineCap='round';g.strokeStyle='#f5c518';
+  for(const [a,b] of CAM_LINKS){const p=lm[a],q=lm[b];if(!p||!q||(p.visibility||0)<.4||(q.visibility||0)<.4)continue;g.beginPath();g.moveTo(p.x*cv.width,p.y*cv.height);g.lineTo(q.x*cv.width,q.y*cv.height);g.stroke()}
+  g.fillStyle='#fff';for(const i of [11,12,13,14,15,16,23,24,25,26,27,28]){const p=lm[i];if(!p||(p.visibility||0)<.4)continue;g.beginPath();g.arc(p.x*cv.width,p.y*cv.height,lw*1.2,0,6.283);g.fill()}
+}
+function camFrame(){
+  if(!cam.running)return;
+  cam.raf=requestAnimationFrame(camFrame);
+  const v=document.getElementById('camVideo'),now=performance.now();
+  if(cam.paused||!v||v.readyState<2||now-cam.lastInfer<60||v.ended)return;
+  cam.lastInfer=now;
+  const ts=Math.max(cam.lastTs+1,Math.round(now));cam.lastTs=ts;
+  let res;try{res=cam.landmarker.detectForVideo(v,ts)}catch(e){
+    cam.running=false;cancelAnimationFrame(cam.raf);
+    if(!cam.forceCpu){cam.forceCpu=true;cam.landmarker=null;const sess=cam.session;camStatus('Passage en mode compatible…');camLoadModel().then(()=>{if(sess===cam.session){cam.running=true;cam.raf=requestAnimationFrame(camFrame)}}).catch(()=>camStatus('Erreur de détection : relance le compteur.',true))}
+    else camStatus('Erreur de détection : relance le compteur.',true);
+    return}
+  const lm=res.landmarks&&res.landmarks[0],world=res.worldLandmarks&&res.worldLandmarks[0];
+  camDraw(lm,v);
+  const t=cam.mode==='file'?v.currentTime*1000:now;
+  const r=cam.counter.update(lm?{img:lm,world,aspect:v.videoWidth/v.videoHeight}:null,t);
+  if(r.rep)camOnRep();
+  camPaint(r);
+}
+
+/* ---------- ouverture / fermeture / résultat ---------- */
+function camOpen(opts){
+  if(!window.RepCounter){alert('Le module de comptage n’est pas chargé. Recharge la page.');return}
+  const el=camOverlay();
+  cam.key=window.RepCounter.EX[opts.key]?opts.key:'squat';cam.target=opts.target||0;cam.source=opts.source||'free';cam.ref=opts.ref||'';cam.counter=null;cam.reached=false;
+  camSetupText();camShow('setup');camMsg('');camStatus('');el.hidden=false;document.body.classList.add('cam-open');
+}
+function camClose(){camStop();const el=document.getElementById('camOverlay');if(el)el.hidden=true;document.body.classList.remove('cam-open')}
+function camFinish(){
+  const n=cam.counter?cam.counter.count:0,src=cam.source,ref=cam.ref;
+  camClose();
+  if(!n)return;
+  if(src==='wod'&&ref){state.completed[ref]=true;save();render()}
+  else if(src==='renfo'&&ref){state.notes[ref]=String(n);save();render()}
+  else if(src==='force'&&ref){
+    const rows=[...document.querySelectorAll('.force-row')].filter(r=>r.querySelector('strong')&&r.querySelector('strong').textContent===ref&&!r.querySelector('.check.done'));
+    const input=rows[0]&&rows[0].querySelector('[data-repskey]');
+    if(input){state.notes[input.dataset.repskey+'-reps']=String(n);save();render()}
+  }
+}
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-cam]');if(!b)return;e.preventDefault();camOpen({key:b.dataset.cam,target:Number(b.dataset.camTarget)||0,source:b.dataset.camSource,ref:b.dataset.camRef})});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&cam.running&&!cam.paused&&cam.mode==='camera'){cam.paused=true;camPaint()}});
 
 render();
 })();

@@ -1,4 +1,19 @@
-ROAD TO GI - V7
+ROAD TO GI - V8
+Nouveautés V8 :
+- Compteur de répétitions par caméra (bêta). Boutons « 📷 Compter les reps » dans les WOD, les
+  séries de force et de renfo, et carte « Compteur de reps » sur l'accueil et l'onglet Force.
+  La caméra suit ton corps (MediaPipe Pose, calculé sur le téléphone : aucune image n'est
+  enregistrée ni envoyée), compte les reps, les annonce à voix haute et signale l'objectif atteint.
+  Exercices : squats (thrusters), fentes, pompes, tractions, dips, sit ups / V ups, soulevés et
+  swings, développés / épaulés / ground to overhead, toes / knees to bar, burpees.
+  Comptage avec amplitude minimale (demi-répétition refusée et signalée), 3 sensibilités, boutons
+  +1 / -1 / zéro, caméra avant ou arrière, et « Analyser une vidéo » pour compter une vidéo filmée.
+  Fin du compteur : coche l'exercice du WOD, ou remplit les reps de la série de force / renfo.
+  Première utilisation : télécharge le modèle (environ 8 Mo), puis il est gardé pour le hors ligne.
+  Limites : une seule personne dans le cadre, corps entier visible, téléphone stable de profil.
+  Contrôlé sur des vidéos réelles (squats, soulevés de terre, développés, burpees, pompes, fentes,
+  swings, tractions) ; sit ups, dips et toes to bar non contrôlés, à vérifier à l'usage.
+
 Nouveautés V7 :
 - Tout le site aux couleurs du GIGN : fond bleu roi, cartes et boutons bleus, or pour les boutons
   principaux, titres et onglets actifs, rouge pour les actions dangereuses, blanc pour le texte.
