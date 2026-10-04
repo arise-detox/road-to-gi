@@ -151,6 +151,7 @@
   Machine.prototype.reset = function () {
     this.count = 0; this.partials = 0; this.state = 'wait'; this.s = null; this.tState = 0; this.tRep = -1e9;
     this.trough = null; this.lastValid = 0; this.hint = '';
+    this.cMin = 1e9; this.cMax = -1e9; /* amplitude mesurée depuis la dernière répétition */
   };
   /* value : mesure lissée (angle) ou null si le corps n’est pas exploitable ; t en ms. */
   Machine.prototype.push = function (value, t) {
@@ -162,6 +163,8 @@
     }
     this.lastValid = t;
     this.s = this.s == null ? value : this.s + 0.5 * (value - this.s);
+    if (this.s < this.cMin) this.cMin = this.s;
+    if (this.s > this.cMax) this.cMax = this.s;
     var s = this.s, low = this.low, high = this.high, held = t - this.tState;
     this.hint = '';
     if (!this.peak) {
@@ -174,7 +177,7 @@
       } else if (this.state === 'bottom') {
         if (s >= high && held >= this.minPhaseMs) {
           this.state = 'start'; this.tState = t; this.trough = s;
-          if (t - this.tRep >= this.minRepMs) { this.count++; this.tRep = t; out.rep = true; }
+          if (t - this.tRep >= this.minRepMs) { this.count++; this.tRep = t; out.rep = true; out.info = { min: this.cMin, max: this.cMax }; this.cMin = 1e9; this.cMax = -1e9; }
         }
       }
     } else {
@@ -183,7 +186,7 @@
       else if (this.state === 'start') {
         if (s >= high && held >= this.minPhaseMs) {
           this.state = 'top'; this.tState = t;
-          if (t - this.tRep >= this.minRepMs) { this.count++; this.tRep = t; out.rep = true; }
+          if (t - this.tRep >= this.minRepMs) { this.count++; this.tRep = t; out.rep = true; out.info = { min: this.cMin, max: this.cMax }; this.cMin = 1e9; this.cMax = -1e9; }
         }
       } else if (this.state === 'top') { if (s <= low) { this.state = 'start'; this.tState = t; } }
     }

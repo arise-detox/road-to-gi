@@ -1,4 +1,11 @@
-ROAD TO GI - V8
+ROAD TO GI - V9
+Nouveautés V9 :
+- Nouvel onglet « Reps » dans la barre du bas : banc d'essai du compteur de répétitions. Choisis
+  un exercice, filme ta série, puis indique le nombre réel de reps : l'appli garde le résultat
+  (compté / réel, amplitude mesurée, sensibilité) et calcule la précision par exercice.
+  Diagnostic en direct pendant le test (angle mesuré, seuils, état, images par seconde) et bouton
+  « Copier le rapport » pour partager les résultats. L'historique est inclus dans la sauvegarde.
+
 Nouveautés V8 :
 - Compteur de répétitions par caméra (bêta). Boutons « 📷 Compter les reps » dans les WOD, les
   séries de force et de renfo, et carte « Compteur de reps » sur l'accueil et l'onglet Force.
