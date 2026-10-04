@@ -1,4 +1,10 @@
-ROAD TO GI - V6
+ROAD TO GI - V7
+Nouveautés V7 :
+- Tout le site aux couleurs du GIGN : fond bleu roi, cartes et boutons bleus, or pour les boutons
+  principaux, titres et onglets actifs, rouge pour les actions dangereuses, blanc pour le texte.
+  Double filet rouge et or sous l'en-tête et au-dessus du menu, badge « GI » cerclé de rouge,
+  d'or et de blanc, icônes de l'écran d'accueil sur fond bleu roi avec liseré blanc.
+
 Nouveautés V6 :
 - Thème GIGN : bleu marine profond, or, rouge et blanc, comme la rondache du GIGN. Nouveau badge
   « GI » dans l'en-tête et nouvelles icônes (écran d'accueil de l'iPhone).
