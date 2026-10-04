@@ -1,8 +1,8 @@
-const CACHE='road-to-gi-v12';
+const CACHE='road-to-gi-v13';
 const ML_CACHE='gi-ml-v1';
 // rep-counter.js est demandé avec ?v=N par la page : chaque version de l'appli ne peut donc utiliser que son propre module
 // (plus de décalage « page neuve + script ancien en cache » à la première ouverture après une mise à jour).
-const ASSETS=['./','./index.html','./manifest.json','./rep-counter.js?v=11','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
+const ASSETS=['./','./index.html','./manifest.json','./rep-counter.js?v=13','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 const NETWORK_TIMEOUT=3500;
 // Compteur caméra : bibliothèque et modèle MediaPipe (hébergés ailleurs), gardés après le premier usage pour fonctionner hors ligne.
 const ML_SOURCES=[['cdn.jsdelivr.net','/npm/@mediapipe/'],['storage.googleapis.com','/mediapipe-models/']];

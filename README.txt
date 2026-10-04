@@ -1,4 +1,15 @@
-ROAD TO GI - V12
+ROAD TO GI - V13
+Nouveautés V13 :
+- Compteur de reps sur chaque série de force : un bouton « 📷 Compter · bip à N » dans chaque ligne de
+  série (l'objectif N est le nombre de reps de la série ; « MAX » = sans objectif). La caméra compte
+  à voix haute et un signal sonore retentit quand l'objectif est atteint ; « Terminer » remplit les
+  reps de la série et la coche si l'objectif est atteint. Même chose pour les séries de renfo.
+- Nouveaux exercices reconnus : développés couchés / inclinés / décliné (angle des coudes, corps
+  allongé ou incliné), tirages (tirage horizontal, bent over row, Pendlay, tirage devant, tirage
+  menton / rowing : distance poignet-épaule) et presse à cuisses. Contrôlés sur des vidéos réelles
+  (développé couché, développé incliné, bent over row) ; le rowing à la poulie et le tirage devant
+  ne sont pas contrôlés, à vérifier à l'usage (onglet Reps).
+
 Nouveautés V12 :
 - Onglet Reps > « Séance chronométrée » : le compteur de reps sur un temps choisi, ou en séries avec
   temps de repos.

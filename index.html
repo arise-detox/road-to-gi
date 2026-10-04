@@ -227,6 +227,10 @@ body.cam-open{overflow:hidden}
 .cam-plan-sub{font-size:12px;color:var(--muted);margin:2px 0 8px}
 .cam-plan-track{height:8px;border-radius:999px;background:#0b2860;overflow:hidden}
 .cam-plan-track i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gign-gold),#ffd84d);transition:width .25s linear}
+
+/* V13 : compteur sur chaque série de force */
+.cam-mini{margin-top:6px;min-height:30px;padding:3px 9px;font-size:11px;border-color:var(--gign-gold);color:var(--gign-gold)}
+.force-row>div:first-child{min-width:0}
 </style>
 
   <link rel="manifest" href="manifest.json">
@@ -237,7 +241,7 @@ body.cam-open{overflow:hidden}
 </head>
 <body>
   <div id="app"></div>
-  <script src="rep-counter.js?v=11"></script>
+  <script src="rep-counter.js?v=13"></script>
   <script>
 window.ROAD_TO_GI_DATA = {
   "1": {
@@ -1165,7 +1169,7 @@ function selectedDay(){const x=Number(sessionStorage.getItem('roadToGI_day'));re
 function sessionView(){const d=selectedDay(),p=PLAN[d];if(p.kind==='rest')return `<section class="hero"><p class="eyebrow">DIMANCHE</p><h2>Repos</h2><p class="muted">Récupération selon le planning du programme.</p></section>`;return `<div class="card"><div class="card-head"><div><p class="eyebrow" style="margin-bottom:4px">${DAYS[d].toUpperCase()}</p><h3>${esc(p.title)}</h3></div><button class="btn ${isDone(key(['day',d]))?'good':''}" id="finishDay">${isDone(key(['day',d]))?'Séance validée ✓':'Valider séance'}</button></div></div>${timerCard()}${p.kind==='functional'?functionalView(p.training):runningView(p.session,d)}`}
 function originalTimerCard(){return `<div class="card timer-panel"><div class="card-head"><h3>Chrono</h3><span id="timerStatus" class="tag">Prêt</span></div><div id="timerDisplay" class="timer-display">00:00</div><div class="pill-row" style="justify-content:center"><button class="btn primary" id="timerStart">Démarrer</button><button class="btn" id="timerPause">Pause</button><button class="btn danger" id="timerReset">Reset</button></div><div class="quick-timers"><button class="btn" data-timer="30">30 s</button><button class="btn" data-timer="60">1 min</button><button class="btn" data-timer="90">1:30</button><button class="btn" data-timer="120">2 min</button><button class="btn" data-timer="180">3 min</button><button class="btn" data-timer="240">4 min</button></div></div>`}
 function functionalView(training){const dat=DATA[String(state.program)].functional[training];if(!dat)return `<div class="empty">Séance non trouvée.</div>`;const w=dat.weeks[String(state.week)]||{};const adjustment=training==='3'?-2.5:0;const primary=training==='2'?[['Shoulders press','shoulder'],['Back squat','squat']]:[['Développé couché','bench'],['Tirage horizontal / Row','row']];return `<div class="card"><div class="card-head"><h3>Force - ${esc(dat.title)}</h3><span class="tag">Cycle P${state.program} S${state.week}</span></div>${primary.map(([name,rm])=>forceExercise(name,rm,adjustment,training)).join('')}<div class="divider"></div><button class="btn ghost source-toggle" data-toggle-source="strengthSource">Afficher les consignes originales</button><div id="strengthSource" class="source-block" hidden>${esc(dat.strength)}</div></div>${complementaryView(training)}${ropeView()}${structuredWodView(training)}${coachNotes()}`}
-function forceExercise(name,rmKey,adjust,training){const cycle=DATA[String(state.program)].forceCycle[String(state.week)]||[];const max=Number(state.profile[rmKey]||0);let rows='';cycle.forEach((r,ri)=>{for(let s=1;s<=r.sets;s++){const k=key(['force',training,name,ri,s]);rows+=`<div class="force-row"><div><strong>${esc(name)}</strong><div class="muted" style="font-size:11px">${r.pct+adjust}% · ${esc(r.reps)} rep${r.reps==='1'?'':'s'}</div></div><input inputmode="decimal" aria-label="Charge" value="${esc(state.notes[k+'-load']??pctWeight(max,r.pct,adjust))}" data-loadkey="${esc(k)}"><input inputmode="numeric" aria-label="Répétitions" value="${esc(state.notes[k+'-reps']??(r.reps==='MAX'?'':r.reps))}" data-repskey="${esc(k)}"><button class="check ${isDone(k)?'done':''}" data-toggle="${esc(k)}">✓</button></div>`}});return `<div class="rm-head"><h4>${esc(name)} <span class="muted" style="font-weight:400">RM actuel : ${max} kg${adjust?` · ajustement ${adjust}%`:''}</span></h4></div><div class="rm-inline-editor"><label>Modifier le RM de ${esc(name)}<input type="number" step="0.5" min="0" value="${max}" data-rm-input="${esc(rmKey)}"></label><button type="button" class="btn primary" data-rm-save="${esc(rmKey)}">Appliquer</button></div>${camButtonFor(name,'force',name)}<div class="force-grid">${rows}</div>`}
+function forceExercise(name,rmKey,adjust,training){const cycle=DATA[String(state.program)].forceCycle[String(state.week)]||[];const max=Number(state.profile[rmKey]||0);let rows='';cycle.forEach((r,ri)=>{for(let s=1;s<=r.sets;s++){const k=key(['force',training,name,ri,s]);rows+=`<div class="force-row"><div><strong>${esc(name)}</strong><div class="muted" style="font-size:11px">${r.pct+adjust}% · ${esc(r.reps)} rep${r.reps==='1'?'':'s'}</div>${camRowButton(name,r.reps,k)}</div><input inputmode="decimal" aria-label="Charge" value="${esc(state.notes[k+'-load']??pctWeight(max,r.pct,adjust))}" data-loadkey="${esc(k)}"><input inputmode="numeric" aria-label="Répétitions" value="${esc(state.notes[k+'-reps']??(r.reps==='MAX'?'':r.reps))}" data-repskey="${esc(k)}"><button class="check ${isDone(k)?'done':''}" data-toggle="${esc(k)}">✓</button></div>`}});return `<div class="rm-head"><h4>${esc(name)} <span class="muted" style="font-weight:400">RM actuel : ${max} kg${adjust?` · ajustement ${adjust}%`:''}</span></h4></div><div class="rm-inline-editor"><label>Modifier le RM de ${esc(name)}<input type="number" step="0.5" min="0" value="${max}" data-rm-input="${esc(rmKey)}"></label><button type="button" class="btn primary" data-rm-save="${esc(rmKey)}">Appliquer</button></div><div class="force-grid">${rows}</div>`}
 
 function runningView(session,d){const dat=DATA[String(state.program)].running[String(state.week)]?.[session]||'';const base=vma(),train2=base+2,train1=base+1;const extra=d===6?saturdayExtras():abExtras();return `<div class="card"><div class="card-head"><h3>Calculs de course</h3><span class="tag">Cooper ${state.profile.cooper} m</span></div><div class="grid stats" style="margin:0"><div class="stat"><span>VMA Cooper</span><strong>${base.toFixed(1)}</strong></div><div class="stat"><span>VMA +1</span><strong>${train1.toFixed(1)}</strong></div><div class="stat"><span>VMA +2</span><strong>${train2.toFixed(1)}</strong></div><div class="stat"><span>30 s à VMA+2</span><strong>${dist(train2,30)} m</strong></div></div><div class="result" style="margin-top:12px">45 s à VMA+2 : <strong>${dist(train2,45)} m</strong> · 60 s : <strong>${dist(train2,60)} m</strong></div>${vmaTable()}</div><div class="card"><div class="card-head"><h3>Course - Séance ${session}</h3><span class="tag">Semaine ${state.week}</span></div>${courseRemark()}${checklist(dat,`run-${session}`)}<button class="btn ghost source-toggle" data-toggle-source="runSource">Texte source</button><div id="runSource" class="source-block" hidden>${esc(dat)}</div></div>${extra}`}
 function circuitSelector(kind,title){const circuits=DATA[String(state.program)][kind]||{};const nums=Object.keys(circuits);if(!nums.length)return'';const selectId=`${kind}Select`;return `<div class="card"><div class="card-head"><h3>${title}</h3><select class="compact-select" id="${selectId}">${nums.map(n=>`<option value="${n}">Circuit ${n}</option>`).join('')}</select></div><div id="${kind}Body">${circuitTimerPanel(kind,nums[0],circuits[nums[0]])}${checklist(circuits[nums[0]],`${kind}-${nums[0]}`)}</div></div>`}
@@ -1297,7 +1301,7 @@ function complementaryView(training){
   return `<div class="divider"></div><h4>Bloc ${g+1}</h4><select aria-label="Exercice du bloc ${g+1}" class="compact-select renfo-options" data-accessory-choice="${esc(choiceKey)}">${options.map(o=>`<option ${o===selected?'selected':''}>${esc(o)}</option>`).join('')}</select><div class="rm-inline-editor"><label>RM ${esc(selected)} ${selected==='Traction lestée'?'(charge ajoutée)':''} en kg<input type="number" min="0" step="0.5" value="${rm||''}" data-rm-input="${esc(rmKey)}" placeholder="Ton RM"></label><button class="btn primary" data-rm-save="${esc(rmKey)}">Appliquer</button></div><button class="btn primary" data-plan="${planId}">Lancer le bloc avec repos et bips</button>${series.map((r,i)=>{
    const doneKey=key(['accessory',training,g,i]);const repsKey=doneKey+'-reps';
    const id=registerPlan(`${planId}-${i}`,[{seconds:r.seconds,label:`${selected} · ${r.reps} rep · ${r.pct}%`}]);
-   return `<div class="renfo-row ${isDone(doneKey)?'renfo-complete':''}"><strong>${state.program===3?'EMOM · Minute':'Série'} ${i+1} · ${r.reps} rep · ${r.pct}%</strong><p>${formatTime(r.seconds)} · <strong>${rm?pctWeight(rm,r.pct)+' kg':'RM à renseigner'}</strong>${r.rest&&i<series.length-1?` · Repos ${formatTime(r.rest)}`:''}</p><div class="pill-row"><button class="btn" data-plan="${id}">Chrono ${formatTime(r.seconds)}</button>${r.rest&&i<series.length-1?`<button class="btn" data-timer="${r.rest}">Repos ${formatTime(r.rest)}</button>`:''}${camButtonFor(selected,'renfo',repsKey)}<label>Reps faites <input type="number" min="0" step="1" data-note="${esc(repsKey)}" value="${esc(state.notes[repsKey]||'')}"></label><label><input type="checkbox" data-accessory-done="${esc(doneKey)}" ${isDone(doneKey)?'checked':''}>Fait</label></div></div>`;
+   return `<div class="renfo-row ${isDone(doneKey)?'renfo-complete':''}"><strong>${state.program===3?'EMOM · Minute':'Série'} ${i+1} · ${r.reps} rep · ${r.pct}%</strong><p>${formatTime(r.seconds)} · <strong>${rm?pctWeight(rm,r.pct)+' kg':'RM à renseigner'}</strong>${r.rest&&i<series.length-1?` · Repos ${formatTime(r.rest)}`:''}</p><div class="pill-row"><button class="btn" data-plan="${id}">Chrono ${formatTime(r.seconds)}</button>${r.rest&&i<series.length-1?`<button class="btn" data-timer="${r.rest}">Repos ${formatTime(r.rest)}</button>`:''}${camButtonFor(selected,'renfo',repsKey,r.reps)}<label>Reps faites <input type="number" min="0" step="1" data-note="${esc(repsKey)}" value="${esc(state.notes[repsKey]||'')}"></label><label><input type="checkbox" data-accessory-done="${esc(doneKey)}" ${isDone(doneKey)?'checked':''}>Fait</label></div></div>`;
   }).join('')}`;
  }).join('')}</section>`;
 }
@@ -1556,7 +1560,9 @@ try{cam.level=localStorage.getItem('roadToGI_camLevel')||'normal';cam.voice=loca
 function camPlainTracker(){return {lock:null,state:'tracked',count:0,others:0,reset(){},lockOn(p){this.count=p.length;this.others=Math.max(0,p.length-1);return p.length?0:-1},update(p){this.count=p.length;this.others=Math.max(0,p.length-1);return {idx:p.length?0:-1,state:'tracked',others:this.others}}}}
 function camKeyFor(text){return window.RepCounter?window.RepCounter.detect(text):null}
 function camButton(text,doneKey){const key=camKeyFor(text);if(!key)return '';const target=window.RepCounter.targetFrom(text);return `<button class="btn cam-btn" type="button" data-cam="${key}" data-cam-target="${target}" data-cam-source="wod" data-cam-ref="${esc(doneKey)}">📷 Compter les reps</button>`}
-function camButtonFor(name,source,ref){const key=camKeyFor(name);if(!key)return '';return `<button class="btn cam-btn" type="button" data-cam="${key}" data-cam-target="0" data-cam-source="${source}" data-cam-ref="${esc(ref)}">📷 Compter</button>`}
+function camTargetOf(reps){const m=String(reps==null?'':reps).match(/^\s*(\d{1,3})\b/);return m?Number(m[1]):0}
+function camButtonFor(name,source,ref,reps){const key=camKeyFor(name);if(!key)return '';const t=camTargetOf(reps);return `<button class="btn cam-btn" type="button" data-cam="${key}" data-cam-target="${t}" data-cam-source="${source}" data-cam-ref="${esc(ref)}">📷 Compter${t?` · bip à ${t}`:''}</button>`}
+function camRowButton(name,reps,rowKey){const key=camKeyFor(name);if(!key)return '';const t=camTargetOf(reps);return `<button class="btn cam-mini" type="button" data-cam="${key}" data-cam-target="${t}" data-cam-source="forcerow" data-cam-ref="${esc(rowKey)}">📷 Compter${t?` · bip à ${t}`:''}</button>`}
 function camCard(){return `<div class="card cam-card"><div class="card-head"><h3>Compteur de reps par caméra</h3><span class="tag">bêta</span></div><p class="muted" style="font-size:13px;line-height:1.5;margin:0 0 12px">Pose ton téléphone, la caméra suit ton corps et compte tes répétitions à voix haute. Analysé sur ton téléphone : rien n’est enregistré ni envoyé.</p><button class="btn primary" type="button" data-cam="squat" data-cam-target="0" data-cam-source="free">Ouvrir le compteur</button></div>`}
 function camInject(view){if(state.page==='home'||state.page==='strength')view.insertAdjacentHTML('beforeend',camCard())}
 
@@ -1627,7 +1633,7 @@ function camPaint(r){
     if(tk&&(tk.state==='lost'||tk.state==='search'))camStatus(tk.others>0?'Je ne te vois plus. Quelqu’un d’autre est dans le cadre : je l’ignore.':'Je ne te vois plus : reviens dans le cadre.',true);
     else if(!r.ready)camStatus('Montre-toi en entier dans le cadre',true);
     else if(r.hint)camStatus(r.hint,/Amplitude|non détecté/.test(r.hint));
-    else camStatus(`${window.RepCounter.EX[cam.key].label} · position ${r.phase}${r.value!=null&&cam.key!=='burpee'?` · ${Math.round(r.value)}°`:''}${tk&&tk.others>0?' · autre personne ignorée':''}`);
+    else camStatus(`${window.RepCounter.EX[cam.key].label} · position ${r.phase}${r.value!=null&&cam.key!=='burpee'&&cam.key!=='row'?` · ${Math.round(r.value)}°`:''}${tk&&tk.others>0?' · autre personne ignorée':''}`);
   }
 }
 function camSay(text){if(!cam.voice||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(text));u.lang='fr-FR';u.rate=1.1;speechSynthesis.speak(u)}catch(e){}}
@@ -1640,7 +1646,7 @@ function camOnRep(){
   if(cam.target&&n>=cam.target&&!cam.reached){
     cam.reached=true;camStatus(`Objectif atteint : ${n} reps !`);
     if(cam.plan){const sess=cam.session;setTimeout(()=>{if(sess===cam.session)planEndSet('objectif')},cam.voice?1400:500)}
-    else{setTimeout(()=>{playAlarm(true,false,true);camSay(`Objectif atteint, ${n}`)},cam.voice?900:0);try{navigator.vibrate?.([200,100,200])}catch(e){}}
+    else{setTimeout(()=>{playAlarm(true,false,alarmLong);camSay(`Objectif atteint, ${n}`)},cam.voice?900:0);try{navigator.vibrate?.([200,100,200])}catch(e){}}
   }
 }
 function camAdjust(d){if(!cam.counter)return;cam.counter.adjust(d);camPaint()}
@@ -1794,7 +1800,8 @@ function camFinish(){
   camClose();
   if(!n)return;
   if(src==='wod'&&ref){state.completed[ref]=true;save();render()}
-  else if(src==='renfo'&&ref){state.notes[ref]=String(n);save();render()}
+  else if(src==='renfo'&&ref){state.notes[ref]=String(n);if(!cam.target||n>=cam.target)state.completed[ref.replace(/-reps$/,'')]=true;save();render()}
+  else if(src==='forcerow'&&ref){state.notes[ref+'-reps']=String(n);if(!cam.target||n>=cam.target)state.completed[ref]=true;save();render()}
   else if(src==='force'&&ref){
     const rows=[...document.querySelectorAll('.force-row')].filter(r=>r.querySelector('strong')&&r.querySelector('strong').textContent===ref&&!r.querySelector('.check.done'));
     const input=rows[0]&&rows[0].querySelector('[data-repskey]');
@@ -1807,7 +1814,7 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 /* ---------- onglet « Reps » : banc d'essai du compteur ---------- */
 const REP_MODES={camera:'caméra',file:'vidéo'};
 const REP_LEVELS={souple:'souple',normal:'normale',strict:'stricte'};
-function repUnit(k){return k==='burpee'?'':'°'}
+function repUnit(k){return k==='burpee'||k==='row'?'':'°'}
 function repTime(t){return new Date(t).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}
 function repsStats(tests){
   const per={};

@@ -21,6 +21,9 @@
     hinge:    { label: 'Soulevés / swings', metric: 'hip',   agg: 'mean', low: 120, high: 152, minRepMs: 600,  countOn: 'peak', tip: 'Téléphone de profil, corps entier visible. La répétition compte quand tu te redresses, hanches ouvertes.' },
     press:    { label: 'Développés / épaulés', metric: 'press', agg: 'mean', low: 105, high: 145, minRepMs: 700, countOn: 'peak', tip: 'Téléphone de face ou de profil, tête et bras visibles. La répétition compte bras tendus au-dessus de la tête.' },
     hangRaise:{ label: 'Toes / knees to bar', metric: 'hip', agg: 'mean', low: 100, high: 145, minRepMs: 700, gate: 'handsUp', tip: 'Téléphone de profil, corps entier visible. Pars suspendu, jambes tendues.' },
+    bench:    { label: 'Développés couchés / inclinés', metric: 'elbow', agg: 'mean', low: 105, high: 140, minRepMs: 800, countOn: 'peak', gate: 'reclined', tip: 'Téléphone de profil (ou côté pieds), bras et épaules visibles. La répétition compte bras tendus en haut.' },
+    row:      { label: 'Tirages / rowing',  metric: 'pull',  agg: 'mean', low: 80,  high: 115, minRepMs: 700,  countOn: 'peak', tip: 'Téléphone de profil, bras et buste visibles. La répétition compte quand la barre ou la poignée arrive au corps.' },
+    legpress: { label: 'Presse à cuisses',  metric: 'knee',  agg: 'mean', low: 105, high: 150, minRepMs: 800,  tip: 'Téléphone de profil, jambes visibles. Descends jusqu’à environ 90° aux genoux.' },
     burpee:   { label: 'Burpees',           metric: 'burpee', agg: 'mean', low: 0.55, high: 1.15, minRepMs: 1500, tip: 'Téléphone de profil, à 2,5 m, corps entier visible y compris au sol.' }
   };
 
@@ -37,6 +40,9 @@
     ['dips',      /\bdips?\b/],
     ['pushup',    /\bpompes?\b|push[- ]?ups?/],
     ['press',     /(shoulders?|military|overhead|push) ?press|developpe (devant|militaire|epaules)|ground to overhead|\bgto\b|\bgao\b/],
+    ['bench',     /developpe (couche|incline|decline)|bench|incline press|decline press/],
+    ['row',       /tirage|bent[- ]?over row|pendlay|rowing|\brow\b|t[- ]?bar/],
+    ['legpress',  /\bpresse\b|leg ?press/],
     ['squat',     /squat|thruster/],
     ['hinge',     /swing|deadlift|souleve de terre/],
     ['situp',     /sit[- ]?ups?|\bv[- ]?ups?\b|crunch/]
@@ -93,7 +99,7 @@
     var sh = meanY(frame, [IDX.lSh, IDX.rSh]), wr = meanY(frame, [IDX.lWr, IDX.rWr]), hip = meanY(frame, [IDX.lHip, IDX.rHip]);
     if (def.gate === 'handsUp') return sh != null && wr != null && wr < sh + 0.08;
     if (def.gate === 'handsDown') return sh != null && wr != null && wr > sh;
-    if (def.gate === 'horizontal') {
+    if (def.gate === 'horizontal' || def.gate === 'reclined') {
       /* Corps allongé : l'axe épaules -> hanches (ou, à défaut, épaules -> chevilles) doit être proche de l'horizontale. */
       var far = [[IDX.lHip, IDX.rHip], [IDX.lKn, IDX.rKn], [IDX.lAn, IDX.rAn]];
       var sIds = [IDX.lSh, IDX.rSh];
@@ -104,7 +110,7 @@
         if (!fv.length) continue;
         var A = avg3(frame, sv), B = avg3(frame, fv);
         var dy = Math.abs(A.y - B.y), len = Math.sqrt(Math.pow(A.x - B.x, 2) + dy * dy + Math.pow(A.z - B.z, 2));
-        return len > 1e-6 && dy / len < 0.6;
+        return len > 1e-6 && dy / len < (def.gate === 'reclined' ? 0.87 : 0.6);
       }
       return false;
     }
@@ -126,6 +132,16 @@
         var wr = meanY(frame, [L.lWr, L.rWr]);
         if (nose == null || wr == null) return null;
         return wr < nose ? e : Math.min(e, def.low - 5); /* bras tendus mais sous la tête : pas un développé */
+      }
+      case 'pull': {
+        var sides = [[L.lWr, L.lSh, L.lHip], [L.rWr, L.rSh, L.rHip]], sum = 0, cnt = 0, asp = frame.aspect || 1;
+        sides.forEach(function (t) {
+          if (Math.min(visOf(frame, t[0]), visOf(frame, t[1]), visOf(frame, t[2])) < MIN_VIS) return;
+          var w = frame.img[t[0]], s = frame.img[t[1]], hp = frame.img[t[2]];
+          var arm = Math.sqrt(Math.pow((w.x - s.x) * asp, 2) + Math.pow(w.y - s.y, 2)), tor = Math.sqrt(Math.pow((s.x - hp.x) * asp, 2) + Math.pow(s.y - hp.y, 2));
+          if (tor < 0.02) return; sum += arm / tor; cnt++;
+        });
+        return cnt ? 200 - 100 * sum / cnt : null; /* bras étirés ~ 60, bras tirés ~ 125 */
       }
       case 'burpee': {
         var sh = meanPt(frame, [L.lSh, L.rSh]), hp = meanPt(frame, [L.lHip, L.rHip]), an = meanPt(frame, [L.lAn, L.rAn]) || meanPt(frame, [L.lKn, L.rKn]);
