@@ -1,4 +1,11 @@
-ROAD TO GI - V5
+ROAD TO GI - V6
+Nouveautés V6 :
+- Thème GIGN : bleu marine profond, or, rouge et blanc, comme la rondache du GIGN. Nouveau badge
+  « GI » dans l'en-tête et nouvelles icônes (écran d'accueil de l'iPhone).
+- Signal du chrono plus long : 3 bips puis une note tenue (environ 2,3 s) à la fin de chaque étape
+  de 30 s ou plus et à la fin du chrono. Les efforts courts (Tabata, 20 s / 10 s) gardent le signal
+  court. Case « Signal long » dans le chrono pour revenir au signal court ; vibration plus longue.
+
 Nouveautés V5 :
 - Les charges et répétitions que tu modifies en Force sont conservées ; cocher une série
   ne remet plus les autres à zéro et la page ne saute plus. Si tu changes un RM, les charges
