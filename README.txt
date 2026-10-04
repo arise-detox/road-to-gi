@@ -1,3 +1,25 @@
+ROAD TO GI - V5
+Nouveautés V5 :
+- Les charges et répétitions que tu modifies en Force sont conservées ; cocher une série
+  ne remet plus les autres à zéro et la page ne saute plus. Si tu changes un RM, les charges
+  sont recalculées.
+- Chrono flottant : quand tu fais défiler la page ou changes d'onglet, le chrono en cours reste
+  visible au-dessus du menu, avec Pause / Reprendre et Arrêter.
+- Bips 3-2-1 avant la fin de chaque étape (désactivables dans le chrono, case « Bips 3-2-1 »).
+- Son iPhone : l'audio est relancé automatiquement quand tu reviens sur l'application.
+- Profil > Sauvegarde : copie / restaure tes RM, ton suivi et tes cases cochées.
+- Réinitialiser l'application efface maintenant bien tout, même à la première utilisation.
+- iPhone : en-tête sous l'encoche, sélecteurs P/S sans zoom automatique, pas de délai au toucher.
+- Ouverture plus rapide en salle : si le réseau met plus de 3,5 s, la version enregistrée s'ouvre.
+- Correction (vérifiée sur les PDF) : aux programmes 3 et 4, chaque séance de force n'a qu'UN
+  exercice complémentaire (EMOM / AMREP). L'appli en proposait deux, dont un qui n'existe pas.
+- Course : tableau VMA complet (VMA, +0,5, +1, +1,5, +2) avec les distances en 30 s, 45 s et 60 s,
+  et la remarque d'échauffement / retour au calme du coach.
+- Séances fonctionnelles : encart « Conseils du coach » (temps de repos selon l'intensité, superset,
+  abdos 3 fois par semaine, retour au calme), propre à chaque programme.
+- Contrôle : les 48 séances WOD, les 96 circuits (abdos et samedi), les 48 séances de course et les
+  16 cycles de force ont été comparés au texte des 16 PDF : aucune différence de contenu.
+
 ROAD TO GI - V4
 Renforcement complémentaire visible pour les 4 programmes, avec choix des exercices,
 RM propre à chaque variante, séries et repos, et EMOM corde / tractions serviette.
