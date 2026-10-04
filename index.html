@@ -1528,7 +1528,7 @@ function paintWodClock(){const panel=document.querySelector('.wod-clock');if(!pa
 const MP_VERSION='0.10.21',MP_BASE='https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@'+MP_VERSION;
 const MP_MODEL='https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task';
 const CAM_LINKS=[[11,12],[11,13],[13,15],[12,14],[14,16],[11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28]];
-const cam={forceCpu:false,landmarker:null,loading:null,stream:null,fileUrl:null,facing:'user',key:'squat',level:'normal',target:0,source:'free',ref:'',counter:null,running:false,paused:false,raf:0,lastInfer:0,lastTs:0,voice:true,mode:'camera',reached:false,wake:null,countdownTimer:0,count:0,session:0};
+const cam={tracker:null,preview:false,forceCpu:false,landmarker:null,loading:null,stream:null,fileUrl:null,facing:'user',key:'squat',level:'normal',target:0,source:'free',ref:'',counter:null,running:false,paused:false,raf:0,lastInfer:0,lastTs:0,voice:true,mode:'camera',reached:false,wake:null,countdownTimer:0,count:0,session:0};
 try{cam.level=localStorage.getItem('roadToGI_camLevel')||'normal';cam.voice=localStorage.getItem('roadToGI_camVoice')!=='0'}catch(e){}
 
 function camKeyFor(text){return window.RepCounter?window.RepCounter.detect(text):null}
@@ -1550,6 +1550,7 @@ function camOverlay(){
     <label class="cam-check"><input type="checkbox" id="camVoice"> Annoncer les reps à voix haute</label>
     <div class="hero-actions"><button class="btn primary" type="button" id="camStart">📷 Démarrer la caméra</button><label class="btn" id="camFileLabel">🎞 Analyser une vidéo<input type="file" accept="video/*" id="camFile" hidden></label></div>
     <p class="muted" style="font-size:12px;line-height:1.5;margin:12px 0 0">Première utilisation : le modèle de détection (environ 8 Mo) est téléchargé, il faut du réseau. Ensuite l’appli le garde et fonctionne hors ligne. Les images restent sur ton téléphone.</p>
+    <p class="muted" style="font-size:12px;line-height:1.5;margin:8px 0 0">Plusieurs personnes dans le cadre : l’appli se fixe sur toi (la plus grande, près du centre, squelette doré) et ignore les autres, même si quelqu’un passe devant. Si elle te perd de vue, elle ne compte rien jusqu’à ton retour.</p>
    </section>
    <section id="camStage" class="cam-stage" hidden>
     <div class="cam-view" id="camView"><video id="camVideo" playsinline muted autoplay></video><canvas id="camCanvas"></canvas><div class="cam-overlay-msg" id="camMsg"></div></div>
@@ -1593,9 +1594,11 @@ function camPaint(r){
   el.querySelector('#camTargetShow').textContent=cam.target?`/ ${cam.target}`:'';
   el.querySelector('#camPause').textContent=cam.paused?'Reprendre':'Pause';
   if(r&&cam.running&&!cam.paused){
-    if(!r.ready)camStatus('Montre-toi en entier dans le cadre',true);
+    const tk=r.track;
+    if(tk&&(tk.state==='lost'||tk.state==='search'))camStatus(tk.others>0?'Je ne te vois plus. Quelqu’un d’autre est dans le cadre : je l’ignore.':'Je ne te vois plus : reviens dans le cadre.',true);
+    else if(!r.ready)camStatus('Montre-toi en entier dans le cadre',true);
     else if(r.hint)camStatus(r.hint,/Amplitude|non détecté/.test(r.hint));
-    else camStatus(`${window.RepCounter.EX[cam.key].label} · position ${r.phase}${r.value!=null&&cam.key!=='burpee'?` · ${Math.round(r.value)}°`:''}`);
+    else camStatus(`${window.RepCounter.EX[cam.key].label} · position ${r.phase}${r.value!=null&&cam.key!=='burpee'?` · ${Math.round(r.value)}°`:''}${tk&&tk.others>0?' · autre personne ignorée':''}`);
   }
 }
 function camSay(text){if(!cam.voice||!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(String(text));u.lang='fr-FR';u.rate=1.1;speechSynthesis.speak(u)}catch(e){}}
@@ -1616,14 +1619,14 @@ async function camLoadModel(){
   cam.loading=(async()=>{
     const mp=await import(MP_BASE+'/vision_bundle.mjs');
     const files=await mp.FilesetResolver.forVisionTasks(MP_BASE+'/wasm');
-    const make=delegate=>mp.PoseLandmarker.createFromOptions(files,{baseOptions:{modelAssetPath:MP_MODEL,delegate},runningMode:'VIDEO',numPoses:1});
+    const make=delegate=>mp.PoseLandmarker.createFromOptions(files,{baseOptions:{modelAssetPath:MP_MODEL,delegate},runningMode:'VIDEO',numPoses:3});
     if(cam.forceCpu){cam.landmarker=await make('CPU');cam.delegate='CPU'}else{try{cam.landmarker=await make('GPU');cam.delegate='GPU'}catch(e){cam.landmarker=await make('CPU');cam.delegate='CPU'}}
     return cam.landmarker;
   })();
   try{return await cam.loading}finally{cam.loading=null}
 }
 function camStop(){
-  cam.session++;cam.running=false;cam.paused=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);
+  cam.session++;cam.running=false;cam.preview=false;cam.paused=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);
   const v=document.getElementById('camVideo');
   if(cam.stream){cam.stream.getTracks().forEach(t=>t.stop());cam.stream=null}
   if(v){try{v.pause()}catch(e){}v.srcObject=null;v.removeAttribute('src');try{v.load()}catch(e){}}
@@ -1637,7 +1640,7 @@ function camSizeView(v){
   view.style.width=w+'px';view.style.aspectRatio=vw+' / '+vh;
 }
 async function camPrepare(mode){
-  const sess=++cam.session;cam.mode=mode;cam.log=[];cam.fpsCount=0;cam.fpsStart=0;cam.fps=0;cam.running=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);
+  const sess=++cam.session;cam.mode=mode;cam.log=[];cam.fpsCount=0;cam.fpsStart=0;cam.fps=0;cam.tracker=new window.RepCounter.Tracker();cam.preview=false;cam.running=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);
   unlockAudio();try{speechSynthesis.speak(new SpeechSynthesisUtterance(''))}catch(e){}
   camShow('stage');camOverlay().querySelector('#camView').classList.toggle('mirror',mode==='camera'&&cam.facing==='user');
   camMsg('Chargement du modèle de détection…');camStatus('Première utilisation : environ 8 Mo à télécharger');camPaint();
@@ -1664,10 +1667,10 @@ async function camStartCamera(flip){
 }
 function camStopStreamOnly(){cam.running=false;cancelAnimationFrame(cam.raf);clearInterval(cam.countdownTimer);if(cam.stream){cam.stream.getTracks().forEach(t=>t.stop());cam.stream=null}}
 function camCountdownThenRun(sess,seconds,keepCount){
-  const begin=()=>{if(sess!==cam.session)return;camMsg('');const prev=cam.counter&&keepCount?cam.counter.count:0;cam.counter=window.RepCounter.create(cam.key,{level:cam.level});if(prev)cam.counter.adjust(prev);cam.reached=false;cam.running=true;cam.paused=false;camStatus('');camSay('C’est parti');camBeep(1175,.35);camPaint();cam.raf=requestAnimationFrame(camFrame)};
+  const begin=()=>{if(sess!==cam.session)return;camMsg('');const prev=cam.counter&&keepCount?cam.counter.count:0;cam.counter=window.RepCounter.create(cam.key,{level:cam.level});if(prev)cam.counter.adjust(prev);cam.reached=false;cam.running=true;cam.preview=false;cam.paused=false;camStatus('');camSay('C’est parti');camBeep(1175,.35);camPaint();cam.raf=requestAnimationFrame(camFrame)};
   if(!seconds){begin();return}
-  let n=seconds;camPaint();
-  const tick=()=>{if(sess!==cam.session){clearInterval(cam.countdownTimer);return}camMsg(String(n));camStatus('Place-toi de profil, corps entier dans le cadre');camSay(n);camBeep(660,.12);n--;if(n<0){clearInterval(cam.countdownTimer);begin()}};
+  let n=seconds;camPaint();cam.preview=true;cam.raf=requestAnimationFrame(camFrame);
+  const tick=()=>{if(sess!==cam.session){clearInterval(cam.countdownTimer);return}camMsg(String(n));camStatus(cam.tracker&&cam.tracker.others>0?'Plusieurs personnes : je te suis (squelette doré), les autres sont ignorées':'Place-toi de profil, corps entier dans le cadre');camSay(n);camBeep(660,.12);n--;if(n<0){clearInterval(cam.countdownTimer);begin()}};
   tick();cam.countdownTimer=setInterval(tick,1000);
 }
 async function camStartFile(file){
@@ -1686,16 +1689,36 @@ async function camStartFile(file){
 }
 
 /* ---------- boucle d'analyse ---------- */
-function camDraw(lm,v){
+function camDrawPose(g,lm,cv,color,lw,dots){
+  g.lineWidth=lw;g.lineCap='round';g.strokeStyle=color;
+  for(const [a,b] of CAM_LINKS){const p=lm[a],q=lm[b];if(!p||!q||(p.visibility||0)<.4||(q.visibility||0)<.4)continue;g.beginPath();g.moveTo(p.x*cv.width,p.y*cv.height);g.lineTo(q.x*cv.width,q.y*cv.height);g.stroke()}
+  if(dots){g.fillStyle='#fff';for(const i of [11,12,13,14,15,16,23,24,25,26,27,28]){const p=lm[i];if(!p||(p.visibility||0)<.4)continue;g.beginPath();g.arc(p.x*cv.width,p.y*cv.height,lw*1.2,0,6.283);g.fill()}}
+}
+function camDraw(poses,sel,v){
   const cv=document.getElementById('camCanvas');if(!cv)return;
   if(cv.width!==v.videoWidth||cv.height!==v.videoHeight){cv.width=v.videoWidth;cv.height=v.videoHeight}
-  const g=cv.getContext('2d');g.clearRect(0,0,cv.width,cv.height);if(!lm)return;
-  const lw=Math.max(3,cv.width/150);g.lineWidth=lw;g.lineCap='round';g.strokeStyle='#f5c518';
-  for(const [a,b] of CAM_LINKS){const p=lm[a],q=lm[b];if(!p||!q||(p.visibility||0)<.4||(q.visibility||0)<.4)continue;g.beginPath();g.moveTo(p.x*cv.width,p.y*cv.height);g.lineTo(q.x*cv.width,q.y*cv.height);g.stroke()}
-  g.fillStyle='#fff';for(const i of [11,12,13,14,15,16,23,24,25,26,27,28]){const p=lm[i];if(!p||(p.visibility||0)<.4)continue;g.beginPath();g.arc(p.x*cv.width,p.y*cv.height,lw*1.2,0,6.283);g.fill()}
+  const g=cv.getContext('2d');g.clearRect(0,0,cv.width,cv.height);
+  poses.forEach((L,i)=>{if(i!==sel)camDrawPose(g,L,cv,'rgba(255,255,255,.45)',Math.max(2,cv.width/260),false)});
+  if(sel>=0)camDrawPose(g,poses[sel],cv,'#f5c518',Math.max(3,cv.width/150),true);
+}
+/* Couleur moyenne du haut du corps : aide à ne pas confondre deux personnes (calculée sur le téléphone, jamais conservée). */
+let camSnapCtx=null,camSnapOk=false;
+function camSnap(v){try{if(!camSnapCtx){const c=document.createElement('canvas');c.width=96;c.height=72;camSnapCtx=c.getContext('2d',{willReadFrequently:true})}camSnapCtx.drawImage(v,0,0,96,72);camSnapOk=true}catch(e){camSnapOk=false}}
+function camSignature(L){
+  if(!camSnapOk||!L)return null;
+  try{
+    const q=[11,12,23,24].map(i=>L[i]);if(q.some(p=>!p||(p.visibility||0)<.4))return null;
+    const cx=(q[0].x+q[1].x+q[2].x+q[3].x)/4,cy=(q[0].y+q[1].y+q[2].y+q[3].y)/4,sx=(q[0].x+q[1].x)/2,sy=(q[0].y+q[1].y)/2,hx=(q[2].x+q[3].x)/2,hy=(q[2].y+q[3].y)/2;
+    let r=0,g=0,b=0,n=0;
+    for(const [x,y] of [[cx,cy],[(cx+sx)/2,(cy+sy)/2],[(cx+hx)/2,(cy+hy)/2]]){
+      const px=Math.min(93,Math.max(0,Math.round(x*96)-1)),py=Math.min(69,Math.max(0,Math.round(y*72)-1));
+      const d=camSnapCtx.getImageData(px,py,3,3).data;for(let i=0;i<d.length;i+=4){r+=d[i];g+=d[i+1];b+=d[i+2];n++}
+    }
+    return n?[r/n,g/n,b/n]:null;
+  }catch(e){return null}
 }
 function camFrame(){
-  if(!cam.running)return;
+  if(!cam.running&&!cam.preview)return;
   cam.raf=requestAnimationFrame(camFrame);
   const v=document.getElementById('camVideo'),now=performance.now();
   if(cam.paused||!v||v.readyState<2||now-cam.lastInfer<60||v.ended)return;
@@ -1706,10 +1729,17 @@ function camFrame(){
     if(!cam.forceCpu){cam.forceCpu=true;cam.landmarker=null;const sess=cam.session;camStatus('Passage en mode compatible…');camLoadModel().then(()=>{if(sess===cam.session){cam.running=true;cam.raf=requestAnimationFrame(camFrame)}}).catch(()=>camStatus('Erreur de détection : relance le compteur.',true))}
     else camStatus('Erreur de détection : relance le compteur.',true);
     return}
-  const lm=res.landmarks&&res.landmarks[0],world=res.worldLandmarks&&res.worldLandmarks[0];
-  camDraw(lm,v);
+  const poses=res.landmarks||[],worlds=res.worldLandmarks||[],aspect=v.videoWidth/v.videoHeight;
   const t=cam.mode==='file'?v.currentTime*1000:now;
-  const r=cam.counter.update(lm?{img:lm,world,aspect:v.videoWidth/v.videoHeight}:null,t);
+  /* La couleur du haut ne sert qu'à départager plusieurs personnes : on ne la lit que si besoin (économie de batterie). */
+  const tl=cam.tracker.lock,needSig=poses.length>1||!cam.running||cam.tracker.state!=='tracked'||!(tl&&tl.sig)||((cam.sigFrame=(cam.sigFrame||0)+1)%10===0);
+  let sigs=[];if(needSig){camSnap(v);sigs=poses.map(L=>camSignature(L))}
+  let sel,track;
+  if(!cam.running){cam.tracker.reset();sel=cam.tracker.lockOn(poses,aspect,sigs,t);track={state:sel>=0?'tracked':'idle',others:Math.max(0,poses.length-1)};camDraw(poses,sel,v);return}
+  const u=cam.tracker.update(poses,aspect,sigs,t);sel=u.idx;track=u;
+  camDraw(poses,sel,v);
+  const lm=sel>=0?poses[sel]:null,world=sel>=0?worlds[sel]:null;
+  const r=cam.counter.update(lm?{img:lm,world,aspect}:null,t);r.track=track;
   if(r.rep){camOnRep();if(r.info){(cam.log||(cam.log=[])).push(r.info);if(cam.log.length>200)cam.log.shift()}}
   cam.fpsCount++;if(!cam.fpsStart)cam.fpsStart=now;if(now-cam.fpsStart>=1000){cam.fps=cam.fpsCount*1000/(now-cam.fpsStart);cam.fpsCount=0;cam.fpsStart=now}
   camPaint(r);camDiagPaint(r);
@@ -1801,6 +1831,7 @@ function camDiagPaint(r){
     `Seuils : bas ≤ ${m.low}${u} · haut ≥ ${m.high}${u}`,
     `État : ${m.state} · corps ${r&&r.ready?'exploitable':'non exploitable'}`,
     `Détection : ${cam.delegate||'?'} · ${Math.round(cam.fps||0)} images/s`,
+    `Suivi : ${r&&r.track?r.track.state:'—'} · personnes dans le cadre : ${cam.tracker?cam.tracker.count:0}`,
     `Reps : ${m.count} · partielles ${m.partials}`
   ];
   if(last.length)lines.push('Amplitude : '+last.map((x,i)=>`#${(cam.log.length-last.length)+i+1} ${Math.round(x.min)}→${Math.round(x.max)}`).join('  '));

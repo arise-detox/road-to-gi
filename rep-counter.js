@@ -215,5 +215,103 @@
     };
   }
 
-  root.RepCounter = { EX: EX, LEVELS: LEVELS, IDX: IDX, detect: detect, targetFrom: targetFrom, create: create, Machine: Machine, measure: measure, norm: norm };
+  /* ---------- verrouillage sur une personne ---------- */
+  /* Le modèle peut détecter plusieurs personnes. Le Tracker choisit « la bonne » et s'y tient : il compare la position,
+     la taille du corps et (si disponible) la couleur du haut avec la personne suivie. Une personne qui passe devant,
+     ou qui s'entraîne derrière, est ignorée. Si la personne suivie disparaît, rien n'est compté jusqu'à son retour. */
+  function describe(L, aspect) {
+    if (!L) return null;
+    function ok(i) { var p = L[i]; return p && (typeof p.visibility === 'number' ? p.visibility : 1) >= 0.3 ? p : null; }
+    function mid(a, b) { return a && b ? { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 } : (a || b || null); }
+    var ls = ok(IDX.lSh), rs = ok(IDX.rSh), lh = ok(IDX.lHip), rh = ok(IDX.rHip);
+    var sh = mid(ls, rs), hp = mid(lh, rh), a = aspect || 1;
+    if (!sh || !hp) return null;
+    var torso = Math.sqrt(Math.pow((sh.x - hp.x) * a, 2) + Math.pow(sh.y - hp.y, 2));
+    if (torso < 0.03) return null;
+    var sw = ls && rs ? Math.sqrt(Math.pow((ls.x - rs.x) * a, 2) + Math.pow(ls.y - rs.y, 2)) : 0;
+    torso = Math.max(torso, 1.25 * sw); /* « taille » du corps : le torse raccourcit quand on se penche vers la caméra, pas la largeur d'épaules */
+    return { cx: (sh.x + hp.x) / 2, cy: (sh.y + hp.y) / 2, torso: torso };
+  }
+  function colorDist(a, b) { return a && b ? (Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]) + Math.abs(a[2] - b[2])) / 765 : 0; }
+
+  function Tracker() { this.reset(); }
+  Tracker.prototype.reset = function () { this.lock = null; this.state = 'idle'; this.lostSince = 0; this.lastT = 0; this.others = 0; this.count = 0; this.oth = []; };
+  /* Mémoire des autres personnes vues : un passant qu'on a vu arriver ne peut pas être pris pour l'utilisateur. */
+  Tracker.prototype.matchOther = function (d, a, t, sig, confirmedOnly) {
+    var tracks = this.oth || [];
+    for (var j = 0; j < tracks.length; j++) {
+      var o = tracks[j], dt = Math.max(0, t - o.t) / 1000;
+      if (confirmedOnly && !o.confirmed) continue;
+      var pos = Math.sqrt(Math.pow((d.cx - o.cx) * a, 2) + Math.pow(d.cy - o.cy, 2)) / Math.max(o.torso, d.torso);
+      var ratio = d.torso / o.torso;
+      if (pos < 1.2 + 3 * dt && ratio > 0.6 && ratio < 1.7 && colorDist(sig, o.sig) <= 0.3) return j;
+    }
+    return -1;
+  };
+  Tracker.prototype.trackOthers = function (ds, selected, a, t, sigs, userVisible) {
+    var tracks = this.oth = (this.oth || []).filter(function (o) { return t - o.t < 2500; });
+    for (var i = 0; i < ds.length; i++) {
+      if (i === selected || !ds[i]) continue;
+      var d = ds[i], sg = sigs && sigs[i] ? sigs[i].slice() : null, j = this.matchOther(d, a, t, sg);
+      /* « Autre personne confirmée » : vue à l'écart de l'utilisateur (au moins un torse de distance), pas un double posé sur lui. */
+      var u = userVisible && ds[selected], far = !!u && Math.sqrt(Math.pow((d.cx - u.cx) * a, 2) + Math.pow(d.cy - u.cy, 2)) / u.torso >= 1.0;
+      if (j >= 0) { tracks[j].cx = d.cx; tracks[j].cy = d.cy; tracks[j].torso = d.torso; tracks[j].t = t; if (sg) tracks[j].sig = sg; if (far) tracks[j].confirmed = true; }
+      else tracks.push({ cx: d.cx, cy: d.cy, torso: d.torso, t: t, sig: sg, confirmed: far });
+    }
+  };
+  /* Choix initial : la personne la plus grande à l'image parmi celles qui sont près du centre. */
+  Tracker.prototype.lockOn = function (poses, aspect, sigs, t) {
+    var ds = poses.map(function (L) { return describe(L, aspect); }), best = -1, bestScore = -1, maxTorso = 0, i;
+    for (i = 0; i < ds.length; i++) if (ds[i] && ds[i].torso > maxTorso) maxTorso = ds[i].torso;
+    for (i = 0; i < ds.length; i++) {
+      var d = ds[i]; if (!d || d.torso < 0.5 * maxTorso) continue;
+      var off = Math.sqrt(Math.pow((d.cx - 0.5) * (aspect || 1), 2) + Math.pow(d.cy - 0.5, 2));
+      var score = d.torso * (1.2 - Math.min(1, off));
+      if (score > bestScore) { bestScore = score; best = i; }
+    }
+    this.count = ds.filter(Boolean).length;
+    if (best < 0) { this.lock = null; this.state = 'idle'; this.others = 0; return -1; }
+    this.lock = { cx: ds[best].cx, cy: ds[best].cy, torso: ds[best].torso, sig: sigs && sigs[best] ? sigs[best].slice() : null };
+    this.state = 'tracked'; this.lostSince = 0; this.lastT = t || 0; this.others = this.count - 1;
+    return best;
+  };
+  /* Image suivante : renvoie l'indice de la personne suivie (ou -1), son état et le nombre d'autres personnes. */
+  Tracker.prototype.update = function (poses, aspect, sigs, t) {
+    if (!this.lock) { var first = this.lockOn(poses, aspect, sigs, t); return { idx: first, state: this.state, others: this.others }; }
+    var ds = poses.map(function (L) { return describe(L, aspect); }), lock = this.lock, a = aspect || 1;
+    var searching = this.lostSince > 0 && t - this.lostSince > 1500, continuous = this.state === 'tracked';
+    var dt = Math.max(0, t - this.lastT) / 1000, best = -1, bestCost = Infinity, i;
+    for (i = 0; i < ds.length; i++) {
+      var d = ds[i]; if (!d) continue;
+      var ratio = d.torso / lock.torso; if (ratio < (continuous ? 0.45 : 0.5) || ratio > (continuous ? 2.2 : 2.0)) continue;
+      var pos = Math.sqrt(Math.pow((d.cx - lock.cx) * a, 2) + Math.pow(d.cy - lock.cy, 2)) / lock.torso;
+      var cd = colorDist(sigs && sigs[i], lock.sig);
+      if (!searching && pos > (continuous ? 2.2 : 1.5) + 4 * dt) continue;
+      if (cd > (searching ? 0.25 : 0.32)) continue;
+      /* Pendant une perte de suivi, une personne déjà vue ailleurs n'est pas toi (sauf couleur du haut très proche). */
+      /* Une personne déjà vue ailleurs (un passant) n'est pas toi, sauf si elle est à ta dernière position avec ta taille et ta couleur. */
+      if (!searching && this.matchOther(d, a, t, sigs && sigs[i], true) >= 0) {
+        var strong = pos < 0.3 && ratio > 0.8 && ratio < 1.25 && cd < 0.15;
+        if (!strong) continue;
+      }
+      var cost = pos + 1.5 * Math.abs(Math.log(ratio)) + 2 * cd;
+      if (cost < bestCost) { bestCost = cost; best = i; }
+    }
+    this.count = ds.filter(Boolean).length;
+    if (best >= 0 || this.count >= 2) this.trackOthers(ds, best, a, t, sigs, best >= 0);
+    if (best >= 0) {
+      var s = ds[best];
+      lock.cx = s.cx; lock.cy = s.cy; lock.torso += 0.25 * (s.torso - lock.torso);
+      var sg = sigs && sigs[best];
+      if (sg) { if (lock.sig) for (var k = 0; k < 3; k++) lock.sig[k] += 0.1 * (sg[k] - lock.sig[k]); else lock.sig = sg.slice(); }
+      this.lastT = t; this.lostSince = 0; this.state = 'tracked'; this.others = this.count - 1;
+    } else {
+      if (!this.lostSince) this.lostSince = t;
+      this.state = t - this.lostSince > 1500 ? 'search' : 'lost';
+      this.others = this.count;
+    }
+    return { idx: best, state: this.state, others: this.others };
+  };
+
+  root.RepCounter = { EX: EX, LEVELS: LEVELS, IDX: IDX, detect: detect, targetFrom: targetFrom, create: create, Machine: Machine, measure: measure, norm: norm, Tracker: Tracker, describe: describe };
 })(typeof window !== 'undefined' ? window : this);

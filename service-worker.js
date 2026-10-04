@@ -1,4 +1,4 @@
-const CACHE='road-to-gi-v9';
+const CACHE='road-to-gi-v10';
 const ML_CACHE='gi-ml-v1';
 const ASSETS=['./','./index.html','./manifest.json','./rep-counter.js','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 const NETWORK_TIMEOUT=3500;

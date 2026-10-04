@@ -1,4 +1,14 @@
-ROAD TO GI - V9
+ROAD TO GI - V10
+Nouveautés V10 :
+- Compteur de reps : verrouillage sur ta personne. Le modèle détecte jusqu'à 3 personnes ; l'appli
+  se fixe sur toi (la plus grande, près du centre, squelette doré) en suivant sa position, sa
+  taille et la couleur de son haut, et ignore les autres, y compris quelqu'un qui passe devant ou
+  qui s'entraîne derrière. Si tu disparais du cadre, rien n'est compté jusqu'à ton retour, et un
+  message l'indique (« Je ne te vois plus » ou « autre personne ignorée »). Les autres personnes
+  sont dessinées en gris. Diagnostic : état du suivi et nombre de personnes.
+  Limite : une personne de même taille ET de même couleur de haut, qui apparaît pile à ta place
+  sans qu'on l'ait vue arriver, ne peut pas être distinguée.
+
 Nouveautés V9 :
 - Nouvel onglet « Reps » dans la barre du bas : banc d'essai du compteur de répétitions. Choisis
   un exercice, filme ta série, puis indique le nombre réel de reps : l'appli garde le résultat
